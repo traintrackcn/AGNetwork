@@ -16,7 +16,9 @@
 @property (nonatomic, strong) NSDictionary *contentJSON;
 @property (nonatomic, strong) NSData *contentBinary;
 
-- (id) initWithRequestType:(NSString*) requestType;
+//- (id) initWithRequestType:(NSString*) requestType;
+
++ (instancetype)instanceWithRequestType:(NSString *)requestType;
 
 - (NSString *)url;
 - (NSString *)key;

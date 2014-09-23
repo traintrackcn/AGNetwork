@@ -26,9 +26,9 @@
 		4AD7D26019D11D0800D7F178 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D22C19D1141400D7F178 /* UIImageView+AFNetworking.m */; };
 		4AD7D26119D11D3B00D7F178 /* AGHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E219D1083200D7F178 /* AGHTTPClient.m */; };
 		4AD7D26219D11D5600D7F178 /* NSObject+Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D20719D10C9900D7F178 /* NSObject+Singleton.m */; };
-		4AD7D26B19D11EC800D7F178 /* AGModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D26A19D11EC800D7F178 /* AGModel.m */; };
-		4AD7D26F19D11EF300D7F178 /* DSValueUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D26E19D11EF300D7F178 /* DSValueUtil.m */; };
-		4AD7D27219D11F0400D7F178 /* DSDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D27119D11F0400D7F178 /* DSDeviceUtil.m */; };
+		4AD7D28219D151A100D7F178 /* AGNetworkConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D28119D151A100D7F178 /* AGNetworkConfig.m */; };
+		4AD7D29A19D167C100D7F178 /* DSReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */; };
+		4AD7D2A119D1680600D7F178 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D2A019D1680600D7F178 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -86,13 +86,19 @@
 		4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		4AD7D26319D11D6D00D7F178 /* liblibOpen.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibOpen.a; path = "../libOpen/build/Debug-iphoneos/liblibOpen.a"; sourceTree = "<group>"; };
-		4AD7D26919D11EC800D7F178 /* AGModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGModel.h; path = ../../libOpen/libOpen/AGModel.h; sourceTree = "<group>"; };
-		4AD7D26A19D11EC800D7F178 /* AGModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGModel.m; path = ../../libOpen/libOpen/AGModel.m; sourceTree = "<group>"; };
 		4AD7D26C19D11EDF00D7F178 /* GlobalDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefine.h; path = ../../libOpen/libOpen/GlobalDefine.h; sourceTree = "<group>"; };
 		4AD7D26D19D11EF300D7F178 /* DSValueUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSValueUtil.h; path = ../../libOpen/libOpen/DSValueUtil.h; sourceTree = "<group>"; };
 		4AD7D26E19D11EF300D7F178 /* DSValueUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSValueUtil.m; path = ../../libOpen/libOpen/DSValueUtil.m; sourceTree = "<group>"; };
 		4AD7D27019D11F0400D7F178 /* DSDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSDeviceUtil.h; path = ../../libOpen/libOpen/DSDeviceUtil.h; sourceTree = "<group>"; };
 		4AD7D27119D11F0400D7F178 /* DSDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSDeviceUtil.m; path = ../../libOpen/libOpen/DSDeviceUtil.m; sourceTree = "<group>"; };
+		4AD7D27B19D149AF00D7F178 /* AGModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGModel.h; path = ../../libOpen/libOpen/AGModel.h; sourceTree = "<group>"; };
+		4AD7D27C19D149AF00D7F178 /* AGModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGModel.m; path = ../../libOpen/libOpen/AGModel.m; sourceTree = "<group>"; };
+		4AD7D28019D151A100D7F178 /* AGNetworkConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNetworkConfig.h; sourceTree = "<group>"; };
+		4AD7D28119D151A100D7F178 /* AGNetworkConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNetworkConfig.m; sourceTree = "<group>"; };
+		4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSReachabilityManager.h; sourceTree = "<group>"; };
+		4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSReachabilityManager.m; sourceTree = "<group>"; };
+		4AD7D29F19D1680600D7F178 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		4AD7D2A019D1680600D7F178 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		53023C4A8F9F42CB99D7BF8E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -141,6 +147,8 @@
 		4AD7D1CA19D1064A00D7F178 /* AGNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */,
+				4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */,
 				4AD7D1E719D1091300D7F178 /* DSRequest.h */,
 				4AD7D1E819D1091300D7F178 /* DSRequest.m */,
 				4AD7D1E119D1083200D7F178 /* AGHTTPClient.h */,
@@ -154,6 +162,8 @@
 				4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */,
 				4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */,
 				4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */,
+				4AD7D28019D151A100D7F178 /* AGNetworkConfig.h */,
+				4AD7D28119D151A100D7F178 /* AGNetworkConfig.m */,
 			);
 			path = AGNetwork;
 			sourceTree = "<group>";
@@ -177,6 +187,7 @@
 		4AD7D20019D10BA500D7F178 /* Shared3rd */ = {
 			isa = PBXGroup;
 			children = (
+				4AD7D29E19D1680600D7F178 /* Reachability */,
 				4AD7D21919D1141400D7F178 /* AFNetworking */,
 				4AD7D20519D10C9900D7F178 /* NSObject+Singleton */,
 				4AD7D20119D10BA500D7F178 /* Flurry */,
@@ -231,15 +242,24 @@
 		4AD7D26519D11E8C00D7F178 /* SharedLibs */ = {
 			isa = PBXGroup;
 			children = (
+				4AD7D27B19D149AF00D7F178 /* AGModel.h */,
+				4AD7D27C19D149AF00D7F178 /* AGModel.m */,
 				4AD7D27019D11F0400D7F178 /* DSDeviceUtil.h */,
 				4AD7D27119D11F0400D7F178 /* DSDeviceUtil.m */,
 				4AD7D26D19D11EF300D7F178 /* DSValueUtil.h */,
 				4AD7D26E19D11EF300D7F178 /* DSValueUtil.m */,
 				4AD7D26C19D11EDF00D7F178 /* GlobalDefine.h */,
-				4AD7D26919D11EC800D7F178 /* AGModel.h */,
-				4AD7D26A19D11EC800D7F178 /* AGModel.m */,
 			);
 			path = SharedLibs;
+			sourceTree = "<group>";
+		};
+		4AD7D29E19D1680600D7F178 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				4AD7D29F19D1680600D7F178 /* Reachability.h */,
+				4AD7D2A019D1680600D7F178 /* Reachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		E80D8FBEA8ED450FAF647832 /* Frameworks */ = {
@@ -344,17 +364,17 @@
 				4AD7D26119D11D3B00D7F178 /* AGHTTPClient.m in Sources */,
 				4AD7D25A19D11D0800D7F178 /* AFHTTPRequestOperation.m in Sources */,
 				4AD7D25B19D11D0800D7F178 /* AFImageRequestOperation.m in Sources */,
-				4AD7D26F19D11EF300D7F178 /* DSValueUtil.m in Sources */,
 				4AD7D25C19D11D0800D7F178 /* AFJSONRequestOperation.m in Sources */,
 				4AD7D25D19D11D0800D7F178 /* AFPropertyListRequestOperation.m in Sources */,
 				4AD7D25E19D11D0800D7F178 /* AFURLConnectionOperation.m in Sources */,
-				4AD7D26B19D11EC800D7F178 /* AGModel.m in Sources */,
-				4AD7D27219D11F0400D7F178 /* DSDeviceUtil.m in Sources */,
 				4AD7D25F19D11D0800D7F178 /* AFXMLRequestOperation.m in Sources */,
 				4AD7D26019D11D0800D7F178 /* UIImageView+AFNetworking.m in Sources */,
 				4AD7D25919D11CF700D7F178 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				4AD7D2A119D1680600D7F178 /* Reachability.m in Sources */,
 				4AD7D25819D11CEF00D7F178 /* AFHTTPClient.m in Sources */,
+				4AD7D29A19D167C100D7F178 /* DSReachabilityManager.m in Sources */,
 				4AD7D1F219D1096500D7F178 /* AGRemoterResultError.m in Sources */,
+				4AD7D28219D151A100D7F178 /* AGNetworkConfig.m in Sources */,
 				4AD7D1F019D1096500D7F178 /* AGRemoteMonitor.m in Sources */,
 				4AD7D1E919D1091300D7F178 /* DSRequest.m in Sources */,
 				4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */,

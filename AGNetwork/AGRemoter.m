@@ -13,6 +13,8 @@
 #import "AGRemoteMonitor.h"
 #import "AGRemoterResultError.h"
 #import "DSValueUtil.h"
+#import "AGNetworkConfig.h"
+#import "NSObject+Singleton.h"
 
 #define kErrorCode @"code"
 
@@ -58,7 +60,7 @@
 
 #pragma mark -
 
-- (void)execute:(DSRequest *)req{
+- (void)send:(DSRequest *)req{
     [req assemble];
     //    [self saveRequestForCallback:req];
     TLOG(@"[Request] %@ %@ %@",[req method], [req URL].absoluteString, [req contentJSON]);
@@ -157,6 +159,12 @@
     if (delegate&&[delegate respondsToSelector:@selector(remoterDataReceived:withRequestData:)]) {
         @try {
             [delegate remoterDataReceived:responseData withRequestData:request];
+            
+            if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].dataReceivedBlock]) {
+                [AGNetworkConfig singleton].dataReceivedBlock(responseData, request);
+            }
+            
+            
         }@catch (NSException *exception) {
             [AGRemoteMonitor logClientException:exception forRequest:request];
         }
@@ -167,6 +175,10 @@
     if ([delegate respondsToSelector:@selector(remoterErrorOccured:)]) {
         @try {
             [delegate remoterErrorOccured:result];
+            if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].errorOccuredBlock]) {
+                [AGNetworkConfig singleton].errorOccuredBlock(result);
+            }
+            
         }@catch (NSException *exception) {
             DSRequest *request = result.request;
             [AGRemoteMonitor logClientException:exception forRequest:request];
@@ -207,31 +219,65 @@
 }
 
 
+- (NSString *)defaultProtocolVersion{
+    return [AGNetworkConfig singleton].defaultProtocolVersion;
+}
+
+- (NSString *)defaultServerUrl{
+    return [AGNetworkConfig singleton].defaultServerUrl;
+}
+
 #pragma mark - 
 
+- (DSRequest *)assembleDefaultRequestWithRequestType:(NSString *)requestType{
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
+    [req setProtocolVersion: self.defaultProtocolVersion];
+    [req setServerUrl: self.defaultServerUrl];
+    [req setToken:[AGNetworkConfig singleton].token];
+    return req;
+}
+
+- (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    [req setProtocolVersion:protocolVersion];
+    [self send:req];
+}
+
+- (void)GET:(NSString *)requestType userInfo:(id)userInfo{
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    [req setUserInfo:userInfo];
+    [self send:req];
+}
+
 - (void)GET:(NSString *)requestType{
-    DSRequest *req = [[DSRequest alloc] initWithRequestType:requestType];
-    [self execute:req];
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    [self send:req];
+}
+
+- (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData{
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    [req setContentBinary:binaryData];
+    [self send:req];
 }
 
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [[DSRequest alloc] initWithRequestType:requestType];
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setContentJSON:requestBody];
-    [self execute:req];
+    [self send:req];
 }
 
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [[DSRequest alloc] initWithRequestType:requestType];
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setContentJSON:requestBody];
     [req setMethod:@"PUT"];
-    [self execute:req];
+    [self send:req];
 }
 
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [[DSRequest alloc] initWithRequestType:requestType];
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setContentJSON:requestBody];
     [req setMethod:@"DELETE"];
-    [self execute:req];
+    [self send:req];
 }
 
 

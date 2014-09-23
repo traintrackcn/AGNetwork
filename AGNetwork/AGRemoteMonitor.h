@@ -78,6 +78,10 @@
 + (NSString *)TAPPED_LOGOUT;
 
 
+#pragma mark - fatal events
++ (NSString *)SERVER_IS_DOWN;
+
+
 @property (nonatomic, strong) NSString *appVersion;
 @property (nonatomic, strong) NSString *userID;
 

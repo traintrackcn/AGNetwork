@@ -16,9 +16,14 @@
 
 @implementation DSRequest
 
-- (id)init{
-    self = [self initWithRequestType:nil];
-    return self;
+
++ (instancetype)instanceWithRequestType:(NSString *)requestType{
+    DSRequest *request = [[DSRequest alloc] initWithRequestType:requestType];
+    return request;
+}
+
+- (instancetype)init{
+    @throw [NSException exceptionWithName:@"init is invalid" reason:@"please use AGRemoter GET/POST" userInfo:nil];
 }
 
 

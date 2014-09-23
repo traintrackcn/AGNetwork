@@ -324,4 +324,11 @@ void signalHandler(int sig) {
 + (NSString *)TAPPED_LOGOUT{
     return @"TAPPED_LOGOUT";
 }
+
+#pragma mark - fatal events
++ (NSString *)SERVER_IS_DOWN{
+    return @"SERVER_IS_DOWN";
+}
+
+
 @end
