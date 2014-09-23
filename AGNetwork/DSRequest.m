@@ -9,10 +9,10 @@
 
 
 #import "DSRequest.h"
-#import "DSHostSettingManager.h"
-
-
-
+#import "GlobalDefine.h"
+#import "DSValueUtil.h"
+#import "AGNetworkMacro.h"
+#import "DSDeviceUtil.h"
 
 @implementation DSRequest
 
@@ -36,9 +36,10 @@
     NSMutableString* url = [NSMutableString stringWithString:@"/"];
     if ([DSValueUtil isAvailable:self.protocolVersion]) {
         [url appendString:self.protocolVersion];
-    }else{
-        [url appendString:[AGConfigurationCoordinator singleton].protocolVersion];
     }
+//    else{
+//        [url appendString:[AGConfigurationCoordinator singleton].protocolVersion];
+//    }
     if (_requestType){
         [url appendString:@"/"];
         [url appendString:_requestType];
@@ -98,7 +99,7 @@
 }
 
 - (void)assembleBasic{
-    NSString *urlStr = [NSString stringWithFormat:@"%@%@", [DSHostSettingManager selectedServerUrl], self.url];
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@", self.serverUrl, self.url];
     
     NSURL *url = [[NSURL alloc] initWithString:urlStr];
     [self setHTTPMethod:[self method]];
@@ -118,8 +119,8 @@
 }
 
 - (void)assembleHeaders{
-    NSString *token = [AGSession singleton].token;
-    if ([DSValueUtil isAvailable:token]) [self setValue:token forHTTPHeaderField:@"X-Authentication-Token"];
+//    NSString *token = [AGSession singleton].token;
+    if ([DSValueUtil isAvailable:self.token]) [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
     
 }
 

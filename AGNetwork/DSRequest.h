@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Voxeo. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 @interface DSRequest : NSMutableURLRequest
 
 
@@ -26,7 +28,8 @@
 @property (nonatomic, strong) NSString *method;
 
 @property (nonatomic, strong) NSString *protocolVersion;
-
+@property (nonatomic, strong) NSString *token;
+@property (nonatomic, strong) NSString *serverUrl;
 
 
 

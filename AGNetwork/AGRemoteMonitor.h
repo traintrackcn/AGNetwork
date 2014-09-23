@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+
 //#import "ABNotifier.h"
 
-//@interface AGRemoteMonitor : NSObject <ABNotifierDelegate>
+@class DSRequest;
+@class AGRemoterResult;
+
 @interface AGRemoteMonitor : NSObject
 
-- (void)start;
+- (void)startWithFlurryAPIKey:(NSString *)flurryAPIKey;
 
 #pragma mark - ops
 
@@ -73,5 +76,9 @@
 + (NSString *)TAPPED_ADD_PRODUCT_TO_CART;
 + (NSString *)TAPPED_CLOSE_SHOPPING_CART;
 + (NSString *)TAPPED_LOGOUT;
+
+
+@property (nonatomic, strong) NSString *appVersion;
+@property (nonatomic, strong) NSString *userID;
 
 @end

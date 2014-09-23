@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Voxeo. All rights reserved.
 //
 
+
 #import <Foundation/Foundation.h>
 #import "DSRequest.h"
 
@@ -17,7 +18,7 @@
 - (void)remoterDataReceived:(id)responseData withRequestData:(DSRequest *)request;
 @optional
 - (void)remoterErrorOccured:(AGRemoterResult *)result;
-
+- (void)remoterGetServerCurrentTime:(NSString *)serverCurrentTime;
 
 @end
 

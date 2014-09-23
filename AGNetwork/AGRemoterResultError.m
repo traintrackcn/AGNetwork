@@ -7,6 +7,7 @@
 //
 
 #import "AGRemoterResultError.h"
+#import "DSValueUtil.h"
 
 @implementation AGRemoterResultError
 

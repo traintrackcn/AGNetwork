@@ -7,12 +7,13 @@
 //
 
 #import "AGRemoteMonitor.h"
-#import "AGSession.h"
-#import "AGContact.h"
+#import "AGRemoterResult.h"
 #import "AGRemoterResultError.h"
 #import "Flurry.h"
-#import "DSHostSettingManager.h"
-#import "AGRemoterResultError.h"
+#import "DSRequest.h"
+#import "GlobalDefine.h"
+#import "DSValueUtil.h"
+#import "NSObject+Singleton.h"
 
 
 @implementation AGRemoteMonitor
@@ -20,7 +21,7 @@
 
 #pragma mark - 
 
-- (void)start{
+- (void)startWithFlurryAPIKey:(NSString *)flurryAPIKey{
     
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     
@@ -37,8 +38,8 @@
     
  //=== Global Environment Setting
     
-    [AGRemoteMonitor setDistributorID:[AGSession singleton].profile.person.distributorID];
-    [AGRemoteMonitor setAppVersion:[AGAppUtil buildNumberText]];
+//    [AGRemoteMonitor setDistributorID:[AGSession singleton].profile.person.distributorID];
+//    [AGRemoteMonitor setAppVersion:[AGAppUtil buildNumberText]];
 
 //=== AirBrake Setting ===
 //    [ABNotifier setEnvironmentValue:[DSHostSettingManager selectedHost] forKey:@"host"];
@@ -50,9 +51,9 @@
  
     
 //=== Flurry Setting ===
-    TLOG(@"[AGConfigurationCoordinator singleton].flurryAPIKey -> %@", [AGConfigurationCoordinator singleton].flurryAPIKey);
+//    TLOG(@"[AGConfigurationCoordinator singleton].flurryAPIKey -> %@", [AGConfigurationCoordinator singleton].flurryAPIKey);
     [Flurry setCrashReportingEnabled:YES];
-    [Flurry startSession:[AGConfigurationCoordinator singleton].flurryAPIKey];
+    [Flurry startSession:flurryAPIKey];
 
     
 #ifdef DEBUG
@@ -145,9 +146,13 @@ void signalHandler(int sig) {
 
 + (void)logErrorID:(NSString *)errorID message:(NSString *)message reason:(NSString *)reason{
     
-    NSString *distributorID = [AGSession singleton].profile.person.distributorID;
-    NSString *appVersion = [AGAppUtil buildNumberText];
-    NSString *environment = [NSString stringWithFormat:@"%@-%@", appVersion,[DSValueUtil isAvailable:distributorID]?distributorID:@"Anonymous"];
+//    NSString *distributorID = [AGSession singleton].profile.person.distributorID;
+//    NSString *appVersion = [AGAppUtil buildNumberText];
+    NSString *userID = [AGRemoteMonitor singleton].userID;
+    NSString *appVersion = [AGRemoteMonitor singleton].appVersion;
+    
+    
+    NSString *environment = [NSString stringWithFormat:@"%@-%@", appVersion,[DSValueUtil isAvailable:userID]?userID:@"Anonymous"];
     NSException *e = [NSException exceptionWithName:environment reason:[DSValueUtil isAvailable:reason]?reason:@"" userInfo:nil];
     
     [Flurry logError:errorID message:[DSValueUtil isAvailable:message]?message:@"" exception:e];

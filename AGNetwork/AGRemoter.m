@@ -7,38 +7,15 @@
 //
 
 #import "AGRemoter.h"
-#import "AGRootViewController.h"
-#import "DSHostSettingManager.h"
-#import "DSReachabilityManager.h"
 #import "AGHTTPClient.h"
-//#import "DSCrashReporterManager.h"
-#import "AGLoginViewController.h"
 #import "AGRemoterResult.h"
-
+#import "GlobalDefine.h"
+#import "AGRemoteMonitor.h"
+#import "AGRemoterResultError.h"
+#import "DSValueUtil.h"
 
 #define kErrorCode @"code"
-//#define kErrorMessage @"error-msg"
-//#define kErrorRaw @"error-raw"
-//#define kErrorData @"error-data"
 
-//enum {
-//    DSErrorNoResponse = 0,
-//    DSErrorNoResponseObject= 2,
-//    DSErrorIncorrectContent = 3,
-//    DSErrorInvalidSecurityToken = 4,
-//    DSErrorInvalidRequestBody = 5,
-//    DSErrorNotAuthenticated = 6,
-//    DSErrorGeneralError = 7,
-//    
-//    DSErrorBadRequest = 400,
-//    DSErrorAuthenticationRequired = 401,
-////    DSErrorForbidden = 403,
-//    DSErrorCannotFindPage = 404,
-////    DSErrorMethodNotAllowed = 405,
-//    DSErrorServerInternal = 500,
-//    DSErrorNotImplemented = 501,
-//    DSErrorServiceUnavailable = 503
-//};
 
 
 @interface AGRemoter(){
@@ -51,6 +28,10 @@
 
 @implementation AGRemoter
 @synthesize delegate;
+
++ (void)initialize{
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+}
 
 - (id)init
 {
@@ -103,8 +84,8 @@
     
     if (responseHeaders != nil) {
         NSString *serverCurrentTime = [responseHeaders objectForKey:@"X-SERVER-CURRENT-TIME"];
-        [[AGSession singleton] setServerCurrentTime:serverCurrentTime];
-        TLOG(@"serverCurrentTime -> %@", serverCurrentTime);
+//        [[AGSession singleton] setServerCurrentTime:serverCurrentTime];
+        [self dispatchRemoterGetServerCurrentTime:serverCurrentTime];
     }
     
     
@@ -193,6 +174,13 @@
     }
 }
 
+
+- (void)dispatchRemoterGetServerCurrentTime:(NSString *)serverCurrentTime{
+    if ([delegate respondsToSelector:@selector(remoterGetServerCurrentTime:)]) {
+        [delegate remoterGetServerCurrentTime:serverCurrentTime];
+        TLOG(@"serverCurrentTime -> %@", serverCurrentTime);
+    }
+}
 
 
 //- (void)processErrorShoppingServiceUnavailable{

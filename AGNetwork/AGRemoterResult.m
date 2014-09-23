@@ -7,8 +7,7 @@
 //
 
 #import "AGRemoterResult.h"
-#import "DSReachabilityManager.h"
-
+#import "AGRemoterResultError.h"
 
 @implementation AGRemoterResult
 
