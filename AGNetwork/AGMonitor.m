@@ -15,6 +15,47 @@
 #import "DSValueUtil.h"
 #import "NSObject+Singleton.h"
 
+NSString *AGCPHome = @"AGCPHome";
+NSString *AGCPProfile = @"AGCPProfile";
+NSString *AGCPProfileHomeAddressEditor = @"AGCPProfileHomeAddressEditor";
+NSString *AGCPProfileShippingAddressEditor = @"AGCPProfileShippingAddressEditor";
+NSString *AGCPProfileBillingAddressEditor = @"AGCPProfileBillingAddressEditor";
+NSString *AGCPProfileOnWebAddressEditor = @"AGCPProfileOnWebAddressEditor";
+NSString *AGCPRegistrationBasic = @"AGCPRegistrationBasic";
+NSString *AGCPRegistrationStepChooseProduct = @"AGCPRegistrationStepChooseProduct";
+NSString *AGCPRegistrationStepFillProfile = @"AGCPRegistrationStepFillProfile";
+NSString *AGCPRegistrationStepReview = @"AGCPRegistrationStepReview";
+NSString *AGCPRegistrationStepResult = @"AGCPRegistrationStepResult";
+NSString *AGCPAutoshipList = @"AGCPAutoshipList";
+NSString *AGCPAutoshipDetail = @"AGCPAutoshipDetail";
+NSString *AGCPAutoshipStepChooseProduct = @"AGCPAutoshipStepChooseProduct";
+NSString *AGCPAutoshipStepReview = @"AGCPAutoshipStepReview";
+NSString *AGCPAutoshipStepResult = @"AGCPAutoshipStepResult";
+NSString *AGCPShoppingTaxonList = @"AGCPShoppingTaxonList";
+NSString *AGCPShoppingProductList = @"AGCPShoppingProductList";
+NSString *AGCPShoppingProductDetail = @"AGCPShoppingProductDetail";
+NSString *AGCPShoppingCart = @"AGCPShoppingCart";
+NSString *AGCPShoppingStepReview = @"AGCPShoppingStepReview";
+NSString *AGCPShoppingStepResult = @"AGCPShoppingStepResult";
+NSString *AGCPGenealogyUnilevel = @"AGCPGenealogyUnilevel";
+NSString *AGCPGenealogyDualteam = @"AGCPGenealogyDualteam";
+NSString *AGCPSetting = @"AGCPSetting";
+NSString *AGCPCommissionWeekly = @"AGCPCommissionWeekly";
+NSString *AGCPCommissionMonthly = @"AGCPCommissionMonthly";
+NSString *AGCPCommissionQuartly = @"AGCPCommissionQuartly";
+NSString *AGCPCommissionRank = @"AGCPCommissionRank";
+NSString *AGCPCommissionDualteam = @"AGCPCommissionDualteam";
+NSString *AGCPReportOrder = @"AGCPReportOrder";
+NSString *AGCPReportOrganization = @"AGCPReportOrganization";
+NSString *AGCPReportRecentGrowth = @"AGCPReportRecentGrowth";
+NSString *AGCPReportTotal = @"AGCPReportTotal";
+NSString *AGCPReportReturn = @"AGCPReportReturn";
+NSString *AGCPGiftCardList = @"AGCPGiftCardList";
+NSString *AGCPGiftCardBoughtList = @"AGCPGiftCardBoughtList";
+NSString *AGCPGiftCardStepReview = @"AGCPGiftCardStepReview";
+NSString *AGCPGiftCardStepResult = @"AGCPGiftCardStepResult";
+NSString *AGCPServerIsDown = @"AGCPServerIsDown";
+
 
 @implementation AGMonitor
 

@@ -13,6 +13,50 @@
 @class DSRequest;
 @class AGRemoterResult;
 
+
+extern NSString *AGCPHome;
+extern NSString *AGCPProfile;
+extern NSString *AGCPProfileHomeAddressEditor;
+extern NSString *AGCPProfileShippingAddressEditor;
+extern NSString *AGCPProfileBillingAddressEditor;
+extern NSString *AGCPProfileOnWebAddressEditor;
+extern NSString *AGCPRegistrationBasic;
+extern NSString *AGCPRegistrationStepChooseProduct;
+extern NSString *AGCPRegistrationStepFillProfile;
+extern NSString *AGCPRegistrationStepReview;
+extern NSString *AGCPRegistrationStepResult;
+extern NSString *AGCPAutoshipList;
+extern NSString *AGCPAutoshipDetail;
+extern NSString *AGCPAutoshipStepChooseProduct;
+extern NSString *AGCPAutoshipStepReview;
+extern NSString *AGCPAutoshipStepResult;
+extern NSString *AGCPShoppingTaxonList;
+extern NSString *AGCPShoppingProductList;
+extern NSString *AGCPShoppingProductDetail;
+extern NSString *AGCPShoppingCart;
+extern NSString *AGCPShoppingStepReview;
+extern NSString *AGCPShoppingStepResult;
+extern NSString *AGCPGenealogyUnilevel;
+extern NSString *AGCPGenealogyDualteam;
+extern NSString *AGCPSetting;
+extern NSString *AGCPCommissionWeekly;
+extern NSString *AGCPCommissionMonthly;
+extern NSString *AGCPCommissionQuartly;
+extern NSString *AGCPCommissionRank;
+extern NSString *AGCPCommissionDualteam;
+extern NSString *AGCPReportOrder;
+extern NSString *AGCPReportOrganization;
+extern NSString *AGCPReportRecentGrowth;
+extern NSString *AGCPReportTotal;
+extern NSString *AGCPReportReturn;
+extern NSString *AGCPGiftCardList;
+extern NSString *AGCPGiftCardBoughtList;
+extern NSString *AGCPGiftCardStepReview;
+extern NSString *AGCPGiftCardStepResult;
+extern NSString *AGCPServerIsDown;
+
+
+
 @interface AGMonitor : NSObject
 
 - (void)startWithFlurryAPIKey:(NSString *)flurryAPIKey;
@@ -29,57 +73,6 @@
 + (void)setDistributorID:(NSString *)distributorID;
 
 + (void)passCheckpoint:(NSString *)checkpointName;
-
-#pragma mark -
-
-//+ (NSString *)ERROR_DOMAIN;
-//+ (NSString *)RESPONSE_EXCEPTION_OF_CLIENT;
-//+ (NSString *)RESPONSE_EXCEPTION_OF_SERVER;
-+ (NSString *)HOME_VIEW;
-+ (NSString *)ENROLL_STEP_BASIC_VIEW;
-+ (NSString *)ENROLL_STEP_PRODUCTS_VIEW;
-+ (NSString *)ENROLL_STEP_PROFILE_VIEW;
-+ (NSString *)ENROLL_STEP_REVIEW_VIEW;
-+ (NSString *)ENROLL_STEP_RESULT_VIEW;
-+ (NSString *)AUTOSHIPS_VIEW;
-+ (NSString *)AUTOSHIP_VIEW;
-+ (NSString *)CREATE_AUTOSHIP_STEP_PRODUCT_VIEW;
-+ (NSString *)CREATE_AUTOSHIP_STEP_REVIEW_VIEW;
-+ (NSString *)CREATE_AUTOSHIP_STEP_RESULT_VIEW;
-+ (NSString *)SHOP_TAXONS_VIEW;
-+ (NSString *)SHOP_PRODUCTS_VIEW;
-+ (NSString *)SHOP_PRODUCT_VIEW;
-+ (NSString *)SHOPPING_CART_VIEW;
-
-//+ (NSString *)SHOPPING_STEP_CHECKOUT_VIEW;
-+ (NSString *)SHOPPING_STEP_REVIEW_VIEW;
-+ (NSString *)SHOPPING_STEP_RESULT_VIEW;
-
-+ (NSString *)GENEALOGY_UNILEVEL_VIEW;
-+ (NSString *)GENEALOGY_DUALTEAM_VIEW;
-+ (NSString *)SETTING_VIEW;
-+ (NSString *)COMMISSIONS_WEEKLY_VIEW;
-+ (NSString *)COMMISSIONS_MONTHLY_VIEW;
-+ (NSString *)COMMISSIONS_QUARTERLY_VIEW;
-+ (NSString *)COMMISSIONS_RANK_VIEW;
-+ (NSString *)COMMISSIONS_DUALTEAM_VIEW;
-+ (NSString *)REPORTS_ORDERS_VIEW;
-+ (NSString *)REPORTS_ORGANIZATIONS_VIEW;
-+ (NSString *)REPORTS_RECENT_GROWTH_VIEW;
-+ (NSString *)REPORTS_TOTAL_VIEW;
-+ (NSString *)REPORTS_RETURNS_VIEW;
-
-+ (NSString *)GIFT_CARD_VIEW;
-
-
-#pragma mark - interactive actions
-+ (NSString *)TAPPED_ADD_PRODUCT_TO_CART;
-+ (NSString *)TAPPED_CLOSE_SHOPPING_CART;
-+ (NSString *)TAPPED_LOGOUT;
-
-
-#pragma mark - fatal events
-+ (NSString *)SERVER_IS_DOWN;
 
 
 @property (nonatomic, strong) NSString *appVersion;
