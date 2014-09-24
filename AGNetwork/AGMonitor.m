@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 2ViVe. All rights reserved.
 //
 
-#import "AGRemoteMonitor.h"
+#import "AGMonitor.h"
 #import "AGRemoterResult.h"
 #import "AGRemoterResultError.h"
 #import "Flurry.h"
@@ -16,7 +16,7 @@
 #import "NSObject+Singleton.h"
 
 
-@implementation AGRemoteMonitor
+@implementation AGMonitor
 
 
 #pragma mark - 
@@ -38,8 +38,8 @@
     
  //=== Global Environment Setting
     
-//    [AGRemoteMonitor setDistributorID:[AGSession singleton].profile.person.distributorID];
-//    [AGRemoteMonitor setAppVersion:[AGAppUtil buildNumberText]];
+//    [AGMonitor setDistributorID:[AGSession singleton].profile.person.distributorID];
+//    [AGMonitor setAppVersion:[AGAppUtil buildNumberText]];
 
 //=== AirBrake Setting ===
 //    [ABNotifier setEnvironmentValue:[DSHostSettingManager selectedHost] forKey:@"host"];
@@ -75,11 +75,11 @@
 
 
 void uncaughtExceptionHandler(NSException *exception){
-    [AGRemoteMonitor logClientUncaughtException:exception];
+    [AGMonitor logClientUncaughtException:exception];
 }
 
 void signalHandler(int sig) {
-    [AGRemoteMonitor logErrorID:[NSString stringWithFormat:@"SIGNAL-%d", sig]];
+    [AGMonitor logErrorID:[NSString stringWithFormat:@"SIGNAL-%d", sig]];
 //    NSLog(@"This is where we save the application data during a signal");
     // Save application data on crash
 }
@@ -107,30 +107,30 @@ void signalHandler(int sig) {
 #pragma mark - remote log ops
 
 + (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request{
-    NSString *errId = [NSString stringWithFormat:@"%@-%@",[AGRemoteMonitor RESPONSE_EXCEPTION_OF_CLIENT],[request url]];
+    NSString *errId = [NSString stringWithFormat:@"%@-%@",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT],[request url]];
     [self logErrorID:errId message:exception.name reason:exception.reason];
 }
 
 + (void)logClientUncaughtException:(NSException *)exception{
-    NSString *errId = [NSString stringWithFormat:@"%@-UNCAUGHT",[AGRemoteMonitor RESPONSE_EXCEPTION_OF_CLIENT]];
+    NSString *errId = [NSString stringWithFormat:@"%@-UNCAUGHT",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT]];
     [self logErrorID:errId message:exception.name reason:exception.reason];
 }
 
 + (void)logServerExceptionWithResult:(AGRemoterResult *)result forRequest:(DSRequest *)request{
-    NSString *errId = [NSString stringWithFormat:@"%@-%ld-%@",[AGRemoteMonitor RESPONSE_EXCEPTION_OF_SERVER],(long)result.code,[request url]];
+    NSString *errId = [NSString stringWithFormat:@"%@-%ld-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],(long)result.code,[request url]];
     AGRemoterResultError *error = result.error;
     [self logErrorID:errId message:[NSString stringWithFormat:@"[%@] %@", error.code, error.message] reason:error.developerMessage];
 }
 
 + (void)logLoadImageFailedError:(NSError *)error forImageUrl:(NSURL *)url{
-    NSString *errId = [NSString stringWithFormat:@"%@-IMG-%@",[AGRemoteMonitor RESPONSE_EXCEPTION_OF_SERVER],url];
+    NSString *errId = [NSString stringWithFormat:@"%@-IMG-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],url];
     [self logErrorID:errId message:[DSValueUtil toString:error.userInfo]];
 }
 
 + (void)logLoadIFrameFailedError:(NSError *)error{
     NSString *url = [error.userInfo objectForKey:@"NSErrorFailingURLKey"];
     NSString *description = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    NSString *errId = [NSString stringWithFormat:@"%@-IFRAME-%@",[AGRemoteMonitor RESPONSE_EXCEPTION_OF_SERVER],url];
+    NSString *errId = [NSString stringWithFormat:@"%@-IFRAME-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],url];
     [self logErrorID:errId message:description];
 }
 
@@ -148,8 +148,8 @@ void signalHandler(int sig) {
     
 //    NSString *distributorID = [AGSession singleton].profile.person.distributorID;
 //    NSString *appVersion = [AGAppUtil buildNumberText];
-    NSString *userID = [AGRemoteMonitor singleton].userID;
-    NSString *appVersion = [AGRemoteMonitor singleton].appVersion;
+    NSString *userID = [AGMonitor singleton].userID;
+    NSString *appVersion = [AGMonitor singleton].appVersion;
     
     
     NSString *environment = [NSString stringWithFormat:@"%@-%@", appVersion,[DSValueUtil isAvailable:userID]?userID:@"Anonymous"];

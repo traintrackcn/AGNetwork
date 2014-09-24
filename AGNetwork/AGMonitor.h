@@ -13,7 +13,7 @@
 @class DSRequest;
 @class AGRemoterResult;
 
-@interface AGRemoteMonitor : NSObject
+@interface AGMonitor : NSObject
 
 - (void)startWithFlurryAPIKey:(NSString *)flurryAPIKey;
 

@@ -10,7 +10,7 @@
 #import "AGHTTPClient.h"
 #import "AGRemoterResult.h"
 #import "GlobalDefine.h"
-#import "AGRemoteMonitor.h"
+#import "AGMonitor.h"
 #import "AGRemoterResultError.h"
 #import "DSValueUtil.h"
 #import "AGNetworkConfig.h"
@@ -140,7 +140,7 @@
         
         //log erver side exceptions to flurry
         if (result.code != AGResultCodeOperationCancelled) {
-            [AGRemoteMonitor logServerExceptionWithResult:result forRequest:request];
+            [AGMonitor logServerExceptionWithResult:result forRequest:request];
         }
         
     }else{
@@ -166,7 +166,7 @@
             
             
         }@catch (NSException *exception) {
-            [AGRemoteMonitor logClientException:exception forRequest:request];
+            [AGMonitor logClientException:exception forRequest:request];
         }
     }
 }
@@ -181,7 +181,7 @@
             
         }@catch (NSException *exception) {
             DSRequest *request = result.request;
-            [AGRemoteMonitor logClientException:exception forRequest:request];
+            [AGMonitor logClientException:exception forRequest:request];
         }
     }
 }

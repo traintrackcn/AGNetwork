@@ -26,6 +26,7 @@
 #define HTTP_HEAD_WSSID_AUTH @"X-WSSID-Authorization"
 #define HTTP_HEAD_COOKIE @"Cookie"
 
+#define HTTP_OG_HEAD_DEVICE_ID @"X-Organo-Device-UUID"
 
 #define DS_SERVER_CONTENT_TYPE_JSON @"application/json"
 

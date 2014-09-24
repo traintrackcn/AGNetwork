@@ -116,6 +116,7 @@
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_ACCEPT_TYPE];
     [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
+    [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_OG_HEAD_DEVICE_ID];
     [headers setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
     [headers setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
     [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
@@ -125,7 +126,10 @@
 
 - (void)assembleHeaders{
 //    NSString *token = [AGSession singleton].token;
-    if ([DSValueUtil isAvailable:self.token]) [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
+    if ([DSValueUtil isAvailable:self.token]){
+        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
+        [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
+    }
     
 }
 

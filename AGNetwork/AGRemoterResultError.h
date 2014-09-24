@@ -10,8 +10,10 @@
 
 @interface AGRemoterResultError : AGModel
 
+@property (nonatomic, strong) id raw;
 @property (nonatomic, strong) NSString *code;
 @property (nonatomic, strong) NSString *message;
+//@property (nonatomic, strong) NSArray *failures;
 @property (nonatomic, strong) NSString *developerMessage;
 
 @end
