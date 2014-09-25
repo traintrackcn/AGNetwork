@@ -15,6 +15,8 @@
 #import "DSValueUtil.h"
 #import "AGNetworkConfig.h"
 #import "NSObject+Singleton.h"
+#import "UIImageView+AFNetworking.h"
+#import "DSRequest.h"
 
 #define kErrorCode @"code"
 
@@ -23,6 +25,7 @@
 @interface AGRemoter(){
     int errorOcurredRecent;
     AFHTTPClient *client;
+    NSMutableArray *imageViewsInRequest;
 }
 
 @end
@@ -33,6 +36,8 @@
 
 + (void)initialize{
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [AFImageRequestOperation addAcceptableContentTypes:
+     [NSSet setWithObject:@"binary/octet-stream"]];
 }
 
 - (id)init
@@ -41,6 +46,7 @@
     if (self) {
         if (client == nil) {
             client = [AGHTTPClient instance];
+            imageViewsInRequest = [NSMutableArray array];
         }
     }
     return self;
@@ -55,15 +61,28 @@
 - (void)cancelAllRequests{
 //    TLOG(@"");
     [client.operationQueue cancelAllOperations];
+    
+    while (imageViewsInRequest.count > 0) {
+        UIImageView *imgV = [imageViewsInRequest objectAtIndex:0];
+//        [imgV cancelImageRequestOperation];
+//        [imageViewsInRequest removeObject:imgV];
+        [self removeInRequestImageView:imgV];
+    }
 }
 
+- (void)removeInRequestImageView:(UIImageView *)imageView{
+    [imageView cancelImageRequestOperation];
+    [imageViewsInRequest removeObject:imageView];
+    
+//    TLOG(@"imageViewsInRequest count -> %lu", (unsigned long)imageViewsInRequest.count);
+}
 
 #pragma mark -
 
 - (void)send:(DSRequest *)req{
     [req assemble];
     //    [self saveRequestForCallback:req];
-    TLOG(@"[Request] %@ %@ %@",[req method], [req URL].absoluteString, [req contentJSON]);
+    TLOG(@"[Request] %@ %@ %@ %ld",[req method], [req URL].absoluteString, [req contentJSON],[req contentBinary].length);
     
     [client enqueueHTTPRequestOperation:
      [client HTTPRequestOperationWithRequest:req success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -100,37 +119,46 @@
 }
 
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
-    AGRemoterResult *result = [AGRemoterResult instance];
-    
-//    TLOG(@"operation.hasStatusCode -> %d error -> %@", operation.hasAcceptableStatusCode, error);
-    
-    if ([DSValueUtil isAvailable:error]) {
-        NSString *recoverySuggestionStr = [error.userInfo objectForKey:@"NSLocalizedRecoverySuggestion"];
-        if ([DSValueUtil isAvailable:recoverySuggestionStr ]) {
-            NSData *recoverySuggestionData = [recoverySuggestionStr dataUsingEncoding:NSUTF8StringEncoding];
-            NSDictionary *recoverySuggestion  = [NSJSONSerialization JSONObjectWithData:recoverySuggestionData options:NSJSONReadingAllowFragments error:nil];
-            NSDictionary *meta = [recoverySuggestion objectForKey:@"meta"];
-            id errorRaw = [meta objectForKey:@"error"];
-            AGRemoterResultError *error = [[AGRemoterResultError alloc] initWithRaw:errorRaw];
-            [result setError: error];
-        }
-    }
+    AGRemoterResult *result = [self parseError:error];
     
     if (operation.isCancelled) {
         [result setCode:AGResultCodeOperationCancelled];
     }else{
-        
         [result setCode: operation.response.statusCode ];
     }
     
-    [result setRequest: (DSRequest *)[operation request] ];
+    [result setRequest: [operation request] ];
     [self processResult:result];
 }
 
-
+- (AGRemoterResult *)parseError:(NSError *)error{
+    AGRemoterResult *result = [AGRemoterResult instance];
+    
+    
+//    TLOG(@"error -> %@", error);
+    //    TLOG(@"operation.hasStatusCode -> %d error -> %@", operation.hasAcceptableStatusCode, error);
+    
+    if ([DSValueUtil isAvailable:error]) {
+        AGRemoterResultError *parsedError = [[AGRemoterResultError alloc] init];
+        NSDictionary *userInfo = error.userInfo;
+        NSString *recoverySuggestionStr = [userInfo objectForKey:@"NSLocalizedRecoverySuggestion"];
+        if ([DSValueUtil isAvailable:recoverySuggestionStr ]) {
+            NSData *recoverySuggestionData = [recoverySuggestionStr dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *recoverySuggestionObj  = [NSJSONSerialization JSONObjectWithData:recoverySuggestionData options:NSJSONReadingAllowFragments error:nil];
+            NSDictionary *meta = [recoverySuggestionObj objectForKey:@"meta"];
+            id errorRaw = [meta objectForKey:@"error"];
+            [parsedError updateWithRaw:errorRaw];
+        }
+        [parsedError setLocalizedDesc:[userInfo objectForKey:@"NSLocalizedDescription"]];
+        [parsedError setFailingUrl:[userInfo objectForKey:@"NSErrorFailingURLKey"]];
+        [result setErrorParsed:parsedError];
+        [result setErrorOrigin:error];
+    }
+    return result;
+}
 
 - (void)processResult:(AGRemoterResult *)result{
-    DSRequest *request = result.request;
+    DSRequest *request = (DSRequest *)result.request;
     TLOG(@"[Response %ld] %@ %@ ", (long)[result code],[request method], [request url]);
     if ( [result isError]){
 //        TLOG(@"[Response error] -> %@", result.error);
@@ -140,11 +168,11 @@
         
         //log erver side exceptions to flurry
         if (result.code != AGResultCodeOperationCancelled) {
-            [AGMonitor logServerExceptionWithResult:result forRequest:request];
+            [AGMonitor logServerExceptionWithResult:result];
         }
         
     }else{
-        [self dispatchRemoterDataReceived:result.responseData withRequest:result.request];
+        [self dispatchRemoterDataReceived:result.responseData withRequest:(DSRequest *)result.request];
     }
     
 }
@@ -180,7 +208,7 @@
             }
             
         }@catch (NSException *exception) {
-            DSRequest *request = result.request;
+            DSRequest *request = (DSRequest *)result.request;
             [AGMonitor logClientException:exception forRequest:request];
         }
     }
@@ -227,7 +255,7 @@
     return [AGNetworkConfig singleton].defaultServerUrl;
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (DSRequest *)assembleDefaultRequestWithRequestType:(NSString *)requestType{
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
@@ -235,6 +263,30 @@
     [req setServerUrl: self.defaultServerUrl];
     [req setToken:[AGNetworkConfig singleton].token];
     return req;
+}
+
+#pragma mark -
+
+- (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage{
+    NSURLRequest *req = [[NSURLRequest alloc] initWithURL:imageURL];
+    
+    __block UIImageView *imgV = imageView;
+    
+    [imageViewsInRequest addObject:imageView];
+    
+    [imageView setImageWithURLRequest:req placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [imgV setImage:image];
+        [self removeInRequestImageView:imgV];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        TLOG(@"response.MIMEType -> %@", response.MIMEType);
+        AGRemoterResult *result = [self parseError:error];
+        [result setRequest:request];
+        [result setCode:response.statusCode];
+        
+        [AGMonitor logServerExceptionWithResult:result];
+        [self removeInRequestImageView:imgV];
+        
+    }];
 }
 
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{

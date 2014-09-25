@@ -26,11 +26,11 @@
 
 
 - (NSString *)errorType{
-    return self.error.code;
+    return self.errorParsed.code;
 }
 
 - (NSString *)errorMessage{
-    return self.error.message;
+    return self.errorParsed.message;
 }
 
 

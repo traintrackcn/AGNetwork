@@ -1,4 +1,4 @@
-//
+    //
 //  AGFlurryEvent.m
 //  AboveGEM
 //
@@ -116,7 +116,7 @@ NSString *AGCPServerIsDown = @"AGCPServerIsDown";
 
 
 void uncaughtExceptionHandler(NSException *exception){
-    [AGMonitor logClientUncaughtException:exception];
+    [AGMonitor logClientException:exception];
 }
 
 void signalHandler(int sig) {
@@ -148,24 +148,21 @@ void signalHandler(int sig) {
 #pragma mark - remote log ops
 
 + (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request{
-    NSString *errId = [NSString stringWithFormat:@"%@-%@",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT],[request url]];
+    NSString *errId = [NSString stringWithFormat:@"%@-%@",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT],[request URL]];
     [self logErrorID:errId message:exception.name reason:exception.reason];
 }
 
-+ (void)logClientUncaughtException:(NSException *)exception{
-    NSString *errId = [NSString stringWithFormat:@"%@-UNCAUGHT",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT]];
++ (void)logClientException:(NSException *)exception{
+    NSString *errId = [NSString stringWithFormat:@"%@",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT]];
     [self logErrorID:errId message:exception.name reason:exception.reason];
 }
 
-+ (void)logServerExceptionWithResult:(AGRemoterResult *)result forRequest:(DSRequest *)request{
-    NSString *errId = [NSString stringWithFormat:@"%@-%ld-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],(long)result.code,[request url]];
-    AGRemoterResultError *error = result.error;
-    [self logErrorID:errId message:[NSString stringWithFormat:@"[%@] %@", error.code, error.message] reason:error.developerMessage];
-}
-
-+ (void)logLoadImageFailedError:(NSError *)error forImageUrl:(NSURL *)url{
-    NSString *errId = [NSString stringWithFormat:@"%@-IMG-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],url];
-    [self logErrorID:errId message:[DSValueUtil toString:error.userInfo]];
++ (void)logServerExceptionWithResult:(AGRemoterResult *)result{
+//    TLOG(@"result.request -> %@", result.request);
+    NSString *errId = [NSString stringWithFormat:@"%@-%ld-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],(long)result.code,[result.request URL]];
+    AGRemoterResultError *error = result.errorParsed;
+//    TLOG(@"headers -> %@", [result.request allHTTPHeaderFields]);
+    [self logErrorID:errId message:[NSString stringWithFormat:@"%@",error.message] reason:error.localizedDesc];
 }
 
 + (void)logLoadIFrameFailedError:(NSError *)error{
@@ -193,14 +190,14 @@ void signalHandler(int sig) {
     NSString *appVersion = [AGMonitor singleton].appVersion;
     
     
-    NSString *environment = [NSString stringWithFormat:@"%@-%@", appVersion,[DSValueUtil isAvailable:userID]?userID:@"Anonymous"];
+    NSString *environment = [NSString stringWithFormat:@"[%@][%@]", appVersion,[DSValueUtil isAvailable:userID]?userID:@"Anonymous"];
     NSException *e = [NSException exceptionWithName:environment reason:[DSValueUtil isAvailable:reason]?reason:@"" userInfo:nil];
     
     [Flurry logError:errorID message:[DSValueUtil isAvailable:message]?message:@"" exception:e];
 
 //    [ABNotifier logException:e];
     
-    TLOG(@"ErrorID:%@ Message:%@ Reason:%@", errorID, message, reason);
+    TLOG(@"%@ %@ %@ %@", environment,errorID, message, reason);
 }
 
 + (NSString *)RESPONSE_EXCEPTION_OF_CLIENT{
@@ -227,149 +224,6 @@ void signalHandler(int sig) {
 //}
 
 #pragma mark -
-
-+ (NSString *)HOME_VIEW{
-//    TLOG(@"HOME_VIEW happend");
-    return @"HOME_VIEW";
-}
-
-+ (NSString *)ENROLL_STEP_BASIC_VIEW{
-    return @"ENROLL_STEP_BASIC_VIEW";
-}
-
-+ (NSString *)ENROLL_STEP_PRODUCTS_VIEW{
-    return @"ENROLL_STEP_PRODUCTS_VIEW";
-}
-
-+ (NSString *)ENROLL_STEP_PROFILE_VIEW{
-    return @"ENROLL_STEP_PROFILE_VIEW";
-}
-
-+ (NSString *)ENROLL_STEP_REVIEW_VIEW{
-    return @"ENROLL_STEP_REVIEW_VIEW";
-}
-
-+ (NSString *)ENROLL_STEP_RESULT_VIEW{
-    return @"ENROLL_STEP_RESULT_VIEW";
-}
-
-+ (NSString *)AUTOSHIPS_VIEW{
-    return @"AUTOSHIPS_VIEW";
-}
-
-+ (NSString *)AUTOSHIP_VIEW{
-    return @"AUTOSHIP_VIEW";
-}
-
-+ (NSString *)CREATE_AUTOSHIP_STEP_PRODUCT_VIEW{
-    return @"CREATE_AUTOSHIP_STEP_PRODUCT_VIEW";
-}
-
-+ (NSString *)CREATE_AUTOSHIP_STEP_REVIEW_VIEW{
-    return @"CREATE_AUTOSHIP_STEP_REVIEW_VIEW";
-}
-
-+ (NSString *)CREATE_AUTOSHIP_STEP_RESULT_VIEW{
-    return @"CREATE_AUTOSHIP_STEP_RESULT_VIEW";
-}
-
-+ (NSString *)SHOP_TAXONS_VIEW{
-    return @"SHOP_TAXONS_VIEW";
-}
-
-+ (NSString *)SHOP_PRODUCTS_VIEW{
-    return @"SHOP_PRODUCTS_VIEW";
-}
-
-+ (NSString *)SHOP_PRODUCT_VIEW{
-    return @"SHOP_PRODUCT_VIEW";
-}
-
-+ (NSString *)SHOPPING_CART_VIEW{
-    return @"SHOPPING_CART_VIEW";
-}
-
-+ (NSString *)SHOPPING_STEP_REVIEW_VIEW{
-    return @"SHOPPING_STEP_REVIEW_VIEW";
-}
-
-+ (NSString *)SHOPPING_STEP_RESULT_VIEW{
-    return @"SHOPPING_STEP_RESULT_VIEW";
-}
-
-+ (NSString *)GENEALOGY_UNILEVEL_VIEW{
-    return @"GENEALOGY_UNILEVEL_VIEW";
-}
-
-+ (NSString *)GENEALOGY_DUALTEAM_VIEW{
-    return @"GENEALOGY_DUALTEAM_VIEW";
-}
-
-+ (NSString *)SETTING_VIEW{
-    return @"SETTING_VIEW";
-}
-
-+ (NSString *)COMMISSIONS_WEEKLY_VIEW{
-    return @"COMMISSIONS_WEEKLY_VIEW";
-}
-
-+ (NSString *)COMMISSIONS_MONTHLY_VIEW{
-    return @"COMMISSIONS_MONTHLY_VIEW";
-}
-
-+ (NSString *)COMMISSIONS_QUARTERLY_VIEW{
-    return @"COMMISSIONS_QUARTERLY_VIEW";
-}
-
-+ (NSString *)COMMISSIONS_RANK_VIEW{
-    return @"COMMISSIONS_RANK_VIEW";
-}
-
-+ (NSString *)COMMISSIONS_DUALTEAM_VIEW{
-    return @"COMMISSIONS_DUALTEAM_VIEW";
-}
-
-+ (NSString *)REPORTS_ORDERS_VIEW{
-    return @"REPORTS_ORDERS_VIEW";
-}
-
-+ (NSString *)REPORTS_ORGANIZATIONS_VIEW{
-    return @"REPORTS_ORGANIZATIONS_VIEW";
-}
-
-+ (NSString *)REPORTS_RECENT_GROWTH_VIEW{
-    return @"REPORTS_RECENT_GROWTH_VIEW";
-}
-
-+ (NSString *)REPORTS_TOTAL_VIEW{
-    return @"REPORTS_TOTAL_VIEW";
-}
-
-+ (NSString *)REPORTS_RETURNS_VIEW{
-    return @"REPORTS_RETURNS_VIEW";
-}
-
-+ (NSString *)GIFT_CARD_VIEW{
-    return @"GIFT_CARD_VIEW";
-}
-
-#pragma mark - interactive actions
-+ (NSString *)TAPPED_ADD_PRODUCT_TO_CART{
-    return @"TAPPED_ADD_PRODUCT_TO_CART";
-}
-
-+ (NSString *)TAPPED_CLOSE_SHOPPING_CART{
-    return @"TAPPED_CLOSE_SHOPPING_CART";
-}
-
-+ (NSString *)TAPPED_LOGOUT{
-    return @"TAPPED_LOGOUT";
-}
-
-#pragma mark - fatal events
-+ (NSString *)SERVER_IS_DOWN{
-    return @"SERVER_IS_DOWN";
-}
 
 
 @end

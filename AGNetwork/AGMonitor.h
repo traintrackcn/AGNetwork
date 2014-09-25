@@ -64,14 +64,11 @@ extern NSString *AGCPServerIsDown;
 #pragma mark - ops
 
 + (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request;
-+ (void)logClientUncaughtException:(NSException *)exception;
-+ (void)logServerExceptionWithResult:(AGRemoterResult *)result forRequest:(DSRequest *)request;
-+ (void)logLoadImageFailedError:(NSError *)error forImageUrl:(NSURL *)url;
++ (void)logClientException:(NSException *)exception;
++ (void)logServerExceptionWithResult:(AGRemoterResult *)result;
 + (void)logLoadIFrameFailedError:(NSError *)error;
-//+ (void)logError:(NSString *)errorID message:(id)message message1:(id)message1;
 
 + (void)setDistributorID:(NSString *)distributorID;
-
 + (void)passCheckpoint:(NSString *)checkpointName;
 
 

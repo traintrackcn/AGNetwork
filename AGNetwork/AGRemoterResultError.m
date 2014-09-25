@@ -23,10 +23,6 @@
         [self setMessage:[DSValueUtil toString:[raw objectForKey:@"message"]]];
     }
     
-    if ([DSValueUtil isAvailable:[raw objectForKey:@"developer-message"]]) {
-        [self setDeveloperMessage:[DSValueUtil toString:[raw objectForKey:@"developer-message"]]];
-    }
-    
 //    if ([DSValueUtil isAvailable:[raw objectForKey:@"failures"]]) {
 //        
 //    }

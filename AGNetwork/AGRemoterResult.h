@@ -35,9 +35,10 @@ typedef enum {
 
 @property (nonatomic, assign) NSInteger code;
 
-@property (nonatomic, strong) DSRequest *request;
+@property (nonatomic, strong) NSURLRequest *request;
 @property (nonatomic, strong) id responseData;
-@property (nonatomic, strong) AGRemoterResultError *error;
+@property (nonatomic, strong) AGRemoterResultError *errorParsed;
+@property (nonatomic, strong) NSError *errorOrigin;
 @property (nonatomic, strong) id responseHeaders;
 
 @end

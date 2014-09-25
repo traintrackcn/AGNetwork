@@ -8,6 +8,7 @@
 
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "DSRequest.h"
 
 @class AGRemoterResult;
@@ -33,6 +34,7 @@
 - (void)cancelAllRequests;
 
 #pragma mark - 
+- (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
 - (void)GET:(NSString *)requestType;
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo;
