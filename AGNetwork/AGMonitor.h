@@ -66,7 +66,7 @@ extern NSString *AGCPServerIsDown;
 + (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request;
 + (void)logClientException:(NSException *)exception;
 + (void)logServerExceptionWithResult:(AGRemoterResult *)result;
-+ (void)logLoadIFrameFailedError:(NSError *)error;
+//+ (void)logLoadIFrameFailedError:(NSError *)error;
 
 + (void)setDistributorID:(NSString *)distributorID;
 + (void)passCheckpoint:(NSString *)checkpointName;

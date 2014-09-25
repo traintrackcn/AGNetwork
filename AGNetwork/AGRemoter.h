@@ -30,8 +30,8 @@
 
 + (AGRemoter *)instanceWithDelegate:(id < AGRemoterDelegate>)aDelegate;
 - (void)send:(DSRequest*)requestData;
-//+ (void)cancelAllRequests;
 - (void)cancelAllRequests;
+- (AGRemoterResult *)assembleResultForError:(NSError *)error;
 
 #pragma mark - 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;

@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSString *message;
 //@property (nonatomic, strong) NSArray *failures;
 @property (nonatomic, strong) NSString *localizedDesc;
-@property (nonatomic, strong) NSString *failingUrl;
+@property (nonatomic, strong) NSURL *failingURL;
 
 @end

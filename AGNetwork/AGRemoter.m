@@ -37,7 +37,10 @@
 + (void)initialize{
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [AFImageRequestOperation addAcceptableContentTypes:
-     [NSSet setWithObject:@"binary/octet-stream"]];
+     [NSSet setWithObjects:@"image/pjpeg",
+      @"binary/octet-stream",
+      nil]
+     ];
 }
 
 - (id)init
@@ -64,8 +67,6 @@
     
     while (imageViewsInRequest.count > 0) {
         UIImageView *imgV = [imageViewsInRequest objectAtIndex:0];
-//        [imgV cancelImageRequestOperation];
-//        [imageViewsInRequest removeObject:imgV];
         [self removeInRequestImageView:imgV];
     }
 }
@@ -82,7 +83,7 @@
 - (void)send:(DSRequest *)req{
     [req assemble];
     //    [self saveRequestForCallback:req];
-    TLOG(@"[Request] %@ %@ %@ %ld",[req method], [req URL].absoluteString, [req contentJSON],[req contentBinary].length);
+    TLOG(@"[Request] %@ %@ %@ %ld",[req method], [req URL].absoluteString, [req contentJSON],(unsigned long)[req contentBinary].length);
     
     [client enqueueHTTPRequestOperation:
      [client HTTPRequestOperationWithRequest:req success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -119,7 +120,7 @@
 }
 
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
-    AGRemoterResult *result = [self parseError:error];
+    AGRemoterResult *result = [self assembleResultForError:error];
     
     if (operation.isCancelled) {
         [result setCode:AGResultCodeOperationCancelled];
@@ -127,11 +128,11 @@
         [result setCode: operation.response.statusCode ];
     }
     
-    [result setRequest: [operation request] ];
+    [result setRequest:(DSRequest *)[operation request] ];
     [self processResult:result];
 }
 
-- (AGRemoterResult *)parseError:(NSError *)error{
+- (AGRemoterResult *)assembleResultForError:(NSError *)error{
     AGRemoterResult *result = [AGRemoterResult instance];
     
     
@@ -150,7 +151,7 @@
             [parsedError updateWithRaw:errorRaw];
         }
         [parsedError setLocalizedDesc:[userInfo objectForKey:@"NSLocalizedDescription"]];
-        [parsedError setFailingUrl:[userInfo objectForKey:@"NSErrorFailingURLKey"]];
+        [parsedError setFailingURL:[userInfo objectForKey:@"NSErrorFailingURLKey"]];
         [result setErrorParsed:parsedError];
         [result setErrorOrigin:error];
     }
@@ -279,8 +280,8 @@
         [self removeInRequestImageView:imgV];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         TLOG(@"response.MIMEType -> %@", response.MIMEType);
-        AGRemoterResult *result = [self parseError:error];
-        [result setRequest:request];
+        AGRemoterResult *result = [self assembleResultForError:error];
+        [result setRequest:(DSRequest *)request];
         [result setCode:response.statusCode];
         
         [AGMonitor logServerExceptionWithResult:result];

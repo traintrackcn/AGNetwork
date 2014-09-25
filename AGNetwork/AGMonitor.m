@@ -148,28 +148,36 @@ void signalHandler(int sig) {
 #pragma mark - remote log ops
 
 + (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request{
-    NSString *errId = [NSString stringWithFormat:@"%@-%@",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT],[request URL]];
-    [self logErrorID:errId message:exception.name reason:exception.reason];
+    NSMutableString *eId = [NSMutableString string];
+    [eId appendString:[NSString stringWithFormat:@"%@", [AGMonitor RESPONSE_EXCEPTION_OF_CLIENT]]];
+    
+    if ([DSValueUtil isAvailable:request]) {
+        [eId appendString: [NSString stringWithFormat:@"-%@", [request URL]] ];
+    }
+    
+    [self logErrorID:eId message:exception.name reason:exception.reason];
 }
 
 + (void)logClientException:(NSException *)exception{
-    NSString *errId = [NSString stringWithFormat:@"%@",[AGMonitor RESPONSE_EXCEPTION_OF_CLIENT]];
-    [self logErrorID:errId message:exception.name reason:exception.reason];
+    [self logClientException:exception forRequest:nil];
 }
 
 + (void)logServerExceptionWithResult:(AGRemoterResult *)result{
 //    TLOG(@"result.request -> %@", result.request);
-    NSString *errId = [NSString stringWithFormat:@"%@-%ld-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],(long)result.code,[result.request URL]];
+    NSMutableString *eId = [NSMutableString string];
+    [eId appendString:[NSString stringWithFormat:@"%@", [AGMonitor RESPONSE_EXCEPTION_OF_SERVER]]];
+    
+    if (result.code != AGResultCodeUnknown) {
+        [eId appendString:[NSString stringWithFormat:@"-%ld",(long)result.code] ];
+    }
+    
+    if ([DSValueUtil isAvailable:result.request]) {
+        [eId appendString:[NSString stringWithFormat:@"-%@", result.request.URL] ];
+    }
+    
     AGRemoterResultError *error = result.errorParsed;
 //    TLOG(@"headers -> %@", [result.request allHTTPHeaderFields]);
-    [self logErrorID:errId message:[NSString stringWithFormat:@"%@",error.message] reason:error.localizedDesc];
-}
-
-+ (void)logLoadIFrameFailedError:(NSError *)error{
-    NSString *url = [error.userInfo objectForKey:@"NSErrorFailingURLKey"];
-    NSString *description = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-    NSString *errId = [NSString stringWithFormat:@"%@-IFRAME-%@",[AGMonitor RESPONSE_EXCEPTION_OF_SERVER],url];
-    [self logErrorID:errId message:description];
+    [self logErrorID:eId message:[NSString stringWithFormat:@"%@",error.message] reason:error.localizedDesc];
 }
 
 #pragma mark - basic remote log ops
@@ -190,7 +198,7 @@ void signalHandler(int sig) {
     NSString *appVersion = [AGMonitor singleton].appVersion;
     
     
-    NSString *environment = [NSString stringWithFormat:@"[%@][%@]", appVersion,[DSValueUtil isAvailable:userID]?userID:@"Anonymous"];
+    NSString *environment = [NSString stringWithFormat:@"[b.%@][u.%@]", appVersion,[DSValueUtil isAvailable:userID]?userID:@"Anonymous"];
     NSException *e = [NSException exceptionWithName:environment reason:[DSValueUtil isAvailable:reason]?reason:@"" userInfo:nil];
     
     [Flurry logError:errorID message:[DSValueUtil isAvailable:message]?message:@"" exception:e];
