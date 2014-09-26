@@ -55,6 +55,7 @@ NSString *AGCPGiftCardBoughtList = @"AGCPGiftCardBoughtList";
 NSString *AGCPGiftCardStepReview = @"AGCPGiftCardStepReview";
 NSString *AGCPGiftCardStepResult = @"AGCPGiftCardStepResult";
 NSString *AGCPServerIsDown = @"AGCPServerIsDown";
+NSString *AGCPServerIsOops = @"AGCPServerIsOops";
 
 
 @implementation AGMonitor

@@ -54,6 +54,7 @@ extern NSString *AGCPGiftCardBoughtList;
 extern NSString *AGCPGiftCardStepReview;
 extern NSString *AGCPGiftCardStepResult;
 extern NSString *AGCPServerIsDown;
+extern NSString *AGCPServerIsOops;
 
 
 

@@ -17,6 +17,7 @@
 #import "NSObject+Singleton.h"
 #import "UIImageView+AFNetworking.h"
 #import "DSRequest.h"
+#import "DSReachabilityManager.h"
 
 #define kErrorCode @"code"
 
@@ -162,16 +163,7 @@
     DSRequest *request = (DSRequest *)result.request;
     TLOG(@"[Response %ld] %@ %@ ", (long)[result code],[request method], [request url]);
     if ( [result isError]){
-//        TLOG(@"[Response error] -> %@", result.error);
-        // process usual error
-        
         [self dispatchRemoterErrorOccured:result];
-        
-        //log erver side exceptions to flurry
-        if (result.code != AGResultCodeOperationCancelled) {
-            [AGMonitor logServerExceptionWithResult:result];
-        }
-        
     }else{
         [self dispatchRemoterDataReceived:result.responseData withRequest:(DSRequest *)result.request];
     }
@@ -204,6 +196,19 @@
     if ([delegate respondsToSelector:@selector(remoterErrorOccured:)]) {
         @try {
             [delegate remoterErrorOccured:result];
+            
+            //Monitor actions
+            if(result.code == AGResultCodeInvailidConnection){
+                if ([DSReachabilityManager singleton].isInternetReachable) {
+                    if ([DSReachabilityManager singleton].isHostReachable) {
+                        [AGMonitor passCheckpoint:AGCPServerIsOops];
+                    }else if (![DSReachabilityManager singleton].isHostReachable) {
+                        [AGMonitor passCheckpoint:AGCPServerIsDown];
+                    }
+                    [AGMonitor logServerExceptionWithResult:result];
+                }
+            }
+            
             if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].errorOccuredBlock]) {
                 [AGNetworkConfig singleton].errorOccuredBlock(result);
             }
