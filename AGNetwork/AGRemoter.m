@@ -162,6 +162,7 @@
 - (void)processResult:(AGRemoterResult *)result{
     DSRequest *request = (DSRequest *)result.request;
     TLOG(@"[Response %ld] %@ %@ ", (long)[result code],[request method], [request url]);
+//    TLOG(@"result isError -> %d", result.isError);
     if ( [result isError]){
         [self dispatchRemoterErrorOccured:result];
     }else{
@@ -177,45 +178,54 @@
 #pragma mark - dispatchers
 
 - (void)dispatchRemoterDataReceived:(id)responseData withRequest:(DSRequest *)request{
-    if (delegate&&[delegate respondsToSelector:@selector(remoterDataReceived:withRequestData:)]) {
-        @try {
+    
+    @try {
+        if (delegate&&[delegate respondsToSelector:@selector(remoterDataReceived:withRequestData:)]) {
             [delegate remoterDataReceived:responseData withRequestData:request];
-            
-            if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].dataReceivedBlock]) {
-                [AGNetworkConfig singleton].dataReceivedBlock(responseData, request);
-            }
-            
-            
-        }@catch (NSException *exception) {
-            [AGMonitor logClientException:exception forRequest:request];
         }
+    }@catch (NSException *exception) {
+        [AGMonitor logClientException:exception forRequest:request];
+    }
+    
+    //universal data handler
+    @try{
+        if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].dataReceivedBlock]) {
+            [AGNetworkConfig singleton].dataReceivedBlock(responseData, request);
+        }
+    }@catch (NSException *exception) {
+        [AGMonitor logClientException:exception forRequest:request];
     }
 }
 
 - (void)dispatchRemoterErrorOccured:(AGRemoterResult *)result{
-    if ([delegate respondsToSelector:@selector(remoterErrorOccured:)]) {
-        @try {
+    
+    @try {
+        if ([delegate respondsToSelector:@selector(remoterErrorOccured:)]) {
             [delegate remoterErrorOccured:result];
-            
-            //Monitor actions
-            if(result.code == AGResultCodeInvailidConnection){
-                if ([DSReachabilityManager singleton].isInternetReachable) {
-                    if ([DSReachabilityManager singleton].isHostReachable) {
-                        [AGMonitor passCheckpoint:AGCPServerIsOops];
-                    }else if (![DSReachabilityManager singleton].isHostReachable) {
-                        [AGMonitor passCheckpoint:AGCPServerIsDown];
-                    }
-                    [AGMonitor logServerExceptionWithResult:result];
-                }
+        }
+    }@catch (NSException *exception) {
+        DSRequest *request = (DSRequest *)result.request;
+        [AGMonitor logClientException:exception forRequest:request];
+    }
+    
+    //univeral error handler
+    @try {
+        if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].errorOccuredBlock]) {
+            [AGNetworkConfig singleton].errorOccuredBlock(result);
+        }
+    }@catch (NSException *exception) {
+        [AGMonitor logClientException:exception forRequest:result.request];
+    }
+    
+    //Monitor actions
+    if(result.code == AGResultCodeInvailidConnection){
+        if ([DSReachabilityManager singleton].isInternetReachable) {
+            if ([DSReachabilityManager singleton].isHostReachable) {
+                [AGMonitor passCheckpoint:AGCPServerIsOops];
+            }else if (![DSReachabilityManager singleton].isHostReachable) {
+                [AGMonitor passCheckpoint:AGCPServerIsDown];
             }
-            
-            if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].errorOccuredBlock]) {
-                [AGNetworkConfig singleton].errorOccuredBlock(result);
-            }
-            
-        }@catch (NSException *exception) {
-            DSRequest *request = (DSRequest *)result.request;
-            [AGMonitor logClientException:exception forRequest:request];
+            [AGMonitor logServerExceptionWithResult:result];
         }
     }
 }
