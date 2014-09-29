@@ -12,7 +12,7 @@
 
 typedef enum {
     AGResultCodeUnknown = -9999,
-    AGResultCodeInvailidConnection = 0,
+    AGResultCodeInvalidConnection = 0,
     AGResultCodeOperationCancelled = 1,
     AGResultCodeTimeout = 2,
     

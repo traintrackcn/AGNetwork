@@ -19,7 +19,7 @@
 - (void)remoterDataReceived:(id)responseData withRequestData:(DSRequest *)request;
 @optional
 - (void)remoterErrorOccured:(AGRemoterResult *)result;
-- (void)remoterGetServerCurrentTime:(NSString *)serverCurrentTime;
+//- (void)remoterGetServerCurrentTime:(NSString *)serverCurrentTime;
 
 @end
 

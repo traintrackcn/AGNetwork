@@ -107,8 +107,11 @@
     
     if (responseHeaders != nil) {
         NSString *serverCurrentTime = [responseHeaders objectForKey:@"X-SERVER-CURRENT-TIME"];
-//        [[AGSession singleton] setServerCurrentTime:serverCurrentTime];
-        [self dispatchRemoterGetServerCurrentTime:serverCurrentTime];
+
+        if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].serverCurrentTimeReceivedBlock]) {
+            [AGNetworkConfig singleton].serverCurrentTimeReceivedBlock(serverCurrentTime);
+        }
+        
     }
     
     
@@ -135,10 +138,6 @@
 
 - (AGRemoterResult *)assembleResultForError:(NSError *)error{
     AGRemoterResult *result = [AGRemoterResult instance];
-    
-    
-//    TLOG(@"error -> %@", error);
-    //    TLOG(@"operation.hasStatusCode -> %d error -> %@", operation.hasAcceptableStatusCode, error);
     
     if ([DSValueUtil isAvailable:error]) {
         AGRemoterResultError *parsedError = [[AGRemoterResultError alloc] init];
@@ -218,30 +217,27 @@
     }
     
     //Monitor actions
-    if(result.code == AGResultCodeInvailidConnection){
+    if(result.code == AGResultCodeInvalidConnection){
         if ([DSReachabilityManager singleton].isInternetReachable) {
+            
             if ([DSReachabilityManager singleton].isHostReachable) {
                 [AGMonitor passCheckpoint:AGCPServerIsOops];
             }else if (![DSReachabilityManager singleton].isHostReachable) {
                 [AGMonitor passCheckpoint:AGCPServerIsDown];
             }
+            
             [AGMonitor logServerExceptionWithResult:result];
+
         }
     }
-}
+    
+    if (result.code != AGResultCodeInvalidAuthentication
+        && result.code != AGResultCodeInvalidConnection
+        && result.code != AGResultCodeOperationCancelled) {
+        [AGMonitor logServerExceptionWithResult:result];
 
-
-- (void)dispatchRemoterGetServerCurrentTime:(NSString *)serverCurrentTime{
-    if ([delegate respondsToSelector:@selector(remoterGetServerCurrentTime:)]) {
-        [delegate remoterGetServerCurrentTime:serverCurrentTime];
-        TLOG(@"serverCurrentTime -> %@", serverCurrentTime);
     }
 }
-
-
-//- (void)processErrorShoppingServiceUnavailable{
-//    [[DSServiceManager sharedInstance] closeShopping];
-//}
 
 
 #pragma mark - error msg assemblers

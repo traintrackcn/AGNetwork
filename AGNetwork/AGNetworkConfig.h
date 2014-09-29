@@ -22,6 +22,7 @@
 
 @property (nonatomic, copy) void(^dataReceivedBlock)(id responseData, DSRequest *request);
 @property (nonatomic, copy) void(^errorOccuredBlock)(AGRemoterResult *result);
+@property (nonatomic, copy) void(^serverCurrentTimeReceivedBlock)(NSString *serverCurrentTime);
 
 
 @end
