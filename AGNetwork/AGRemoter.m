@@ -15,7 +15,8 @@
 #import "DSValueUtil.h"
 #import "AGNetworkConfig.h"
 #import "NSObject+Singleton.h"
-#import "UIImageView+AFNetworking.h"
+//#import "UIImageView+AFNetworking.h"
+#import "UIImageView+WebCache.h"
 #import "DSRequest.h"
 #import "DSReachabilityManager.h"
 
@@ -74,6 +75,7 @@
 
 - (void)removeInRequestImageView:(UIImageView *)imageView{
     [imageView cancelImageRequestOperation];
+    [imageView sd_cancelCurrentImageLoad];
     [imageViewsInRequest removeObject:imageView];
     
 //    TLOG(@"imageViewsInRequest count -> %lu", (unsigned long)imageViewsInRequest.count);
@@ -286,19 +288,34 @@
     
     [imageViewsInRequest addObject:imageView];
     
-    [imageView setImageWithURLRequest:req placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [imageView sd_setImageWithURL:imageURL placeholderImage:placeholderImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         [imgV setImage:image];
         [self removeInRequestImageView:imgV];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        TLOG(@"response.MIMEType -> %@", response.MIMEType);
-        AGRemoterResult *result = [self assembleResultForError:error];
-        [result setRequest:(DSRequest *)request];
-        [result setCode:response.statusCode];
         
-        [AGMonitor logServerExceptionWithResult:result];
-        [self removeInRequestImageView:imgV];
+        if ([DSValueUtil isAvailable:error]) {
+            AGRemoterResult *result = [self assembleResultForError:error];
+            [result setRequest:(DSRequest *)req];
+//            [result setCode:response.statusCode];
+            [AGMonitor logServerExceptionWithResult:result];
+            [self removeInRequestImageView:imgV];
+        }
         
     }];
+    
+//    [imageView setImageWithURLRequest:req placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//        TLOG(@"image -> %@", image);
+//        [imgV setImage:image];
+//        [self removeInRequestImageView:imgV];
+//    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+//        TLOG(@"response.MIMEType -> %@", response.MIMEType);
+//        AGRemoterResult *result = [self assembleResultForError:error];
+//        [result setRequest:(DSRequest *)request];
+//        [result setCode:response.statusCode];
+//        
+//        [AGMonitor logServerExceptionWithResult:result];
+//        [self removeInRequestImageView:imgV];
+//        
+//    }];
 }
 
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
