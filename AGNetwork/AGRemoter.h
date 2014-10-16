@@ -35,6 +35,8 @@
 
 #pragma mark - 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
+- (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error))completion;
+
 - (void)GET:(NSString *)requestType;
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo;

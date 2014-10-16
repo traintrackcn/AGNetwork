@@ -282,40 +282,61 @@
 #pragma mark -
 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage{
+    [imageView setImage:placeholderImage];
+    
+    NSInteger lTag = 999;
+    UIActivityIndicatorView *l = (UIActivityIndicatorView *)[imageView viewWithTag:lTag];
+    
+    if ([DSValueUtil isNotAvailable:l]) {
+        //loading icon
+        CGFloat w = 40;
+        CGFloat h = 40;
+        CGFloat x = (imageView.frame.size.width-w)/2.0;
+        CGFloat y = (imageView.frame.size.height-h)/2.0;
+        l = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(x, y, w, h)];
+        [l setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [l setBackgroundColor:RGBA(242, 242, 242, 1)];
+        [l setTag:lTag];
+        [imageView addSubview:l];
+        [l startAnimating];
+    }
+    
+    
+    __block UIImageView *v = imageView;
+    [self REQUEST:imageURL completion:^(UIImage *image, NSError *error) {
+        [l stopAnimating];
+        [l removeFromSuperview];
+        if ([DSValueUtil isAvailable:image]) {
+            [v setImage:image];
+            [v setAlpha:0];
+            
+            [UIView animateWithDuration:.33 animations:^{
+                [v setAlpha:1];
+            }];
+            
+        }
+        
+        
+    }];
+}
+
+
+- (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error))completion{
     NSURLRequest *req = [[NSURLRequest alloc] initWithURL:imageURL];
-    
-    __block UIImageView *imgV = imageView;
-    
-    [imageViewsInRequest addObject:imageView];
-    
-    [imageView sd_setImageWithURL:imageURL placeholderImage:placeholderImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        [imgV setImage:image];
-        [self removeInRequestImageView:imgV];
+    UIImageView *v = [[UIImageView alloc] init];
+    [imageViewsInRequest addObject:v];
+    [v sd_setImageWithURL:imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
         if ([DSValueUtil isAvailable:error]) {
             AGRemoterResult *result = [self assembleResultForError:error];
             [result setRequest:(DSRequest *)req];
-//            [result setCode:response.statusCode];
             [AGMonitor logServerExceptionWithResult:result];
-            [self removeInRequestImageView:imgV];
         }
         
+        if([DSValueUtil isAvailable:completion]) completion(image, error);
+        [self removeInRequestImageView:v];
+        
     }];
-    
-//    [imageView setImageWithURLRequest:req placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-//        TLOG(@"image -> %@", image);
-//        [imgV setImage:image];
-//        [self removeInRequestImageView:imgV];
-//    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-//        TLOG(@"response.MIMEType -> %@", response.MIMEType);
-//        AGRemoterResult *result = [self assembleResultForError:error];
-//        [result setRequest:(DSRequest *)request];
-//        [result setCode:response.statusCode];
-//        
-//        [AGMonitor logServerExceptionWithResult:result];
-//        [self removeInRequestImageView:imgV];
-//        
-//    }];
 }
 
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
