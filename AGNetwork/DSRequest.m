@@ -108,7 +108,7 @@
     
     NSURL *url = [[NSURL alloc] initWithString:urlStr];
     [self setHTTPMethod:[self method]];
-    [self setTimeoutInterval:15];
+    [self setTimeoutInterval:60];
     [self setURL:url];
 }
 

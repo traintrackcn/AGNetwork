@@ -27,7 +27,7 @@
 @interface AGRemoter(){
     int errorOcurredRecent;
     AFHTTPClient *client;
-    NSMutableArray *imageViewsInRequest;
+    NSMutableDictionary *imagesLoading;
 }
 
 @end
@@ -38,11 +38,11 @@
 
 + (void)initialize{
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    [AFImageRequestOperation addAcceptableContentTypes:
-     [NSSet setWithObjects:@"image/pjpeg",
-      @"binary/octet-stream",
-      nil]
-     ];
+//    [AFImageRequestOperation addAcceptableContentTypes:
+//     [NSSet setWithObjects:@"image/pjpeg",
+//      @"binary/octet-stream",
+//      nil]
+//     ];
 }
 
 - (id)init
@@ -51,7 +51,7 @@
     if (self) {
         if (client == nil) {
             client = [AGHTTPClient instance];
-            imageViewsInRequest = [NSMutableArray array];
+            imagesLoading = [NSMutableDictionary dictionary];
         }
     }
     return self;
@@ -64,21 +64,54 @@
 }
 
 - (void)cancelAllRequests{
-//    TLOG(@"");
     [client.operationQueue cancelAllOperations];
-    
-    while (imageViewsInRequest.count > 0) {
-        UIImageView *imgV = [imageViewsInRequest objectAtIndex:0];
-        [self removeInRequestImageView:imgV];
-    }
+    [self cancelAllImageRequests];
 }
 
-- (void)removeInRequestImageView:(UIImageView *)imageView{
-    [imageView cancelImageRequestOperation];
-    [imageView sd_cancelCurrentImageLoad];
-    [imageViewsInRequest removeObject:imageView];
-    
-//    TLOG(@"imageViewsInRequest count -> %lu", (unsigned long)imageViewsInRequest.count);
+#pragma mark - images request ops
+
+- (NSString *)keyOfImageRequest:(NSURL *)url{
+    return url.absoluteString;
+}
+
+- (void)setImageRequest:(NSURL *)url forImageView:(UIImageView *)imageView{
+    NSString *key = [self keyOfImageRequest:url];
+//    TLOG(@"key -> %@", key);
+    [imagesLoading setObject:imageView forKey:key];
+}
+
+- (BOOL)isLoadingImageRequest:(NSURL *)url{
+    NSString *key = [self keyOfImageRequest:url];
+    if ([imagesLoading objectForKey:key] != nil) return YES;
+    return NO;
+}
+
+- (BOOL)isLoadingAnyImageRequest{
+    if (imagesLoading.allKeys.count > 0) return YES;
+    return NO;
+}
+
+- (void)removeImageReqest:(NSURL *)url{
+    NSString *key = [self keyOfImageRequest:url];
+    [self removeImageReqestForKey:key];
+}
+
+- (void)removeImageReqestForKey:(NSString *)key{
+//    TLOG(@"key -> %@", key);
+    UIImageView *imgV = [imagesLoading objectForKey:key];
+    [imgV cancelImageRequestOperation];
+    [imgV sd_cancelCurrentImageLoad];
+    [imagesLoading removeObjectForKey:key];
+}
+
+- (void)cancelAllImageRequests{
+    if (imagesLoading.allKeys.count == 0) return;
+//    TLOG(@"%@ ===== start",self);
+    while (imagesLoading.allKeys.count > 0) {
+        NSString *key = [imagesLoading.allKeys objectAtIndex:0];
+        [self removeImageReqestForKey:key];
+    }
+//    TLOG(@"%@ ===== end", self);
 }
 
 #pragma mark -
@@ -209,7 +242,7 @@
         [AGMonitor logClientException:exception forRequest:request];
     }
     
-    //univeral error handler
+    //universal error handler
     @try {
         if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].errorOccuredBlock]) {
             [AGNetworkConfig singleton].errorOccuredBlock(result);
@@ -297,22 +330,26 @@
         [l setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         [l setBackgroundColor:RGBA(242, 242, 242, 1)];
         [l setTag:lTag];
-        [imageView addSubview:l];
-        [l startAnimating];
     }
+    
+    [imageView addSubview:l];
+    [l startAnimating];
     
     
     __block UIImageView *v = imageView;
-    [self REQUEST:imageURL completion:^(UIImage *image, NSError *error) {
+    [self REQUEST:imageURL completion:^(UIImage *image, NSError *error, NSInteger cacheType) {
         [l stopAnimating];
         [l removeFromSuperview];
         if ([DSValueUtil isAvailable:image]) {
             [v setImage:image];
-            [v setAlpha:0];
             
-            [UIView animateWithDuration:.33 animations:^{
-                [v setAlpha:1];
-            }];
+            if (cacheType == 0) {
+                [v setAlpha:0];
+                [UIView animateWithDuration:.33 animations:^{
+                    [v setAlpha:1];
+                }];
+            }
+            
             
         }
         
@@ -321,11 +358,14 @@
 }
 
 
-- (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error))completion{
+- (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error, NSInteger cacheType))completion{
     NSURLRequest *req = [[NSURLRequest alloc] initWithURL:imageURL];
     UIImageView *v = [[UIImageView alloc] init];
-    [imageViewsInRequest addObject:v];
+    
+    [self setImageRequest:imageURL forImageView:v];
     [v sd_setImageWithURL:imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+//        TLOG(@"cache type -> %ld", cacheType);
         
         if ([DSValueUtil isAvailable:error]) {
             AGRemoterResult *result = [self assembleResultForError:error];
@@ -333,8 +373,8 @@
             [AGMonitor logServerExceptionWithResult:result];
         }
         
-        if([DSValueUtil isAvailable:completion]) completion(image, error);
-        [self removeInRequestImageView:v];
+        if([DSValueUtil isAvailable:completion]) completion(image, error, cacheType);
+        [self removeImageReqest:imageURL];
         
     }];
 }

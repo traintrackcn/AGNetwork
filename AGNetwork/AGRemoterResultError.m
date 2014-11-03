@@ -13,7 +13,7 @@
 
 - (void)updateWithRaw:(id)raw{
     
-    [self setRaw:raw];
+    [super updateWithRaw:raw];
     
     if ([DSValueUtil isAvailable:[raw objectForKey:@"error-code"]]) {
         [self setCode:[DSValueUtil toString:[raw objectForKey:@"error-code"]]];
@@ -23,9 +23,9 @@
         [self setMessage:[DSValueUtil toString:[raw objectForKey:@"message"]]];
     }
     
-//    if ([DSValueUtil isAvailable:[raw objectForKey:@"failures"]]) {
-//        
-//    }
+    if ([self isAvailableForKey:@"developer-message"]) {
+        [self setDevelopMessage:[self stringForKey:@"developer-message"]];
+    }
     
 }
 

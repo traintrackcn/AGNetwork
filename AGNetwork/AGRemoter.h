@@ -31,11 +31,14 @@
 + (AGRemoter *)instanceWithDelegate:(id < AGRemoterDelegate>)aDelegate;
 - (void)send:(DSRequest*)requestData;
 - (void)cancelAllRequests;
+- (void)cancelAllImageRequests;
+- (BOOL)isLoadingAnyImageRequest;
+- (void)removeImageReqest:(NSURL *)url;
 - (AGRemoterResult *)assembleResultForError:(NSError *)error;
 
 #pragma mark - 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
-- (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error))completion;
+- (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error, NSInteger cacheType))completion;
 
 - (void)GET:(NSString *)requestType;
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
