@@ -116,7 +116,8 @@
 
 #pragma mark -
 
-- (void)send:(DSRequest *)req{
+- (void)send:(DSRequest *)req forOrder:(BOOL)isForOrder{
+    [req setIsForOrder:isForOrder];
     [req assemble];
     //    [self saveRequestForCallback:req];
     TLOG(@"[Request] %@ %@ %@ %ld",[req method], [req URL].absoluteString, [req contentJSON],(unsigned long)[req contentBinary].length);
@@ -218,7 +219,7 @@
             [delegate remoterDataReceived:responseData withRequestData:request];
         }
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:request];
+        [AGMonitor logClientException:exception forRequest:request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
     }
     
     //universal data handler
@@ -227,7 +228,7 @@
             [AGNetworkConfig singleton].dataReceivedBlock(responseData, request);
         }
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:request];
+        [AGMonitor logClientException:exception forRequest:request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
     }
 }
 
@@ -239,7 +240,7 @@
         }
     }@catch (NSException *exception) {
         DSRequest *request = (DSRequest *)result.request;
-        [AGMonitor logClientException:exception forRequest:request];
+        [AGMonitor logClientException:exception forRequest:request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
     }
     
     //universal error handler
@@ -248,7 +249,7 @@
             [AGNetworkConfig singleton].errorOccuredBlock(result);
         }
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:result.request];
+        [AGMonitor logClientException:exception forRequest:result.request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
     }
     
     //Monitor actions
@@ -382,44 +383,49 @@
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
     DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setProtocolVersion:protocolVersion];
-    [self send:req];
+    [self send:req forOrder:NO];
 }
 
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo{
     DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setUserInfo:userInfo];
-    [self send:req];
+    [self send:req forOrder:NO];
 }
 
 - (void)GET:(NSString *)requestType{
     DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
-    [self send:req];
+    [self send:req forOrder:NO];
 }
 
 - (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData{
     DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setContentBinary:binaryData];
-    [self send:req];
+    [self send:req forOrder:NO];
+}
+
+
+- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder{
+    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    [req setContentJSON:requestBody];
+    [self send:req forOrder:isForOrder];
 }
 
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
-    [req setContentJSON:requestBody];
-    [self send:req];
+    [self POST:requestType requestBody:requestBody forOrder:NO];
 }
 
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody{
     DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setContentJSON:requestBody];
     [req setMethod:@"PUT"];
-    [self send:req];
+    [self send:req forOrder:NO];
 }
 
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody{
     DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     [req setContentJSON:requestBody];
     [req setMethod:@"DELETE"];
-    [self send:req];
+    [self send:req forOrder:NO];
 }
 
 

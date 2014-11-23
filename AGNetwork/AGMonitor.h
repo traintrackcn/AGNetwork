@@ -64,8 +64,8 @@ extern NSString *AGCPServerIsOops;
 
 #pragma mark - ops
 
-+ (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request;
-+ (void)logClientException:(NSException *)exception;
++ (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request fnName:(NSString *)fnName;
++ (void)logClientException:(NSException *)exception fnName:(NSString *)fnName;
 + (void)logServerExceptionWithResult:(AGRemoterResult *)result;
 //+ (void)logLoadIFrameFailedError:(NSError *)error;
 

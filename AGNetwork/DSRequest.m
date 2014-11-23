@@ -97,6 +97,11 @@
         [self assembleBasic];
         [self assembleDefaultHeaders];
         [self assembleHeaders];
+        
+        if (self.isForOrder){
+            [self assembleHeaderForPostingOrder];
+        }
+        
         [self assembleBody];
     }@catch (NSException *exception) {
         TLOG(@"exception -> %@", exception);
@@ -108,7 +113,7 @@
     
     NSURL *url = [[NSURL alloc] initWithString:urlStr];
     [self setHTTPMethod:[self method]];
-    [self setTimeoutInterval:60];
+    [self setTimeoutInterval:45];
     [self setURL:url];
 }
 
@@ -131,6 +136,14 @@
         [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
     }
     
+}
+
+- (void)assembleHeaderForPostingOrder{
+    NSUUID *uuid = [[NSUUID alloc] init];
+    NSString *uuidStr = [uuid UUIDString];
+    uuidStr = [uuidStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    
+    [self setValue:uuidStr forHTTPHeaderField:@"X-Client-Request-Id"];
 }
 
 - (void)assembleBody{

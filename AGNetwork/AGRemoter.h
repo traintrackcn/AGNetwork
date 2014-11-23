@@ -29,7 +29,7 @@
 
 
 + (AGRemoter *)instanceWithDelegate:(id < AGRemoterDelegate>)aDelegate;
-- (void)send:(DSRequest*)requestData;
+- (void)send:(DSRequest *)req forOrder:(BOOL)isForOrder;
 - (void)cancelAllRequests;
 - (void)cancelAllImageRequests;
 - (BOOL)isLoadingAnyImageRequest;
@@ -44,6 +44,7 @@
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo;
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody;
+- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder;
 - (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData;
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody;
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody;

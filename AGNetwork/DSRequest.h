@@ -16,6 +16,9 @@
 @property (nonatomic, strong) NSDictionary *contentJSON;
 @property (nonatomic, strong) NSData *contentBinary;
 
+
+@property (nonatomic, assign) BOOL isForOrder;
+
 //- (id) initWithRequestType:(NSString*) requestType;
 
 + (instancetype)instanceWithRequestType:(NSString *)requestType;
@@ -24,7 +27,7 @@
 - (NSString *)key;
 - (void)assemble;
 
-//- (BOOL)isTypeOfGetOrderInfo;
+- (void)assembleHeaderForPostingOrder;
 
 
 @property (nonatomic, strong) NSString *method;

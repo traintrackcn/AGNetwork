@@ -117,7 +117,7 @@ NSString *AGCPServerIsOops = @"AGCPServerIsOops";
 
 
 void uncaughtExceptionHandler(NSException *exception){
-    [AGMonitor logClientException:exception];
+    [AGMonitor logClientException:exception fnName:nil];
 }
 
 void signalHandler(int sig) {
@@ -148,7 +148,7 @@ void signalHandler(int sig) {
 
 #pragma mark - remote log ops
 
-+ (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request{
++ (void)logClientException:(NSException *)exception forRequest:(DSRequest *)request fnName:(NSString *)fnName{
     NSMutableString *eId = [NSMutableString string];
     [eId appendString:[NSString stringWithFormat:@"%@", [AGMonitor RESPONSE_EXCEPTION_OF_CLIENT]]];
     
@@ -156,11 +156,15 @@ void signalHandler(int sig) {
         [eId appendString: [NSString stringWithFormat:@"-%@", [request URL]] ];
     }
     
+    if ([DSValueUtil isAvailable:fnName]){
+        [eId appendString: [NSString stringWithFormat:@"-%@", fnName]];
+    }
+    
     [self logErrorID:eId message:exception.name reason:exception.reason];
 }
 
-+ (void)logClientException:(NSException *)exception{
-    [self logClientException:exception forRequest:nil];
++ (void)logClientException:(NSException *)exception fnName:(NSString *)fnName{
+    [self logClientException:exception forRequest:nil fnName:fnName];
 }
 
 + (void)logServerExceptionWithResult:(AGRemoterResult *)result{
