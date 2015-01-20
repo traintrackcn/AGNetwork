@@ -46,6 +46,8 @@ NSString *AGCPCommissionQuartly = @"AGCPCommissionQuartly";
 NSString *AGCPCommissionRank = @"AGCPCommissionRank";
 NSString *AGCPCommissionDualteam = @"AGCPCommissionDualteam";
 NSString *AGCPReportOrder = @"AGCPReportOrder";
+NSString *AGCPReportCustomerOrder = @"AGCPReportCustomerOrder";
+NSString *AGCPReportDistributor = @"AGCPReportDistributor";
 NSString *AGCPReportOrganization = @"AGCPReportOrganization";
 NSString *AGCPReportRecentGrowth = @"AGCPReportRecentGrowth";
 NSString *AGCPReportTotal = @"AGCPReportTotal";
@@ -94,8 +96,13 @@ NSString *AGCPServerIsOops = @"AGCPServerIsOops";
     
 //=== Flurry Setting ===
 //    TLOG(@"[AGConfigurationCoordinator singleton].flurryAPIKey -> %@", [AGConfigurationCoordinator singleton].flurryAPIKey);
-    [Flurry setCrashReportingEnabled:YES];
-    [Flurry startSession:flurryAPIKey];
+    
+    if ([DSValueUtil isAvailable:flurryAPIKey]){
+        if (flurryAPIKey.length > 0) {
+            [Flurry setCrashReportingEnabled:YES];
+            [Flurry startSession:flurryAPIKey];
+        }
+    }
 
     
 #ifdef DEBUG

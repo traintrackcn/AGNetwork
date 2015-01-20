@@ -13,6 +13,8 @@
 #import "DSValueUtil.h"
 #import "AGNetworkMacro.h"
 #import "DSDeviceUtil.h"
+#import "AGNetworkConfig.h"
+#import "NSObject+Singleton.h"
 
 @implementation DSRequest
 
@@ -90,12 +92,17 @@
 //    TLOG(@"requestTypep -> %@", requestType);
 }
 
+//- (void)setToken:(NSString *)token{
+//    NSArray *arr = [token componentsSeparatedByString:@"\n"];
+//    _token = [arr componentsJoinedByString:@""];
+//}
+
 #pragma mark - assemble request
 
 - (void)assemble{
     @try {
         [self assembleBasic];
-        [self assembleDefaultHeaders];
+//        [self assembleDefaultHeaders];
         [self assembleHeaders];
         
         if (self.isForOrder){
@@ -117,26 +124,58 @@
     [self setURL:url];
 }
 
-- (void)assembleDefaultHeaders{
+- (void)assembleHeaders{
+    
+//    TLOG(@"[AGNetworkConfig singleton].clientID -> %@", [AGNetworkConfig singleton].clientID);
+    
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_ACCEPT_TYPE];
     [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
-    [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_OG_HEAD_DEVICE_ID];
+    
     [headers setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
     [headers setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
     [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
     [headers setObject:@"gzip" forKey:@"Accept-Encoding"];
+    [headers setObject:[AGNetworkConfig singleton].clientID forKey:@"X-Client-Id"];
+    [headers setObject:[AGNetworkConfig singleton].clientSecret forKey:@"X-Client-Secret"];
+
+    
+    if ([AGNetworkConfig singleton].isOG){
+        [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_OG_HEAD_DEVICE_ID];
+    }
+    
+    
+    TLOG(@"token -> %@", self.token);
+    if ([DSValueUtil isAvailable:self.token]){
+//        TLOG(@"setToken");
+//        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
+        [headers setObject:self.token forKey:@"X-Authentication-Token"];
+//        if ([AGNetworkConfig singleton].isOG){
+//            [headers setObject:self.token forKey:@"X-Organo-Authentication-Token"];
+//            [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
+//        }
+    }
     [self setAllHTTPHeaderFields:headers];
 }
 
-- (void)assembleHeaders{
-//    NSString *token = [AGSession singleton].token;
-    if ([DSValueUtil isAvailable:self.token]){
-        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
-        [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
-    }
-    
-}
+//- (void)assembleHeaders{
+////    NSString *token = [AGSession singleton].token;
+//    TLOG(@"token -> %@", self.token);
+//    if ([DSValueUtil isAvailable:self.token]){
+//        TLOG(@"setToken");
+//        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
+////        [self setValue:[AGNetworkConfig singleton].clientID forHTTPHeaderField:@"X-Client-Id"];
+////        [self setValue:[AGNetworkConfig singleton].clientSecret forHTTPHeaderField:@"X-Client-Secret"];
+//        
+////        if ([AGNetworkConfig singleton].isOG){
+//            [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
+////        }
+//        
+//    }else{
+//        
+//    }
+//    
+//}
 
 - (void)assembleHeaderForPostingOrder{
     NSUUID *uuid = [[NSUUID alloc] init];

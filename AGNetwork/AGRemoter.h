@@ -10,16 +10,20 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "DSRequest.h"
+//#import "UIImageView+WebCache.h"
+//#import "UIImageView+AFNetworking.h"
 
 @class AGRemoterResult;
 
 @protocol AGRemoterDelegate <NSObject>
 
-@required
-- (void)remoterDataReceived:(id)responseData withRequestData:(DSRequest *)request;
 @optional
-- (void)remoterErrorOccured:(AGRemoterResult *)result;
-//- (void)remoterGetServerCurrentTime:(NSString *)serverCurrentTime;
+- (void)remoterDataReceived:(id)responseData withRequestData:(DSRequest *)request NS_DEPRECATED_IOS(7_0, 7_1,"Use - remoterDataReceived:requestType:");
+- (void)remoterErrorOccured:(AGRemoterResult *)result NS_DEPRECATED_IOS(7_0, 7_1,"Use - remoterErrorOccured:requestType:");
+
+
+- (void)remoterErrorOccured:(AGRemoterResult *)result requestType:(NSString *)requestType;
+- (void)remoterDataReceived:(id)responseData requestType:(NSString *)requestType;
 
 @end
 

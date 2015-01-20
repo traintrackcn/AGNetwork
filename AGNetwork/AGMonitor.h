@@ -45,6 +45,8 @@ extern NSString *AGCPCommissionQuartly;
 extern NSString *AGCPCommissionRank;
 extern NSString *AGCPCommissionDualteam;
 extern NSString *AGCPReportOrder;
+extern NSString *AGCPReportCustomerOrder;
+extern NSString *AGCPReportDistributor;
 extern NSString *AGCPReportOrganization;
 extern NSString *AGCPReportRecentGrowth;
 extern NSString *AGCPReportTotal;

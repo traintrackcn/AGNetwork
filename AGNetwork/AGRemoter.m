@@ -16,9 +16,12 @@
 #import "AGNetworkConfig.h"
 #import "NSObject+Singleton.h"
 //#import "UIImageView+AFNetworking.h"
-#import "UIImageView+WebCache.h"
+
 #import "DSRequest.h"
 #import "DSReachabilityManager.h"
+
+#import "UIImageView+WebCache.h"
+#import "UIImageView+AFNetworking.h"
 
 #define kErrorCode @"code"
 
@@ -58,9 +61,9 @@
 }
 
 + (AGRemoter *)instanceWithDelegate:(id< AGRemoterDelegate>)aDelegate{
-    AGRemoter *r = [[AGRemoter alloc] init];
-    [r setDelegate:aDelegate];
-    return r;
+    AGRemoter *instance = [[AGRemoter alloc] init];
+    [instance setDelegate:aDelegate];
+    return instance;
 }
 
 - (void)cancelAllRequests{
@@ -99,9 +102,26 @@
 - (void)removeImageReqestForKey:(NSString *)key{
 //    TLOG(@"key -> %@", key);
     UIImageView *imgV = [imagesLoading objectForKey:key];
-    [imgV cancelImageRequestOperation];
-    [imgV sd_cancelCurrentImageLoad];
+    @try {
+//        TLOG(@"[imgV respondsToSelector:@selector(cancelImageRequestOperation)] -> %d",[imgV respondsToSelector:@selector(cancelImageRequestOperation)] );
+        
+        [imgV cancelImageRequestOperation];
+        
+        
+    }@catch (NSException *exception) {
+        TLOG(@"exception -> %@", exception);
+        
+    }
+    
+    @try {
+        [imgV sd_cancelCurrentImageLoad];
+    }
+    @catch (NSException *exception) {
+        TLOG(@"exception -> %@", exception);
+    }
+    
     [imagesLoading removeObjectForKey:key];
+    
 }
 
 - (void)cancelAllImageRequests{
@@ -121,6 +141,10 @@
     [req assemble];
     //    [self saveRequestForCallback:req];
     TLOG(@"[Request] %@ %@ %@ %ld",[req method], [req URL].absoluteString, [req contentJSON],(unsigned long)[req contentBinary].length);
+    
+    if (![AGNetworkConfig singleton].isOG){
+//    TLOG(@"request headerFields -> %@", req.allHTTPHeaderFields);
+    }
     
     [client enqueueHTTPRequestOperation:
      [client HTTPRequestOperationWithRequest:req success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -174,7 +198,7 @@
 
 - (AGRemoterResult *)assembleResultForError:(NSError *)error{
     AGRemoterResult *result = [AGRemoterResult instance];
-    
+    TLOG(@"error -> %@", error);
     if ([DSValueUtil isAvailable:error]) {
         AGRemoterResultError *parsedError = [[AGRemoterResultError alloc] init];
         NSDictionary *userInfo = error.userInfo;
@@ -218,8 +242,13 @@
         if (delegate&&[delegate respondsToSelector:@selector(remoterDataReceived:withRequestData:)]) {
             [delegate remoterDataReceived:responseData withRequestData:request];
         }
+        
+        if (delegate && [delegate respondsToSelector:@selector(remoterDataReceived:requestType:)]) {
+            [delegate remoterDataReceived:responseData requestType:request.requestType];
+        }
+        
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
+        [AGMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
     }
     
     //universal data handler
@@ -228,7 +257,7 @@
             [AGNetworkConfig singleton].dataReceivedBlock(responseData, request);
         }
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
+        [AGMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
     }
 }
 
@@ -238,9 +267,14 @@
         if ([delegate respondsToSelector:@selector(remoterErrorOccured:)]) {
             [delegate remoterErrorOccured:result];
         }
+        
+        if ([delegate respondsToSelector:@selector(remoterDataReceived:requestType:)]) {
+            [delegate remoterErrorOccured:result requestType:result.request.requestType];
+        }
+        
     }@catch (NSException *exception) {
         DSRequest *request = (DSRequest *)result.request;
-        [AGMonitor logClientException:exception forRequest:request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
+        [AGMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
     }
     
     //universal error handler
@@ -249,7 +283,7 @@
             [AGNetworkConfig singleton].errorOccuredBlock(result);
         }
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:result.request fnName:[NSString stringWithFormat:@"%s", CURRENT_FUNCTION]];
+        [AGMonitor logClientException:exception forRequest:result.request fnName:CURRENT_FUNCTION_NAME];
     }
     
     //Monitor actions
