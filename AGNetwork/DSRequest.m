@@ -88,40 +88,61 @@
 
 
 - (void)setRequestType:(NSString *)requestType{
-    _requestType = [requestType stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+    _requestType = requestType;
+//    _requestType = [requestType stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
 //    TLOG(@"requestTypep -> %@", requestType);
 }
 
-//- (void)setToken:(NSString *)token{
-//    NSArray *arr = [token componentsSeparatedByString:@"\n"];
-//    _token = [arr componentsJoinedByString:@""];
-//}
+- (NSInteger)timeout{
+    return 300;
+}
 
 #pragma mark - assemble request
 
 - (void)assemble{
-    @try {
-        [self assembleBasic];
-//        [self assembleDefaultHeaders];
-        [self assembleHeaders];
+    
+    [self setHTTPMethod:[self method]];
+    [self setTimeoutInterval:300];
+    
+    if ([self isThirdParty]) {
         
-        if (self.isForOrder){
-            [self assembleHeaderForPostingOrder];
+        [self assembleHeaderForThirdParty];
+    
+    }else{
+        
+        @try {
+            [self assembleCustomURL];
+            [self assembleHeaders];
+            
+            if (self.isForOrder){
+                [self assembleHeaderForPostingOrder];
+            }
+            
+            [self assembleBody];
+        }@catch (NSException *exception) {
+            TLOG(@"exception -> %@", exception);
         }
         
-        [self assembleBody];
-    }@catch (NSException *exception) {
-        TLOG(@"exception -> %@", exception);
     }
 }
 
-- (void)assembleBasic{
+
+
+- (void)assembleCustomURL{
     NSString *urlStr = [NSString stringWithFormat:@"%@%@", self.serverUrl, self.url];
-    
     NSURL *url = [[NSURL alloc] initWithString:urlStr];
-    [self setHTTPMethod:[self method]];
-    [self setTimeoutInterval:45];
+    
     [self setURL:url];
+}
+
+- (void)assembleHeaderForThirdParty{
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    [headers setObject:@"application/json, text/*" forKey:HTTP_HEAD_ACCEPT_TYPE];
+    [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
+    [headers setObject:@"compress, gzip" forKey:@"Accept-Encoding"];
+//    [headers setObject:@"utf-8" forKey:@"Accept-Charset"];
+    [headers setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
+    [self setAllHTTPHeaderFields:headers];
 }
 
 - (void)assembleHeaders{
@@ -140,18 +161,18 @@
     [headers setObject:[AGNetworkConfig singleton].clientSecret forKey:@"X-Client-Secret"];
 
     
-    if ([AGNetworkConfig singleton].isOG){
-        [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_OG_HEAD_DEVICE_ID];
-    }
+//    if ([AGNetworkConfig singleton].isOG){
+//        [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_OG_HEAD_DEVICE_ID];
+//    }
     
     
-    TLOG(@"token -> %@", self.token);
+//    TLOG(@"token -> %@", self.token);
     if ([DSValueUtil isAvailable:self.token]){
 //        TLOG(@"setToken");
 //        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
         [headers setObject:self.token forKey:@"X-Authentication-Token"];
 //        if ([AGNetworkConfig singleton].isOG){
-//            [headers setObject:self.token forKey:@"X-Organo-Authentication-Token"];
+            [headers setObject:self.token forKey:@"X-Organo-Authentication-Token"];
 //            [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
 //        }
     }

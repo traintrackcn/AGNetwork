@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *clientID;
 @property (nonatomic, strong) NSString *clientSecret;
-@property (nonatomic, assign) BOOL isOG;
+//@property (nonatomic, assign) BOOL isOG;
 
 
 

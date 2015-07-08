@@ -31,11 +31,12 @@
 
 
 @property (nonatomic, strong) NSString *method;
-
 @property (nonatomic, strong) NSString *protocolVersion;
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *serverUrl;
 
+@property (nonatomic, assign) BOOL isThirdParty;
+@property (nonatomic, assign) NSInteger timeout;
 
 
 

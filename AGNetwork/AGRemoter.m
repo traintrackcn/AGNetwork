@@ -33,6 +33,8 @@
     NSMutableDictionary *imagesLoading;
 }
 
+@property (nonatomic, strong) UIImage *dummyImage;
+
 @end
 
 
@@ -99,12 +101,19 @@
     [self removeImageReqestForKey:key];
 }
 
+- (UIImage *)dummyImage{
+    if (!_dummyImage) {
+        _dummyImage = [[UIImage alloc] init];
+    }
+    return _dummyImage;
+}
+
 - (void)removeImageReqestForKey:(NSString *)key{
 //    TLOG(@"key -> %@", key);
     UIImageView *imgV = [imagesLoading objectForKey:key];
     @try {
 //        TLOG(@"[imgV respondsToSelector:@selector(cancelImageRequestOperation)] -> %d",[imgV respondsToSelector:@selector(cancelImageRequestOperation)] );
-        
+        [imgV setImage:self.dummyImage];
         [imgV cancelImageRequestOperation];
         
         
@@ -141,18 +150,18 @@
     [req assemble];
     //    [self saveRequestForCallback:req];
     TLOG(@"[Request] %@ %@ %@ %ld",[req method], [req URL].absoluteString, [req contentJSON],(unsigned long)[req contentBinary].length);
-    
-    if (![AGNetworkConfig singleton].isOG){
+//    TLOG(@"[Request] header -> %@", req.allHTTPHeaderFields);
+//    if (![AGNetworkConfig singleton].isOG){
 //    TLOG(@"request headerFields -> %@", req.allHTTPHeaderFields);
-    }
+//    }
     
-    [client enqueueHTTPRequestOperation:
-     [client HTTPRequestOperationWithRequest:req success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:req success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self operation:operation successfulWithResponse:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self operation:operation failedWithError:error];
-    }]
-     ];
+    }];
+    
+    [client enqueueHTTPRequestOperation:operation];
     
 }
 
@@ -160,6 +169,8 @@
 #pragma mark -
 
 - (void)operation:(AFHTTPRequestOperation *)operation successfulWithResponse:(id)responseDataRaw{
+//    TLOG(@"operation.responseString -> %@",operation.responseString);
+//    TLOG(@"responseDataRaw -> %@", responseDataRaw);
     NSDictionary *responseHeaders =  operation.response.allHeaderFields;
     AGRemoterResult *result = [AGRemoterResult instance];
     
@@ -174,16 +185,30 @@
         
     }
     
+    id responseData = [responseDataRaw objectForKey:@"response"];
+    if (!responseData) {
+        responseData = responseDataRaw;
+    }
+    
     
     [result setCode: operation.response.statusCode ];
     [result setRequest: (DSRequest *)[operation request] ];
-    [result setResponseData: [responseDataRaw objectForKey:@"response"] ];
+    [result setResponseData: responseData ];
     [result setResponseHeaders:operation.response.allHeaderFields];
     
     [self processResult:result];
 }
 
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
+//    TLOG(@"operation.responseString -> %@",operation.responseString);
+//    @try {
+//        NSString *str = [operation.responseString substringWithRange:NSMakeRange(1427, 20)];
+//        TLOG(@"str -> %@", str);
+//    }
+//    @catch (NSException *exception) {
+//        
+//    }
+    
     AGRemoterResult *result = [self assembleResultForError:error];
     
     if (operation.isCancelled) {
@@ -220,7 +245,18 @@
 
 - (void)processResult:(AGRemoterResult *)result{
     DSRequest *request = (DSRequest *)result.request;
-    TLOG(@"[Response %ld] %@ %@ ", (long)[result code],[request method], [request url]);
+    
+    NSInteger resultCode = [result code];
+    NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultCode];
+    
+    if (resultCode == 1) {
+        resultStr = @"CANCELED";
+    }else if(resultCode == 0){
+        resultStr = @"TIMEOUT";
+    }
+    
+    TLOG(@"[Response %@] %@ %@ ", resultStr.uppercaseString,[request method], [request URL]);
+    
 //    TLOG(@"result isError -> %d", result.isError);
     if ( [result isError]){
         [self dispatchRemoterErrorOccured:result];
@@ -351,6 +387,8 @@
 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage{
     [imageView setImage:placeholderImage];
+    TLOG(@"imageURL -> %@", imageURL);
+    if ([DSValueUtil isNotAvailable:imageURL]) return;
     
     NSInteger lTag = 999;
     UIActivityIndicatorView *l = (UIActivityIndicatorView *)[imageView viewWithTag:lTag];
@@ -405,13 +443,19 @@
         if ([DSValueUtil isAvailable:error]) {
             AGRemoterResult *result = [self assembleResultForError:error];
             [result setRequest:(DSRequest *)req];
-            [AGMonitor logServerExceptionWithResult:result];
+//            [AGMonitor logServerExceptionWithResult:result];
         }
         
         if([DSValueUtil isAvailable:completion]) completion(image, error, cacheType);
         [self removeImageReqest:imageURL];
         
     }];
+}
+
+- (void)GET3:(NSURL *)thirdPartyUrl{
+    DSRequest *req = [[DSRequest alloc] initWithURL:thirdPartyUrl];
+    [req setIsThirdParty:YES];
+    [self send:req forOrder:NO];
 }
 
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
@@ -457,6 +501,10 @@
 
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody{
     DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+//    TLOG(@"requestBody -> %@", requestBody);
+    if (!requestBody) {
+        requestBody = @{};
+    }
     [req setContentJSON:requestBody];
     [req setMethod:@"DELETE"];
     [self send:req forOrder:NO];

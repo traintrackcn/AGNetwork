@@ -32,9 +32,13 @@
     self = [super initWithBaseURL:[NSURL URLWithString:@"nil"]];
     if (self) {
 #ifdef DEBUG
+        NSLog(@"allow invalid certificate");
         [self setAllowsInvalidSSLCertificate:YES];
 #endif
         [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
+        
+        
+//         [self setAllowsInvalidSSLCertificate:NO];
     }
     return self;
 

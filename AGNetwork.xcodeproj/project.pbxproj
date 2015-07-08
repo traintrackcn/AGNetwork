@@ -23,7 +23,7 @@
 		4A314A1819D3CA1100A4EBA4 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A314A0619D3CA1100A4EBA4 /* UIImageView+HighlightedWebCache.m */; };
 		4A314A1919D3CA1100A4EBA4 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A314A0819D3CA1100A4EBA4 /* UIImageView+WebCache.m */; };
 		4A314A1A19D3CA1100A4EBA4 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A314A0A19D3CA1100A4EBA4 /* UIView+WebCacheOperation.m */; };
-		4A61A7171A6DE79D002D3E2E /* AGRemoteItemUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A61A7161A6DE79D002D3E2E /* AGRemoteItemUnit.m */; };
+		4A61A7171A6DE79D002D3E2E /* AGRemoteUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */; };
 		4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E419D1083200D7F178 /* AGRemoter.m */; };
 		4AD7D1E919D1091300D7F178 /* DSRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E819D1091300D7F178 /* DSRequest.m */; };
 		4AD7D1F019D1096500D7F178 /* AGMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1EB19D1096500D7F178 /* AGMonitor.m */; };
@@ -94,8 +94,8 @@
 		4A314A0819D3CA1100A4EBA4 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		4A314A0919D3CA1100A4EBA4 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		4A314A0A19D3CA1100A4EBA4 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		4A61A7151A6DE79D002D3E2E /* AGRemoteItemUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoteItemUnit.h; sourceTree = "<group>"; };
-		4A61A7161A6DE79D002D3E2E /* AGRemoteItemUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoteItemUnit.m; sourceTree = "<group>"; };
+		4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoteUnit.h; sourceTree = "<group>"; };
+		4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoteUnit.m; sourceTree = "<group>"; };
 		4AD7D1C819D1064A00D7F178 /* libAGNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAGNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD7D1D319D1064A00D7F178 /* AGNetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AGNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD7D1D619D1064A00D7F178 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -239,8 +239,8 @@
 		4AD7D1CA19D1064A00D7F178 /* AGNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				4A61A7151A6DE79D002D3E2E /* AGRemoteItemUnit.h */,
-				4A61A7161A6DE79D002D3E2E /* AGRemoteItemUnit.m */,
+				4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */,
+				4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */,
 				4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */,
 				4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */,
 				4AD7D1E719D1091300D7F178 /* DSRequest.h */,
@@ -486,7 +486,7 @@
 				4A314A1619D3CA1100A4EBA4 /* UIImage+MultiFormat.m in Sources */,
 				4AD7D1F019D1096500D7F178 /* AGMonitor.m in Sources */,
 				4A314A0E19D3CA1100A4EBA4 /* SDWebImageCompat.m in Sources */,
-				4A61A7171A6DE79D002D3E2E /* AGRemoteItemUnit.m in Sources */,
+				4A61A7171A6DE79D002D3E2E /* AGRemoteUnit.m in Sources */,
 				4AD7D1E919D1091300D7F178 /* DSRequest.m in Sources */,
 				4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */,
 				4A314A1419D3CA1100A4EBA4 /* UIButton+WebCache.m in Sources */,

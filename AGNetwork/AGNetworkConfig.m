@@ -19,7 +19,7 @@
         [self setToken:[aDecoder decodeObjectForKey:@"token"]];
         [self setClientID:[aDecoder decodeObjectForKey:@"client-id"]];
         [self setClientSecret:[aDecoder decodeObjectForKey:@"client-secret"]];
-        [self setIsOG:[[aDecoder decodeObjectForKey:@"is-og"] boolValue]];
+//        [self setIsOG:[[aDecoder decodeObjectForKey:@"is-og"] boolValue]];
     }
     return self;
 }
@@ -32,7 +32,7 @@
     [aCoder encodeObject:self.token forKey:@"token"];
     [aCoder encodeObject:self.clientID forKey:@"client-id"];
     [aCoder encodeObject:self.clientSecret forKey:@"client-secret"];
-    [aCoder encodeObject:[NSNumber numberWithBool:self.isOG] forKey:@"is-og"];
+//    [aCoder encodeObject:[NSNumber numberWithBool:self.isOG] forKey:@"is-og"];
 }
 
 @end

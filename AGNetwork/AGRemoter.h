@@ -44,6 +44,7 @@
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
 - (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error, NSInteger cacheType))completion;
 
+- (void)GET3:(NSURL *)thirdPartyUrl;
 - (void)GET:(NSString *)requestType;
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo;
