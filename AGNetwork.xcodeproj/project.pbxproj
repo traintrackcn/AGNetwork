@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A0CA53E1B4F810F00DF9379 /* AGRemoteUnit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */; };
+		4A0CA53F1B4F810F00DF9379 /* DSReachabilityManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */; };
+		4A0CA5401B4F810F00DF9379 /* DSRequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E719D1091300D7F178 /* DSRequest.h */; };
+		4A0CA5411B4F810F00DF9379 /* AGHTTPClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E119D1083200D7F178 /* AGHTTPClient.h */; };
+		4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E319D1083200D7F178 /* AGRemoter.h */; };
+		4A0CA5431B4F810F00DF9379 /* AGMonitor.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EA19D1096500D7F178 /* AGMonitor.h */; };
+		4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EC19D1096500D7F178 /* AGRemoterResult.h */; };
+		4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */; };
+		4A0CA5461B4F810F00DF9379 /* AGNetworkMacro.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */; };
+		4A0CA5471B4F810F00DF9379 /* AGNetworkConfig.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D28019D151A100D7F178 /* AGNetworkConfig.h */; };
 		4A314A0B19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149EB19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m */; };
 		4A314A0C19D3CA1100A4EBA4 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149ED19D3CA1100A4EBA4 /* NSData+ImageContentType.m */; };
 		4A314A0D19D3CA1100A4EBA4 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149EF19D3CA1100A4EBA4 /* SDImageCache.m */; };
@@ -49,12 +59,22 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4AD7D1C619D1064A00D7F178 /* CopyFiles */ = {
+		4A0CA53D1B4F801B00DF9379 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
+				4A0CA53E1B4F810F00DF9379 /* AGRemoteUnit.h in CopyFiles */,
+				4A0CA53F1B4F810F00DF9379 /* DSReachabilityManager.h in CopyFiles */,
+				4A0CA5401B4F810F00DF9379 /* DSRequest.h in CopyFiles */,
+				4A0CA5411B4F810F00DF9379 /* AGHTTPClient.h in CopyFiles */,
+				4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */,
+				4A0CA5431B4F810F00DF9379 /* AGMonitor.h in CopyFiles */,
+				4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */,
+				4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */,
+				4A0CA5461B4F810F00DF9379 /* AGNetworkMacro.h in CopyFiles */,
+				4A0CA5471B4F810F00DF9379 /* AGNetworkConfig.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,7 +397,8 @@
 			buildPhases = (
 				4AD7D1C419D1064A00D7F178 /* Sources */,
 				4AD7D1C519D1064A00D7F178 /* Frameworks */,
-				4AD7D1C619D1064A00D7F178 /* CopyFiles */,
+				4A0CA53D1B4F801B00DF9379 /* CopyFiles */,
+				4A0CA5481B4F818F00DF9379 /* lipo */,
 			);
 			buildRules = (
 			);
@@ -449,6 +470,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4A0CA5481B4F818F00DF9379 /* lipo */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = lipo;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ID=${PRODUCT_NAME}\nFOR_SIMULATOR=${TARGET_BUILD_DIR}/../Debug-iphonesimulator/lib$ID.a\nFOR_DEVICE=${TARGET_BUILD_DIR}/../Debug-iphoneos/lib$ID.a\nFOR_BOTH_DIR=~/Desktop/$ID\nFOR_BOTH=$FOR_BOTH_DIR/lib$ID.a\nHEADERS_DIR=${TARGET_BUILD_DIR}/../Debug-iphonesimulator/include\n\necho $FOR_SIMULATOR\necho $FOR_DEVICE\necho $FOR_BOTH\n\nif [ -f $FOR_SIMULATOR ];then\n    if [ -f $FOR_DEVICE ];then\n\n        if [ -d $FOR_BOTH_DIR ];then\n            rm -r $FOR_BOTH_DIR\n        fi\n\n        mkdir $FOR_BOTH_DIR\n\n        lipo -create $FOR_SIMULATOR $FOR_DEVICE -output $FOR_BOTH\n\n        cp -r $HEADERS_DIR $FOR_BOTH_DIR\n    fi\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4AD7D1C419D1064A00D7F178 /* Sources */ = {
@@ -588,6 +626,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -602,6 +641,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
