@@ -171,7 +171,6 @@
 		4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSReachabilityManager.m; sourceTree = "<group>"; };
 		4AD7D29F19D1680600D7F178 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		4AD7D2A019D1680600D7F178 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		53023C4A8F9F42CB99D7BF8E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -383,7 +382,6 @@
 				4AD7D26319D11D6D00D7F178 /* liblibOpen.a */,
 				4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */,
 				4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */,
-				53023C4A8F9F42CB99D7BF8E /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -623,6 +621,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shared3rd/**",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
