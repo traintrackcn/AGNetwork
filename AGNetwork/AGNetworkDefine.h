@@ -12,7 +12,7 @@
 @class AGRemoterResult;
 
 
-@interface AGNetworkConfig : AGModel
+@interface AGNetworkDefine : AGModel
 
 @property (nonatomic, strong) NSString *defaultProtocolVersion;
 @property (nonatomic, strong) NSString *defaultServerUrl;

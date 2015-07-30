@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 AboveGEM. All rights reserved.
 //
 
-#import "AGNetworkConfig.h"
+#import "AGNetworkDefine.h"
 
-@implementation AGNetworkConfig
+@implementation AGNetworkDefine
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];

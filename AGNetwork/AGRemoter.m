@@ -13,7 +13,7 @@
 #import "AGMonitor.h"
 #import "AGRemoterResultError.h"
 #import "DSValueUtil.h"
-#import "AGNetworkConfig.h"
+#import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
 //#import "UIImageView+AFNetworking.h"
 
@@ -179,8 +179,8 @@
     if (responseHeaders != nil) {
         NSString *serverCurrentTime = [responseHeaders objectForKey:@"X-SERVER-CURRENT-TIME"];
 
-        if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].serverCurrentTimeReceivedBlock]) {
-            [AGNetworkConfig singleton].serverCurrentTimeReceivedBlock(serverCurrentTime);
+        if ([AGNetworkDefine singleton].serverCurrentTimeReceivedBlock) {
+            [AGNetworkDefine singleton].serverCurrentTimeReceivedBlock(serverCurrentTime);
         }
         
     }
@@ -289,8 +289,8 @@
     
     //universal data handler
     @try{
-        if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].dataReceivedBlock]) {
-            [AGNetworkConfig singleton].dataReceivedBlock(responseData, request);
+        if ([AGNetworkDefine singleton].dataReceivedBlock) {
+            [AGNetworkDefine singleton].dataReceivedBlock(responseData, request);
         }
     }@catch (NSException *exception) {
         [AGMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
@@ -315,8 +315,8 @@
     
     //universal error handler
     @try {
-        if ([DSValueUtil isAvailable:[AGNetworkConfig singleton].errorOccuredBlock]) {
-            [AGNetworkConfig singleton].errorOccuredBlock(result);
+        if ([AGNetworkDefine singleton].errorOccuredBlock) {
+            [AGNetworkDefine singleton].errorOccuredBlock(result);
         }
     }@catch (NSException *exception) {
         [AGMonitor logClientException:exception forRequest:result.request fnName:CURRENT_FUNCTION_NAME];
@@ -366,11 +366,11 @@
 
 
 - (NSString *)defaultProtocolVersion{
-    return [AGNetworkConfig singleton].defaultProtocolVersion;
+    return [AGNetworkDefine singleton].defaultProtocolVersion;
 }
 
 - (NSString *)defaultServerUrl{
-    return [AGNetworkConfig singleton].defaultServerUrl;
+    return [AGNetworkDefine singleton].defaultServerUrl;
 }
 
 #pragma mark -
@@ -379,7 +379,7 @@
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setProtocolVersion: self.defaultProtocolVersion];
     [req setServerUrl: self.defaultServerUrl];
-    [req setToken:[AGNetworkConfig singleton].token];
+    [req setToken:[AGNetworkDefine singleton].token];
     return req;
 }
 

@@ -16,7 +16,7 @@
 		4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EC19D1096500D7F178 /* AGRemoterResult.h */; };
 		4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */; };
 		4A0CA5461B4F810F00DF9379 /* AGNetworkMacro.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */; };
-		4A0CA5471B4F810F00DF9379 /* AGNetworkConfig.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D28019D151A100D7F178 /* AGNetworkConfig.h */; };
+		4A0CA5471B4F810F00DF9379 /* AGNetworkDefine.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */; };
 		4A314A0B19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149EB19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m */; };
 		4A314A0C19D3CA1100A4EBA4 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149ED19D3CA1100A4EBA4 /* NSData+ImageContentType.m */; };
 		4A314A0D19D3CA1100A4EBA4 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149EF19D3CA1100A4EBA4 /* SDImageCache.m */; };
@@ -52,8 +52,7 @@
 		4AD7D25F19D11D0800D7F178 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D22A19D1141400D7F178 /* AFXMLRequestOperation.m */; };
 		4AD7D26019D11D0800D7F178 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D22C19D1141400D7F178 /* UIImageView+AFNetworking.m */; };
 		4AD7D26119D11D3B00D7F178 /* AGHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E219D1083200D7F178 /* AGHTTPClient.m */; };
-		4AD7D26219D11D5600D7F178 /* NSObject+Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D20719D10C9900D7F178 /* NSObject+Singleton.m */; };
-		4AD7D28219D151A100D7F178 /* AGNetworkConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D28119D151A100D7F178 /* AGNetworkConfig.m */; };
+		4AD7D28219D151A100D7F178 /* AGNetworkDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */; };
 		4AD7D29A19D167C100D7F178 /* DSReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */; };
 		4AD7D2A119D1680600D7F178 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D2A019D1680600D7F178 /* Reachability.m */; };
 /* End PBXBuildFile section */
@@ -74,7 +73,7 @@
 				4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */,
 				4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */,
 				4A0CA5461B4F810F00DF9379 /* AGNetworkMacro.h in CopyFiles */,
-				4A0CA5471B4F810F00DF9379 /* AGNetworkConfig.h in CopyFiles */,
+				4A0CA5471B4F810F00DF9379 /* AGNetworkDefine.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,8 +116,6 @@
 		4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoteUnit.h; sourceTree = "<group>"; };
 		4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoteUnit.m; sourceTree = "<group>"; };
 		4AD7D1C819D1064A00D7F178 /* libAGNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAGNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4AD7D1D319D1064A00D7F178 /* AGNetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AGNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4AD7D1D619D1064A00D7F178 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4AD7D1E119D1083200D7F178 /* AGHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGHTTPClient.h; sourceTree = "<group>"; };
 		4AD7D1E219D1083200D7F178 /* AGHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGHTTPClient.m; sourceTree = "<group>"; };
 		4AD7D1E319D1083200D7F178 /* AGRemoter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoter.h; sourceTree = "<group>"; };
@@ -133,8 +130,6 @@
 		4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoterResultError.m; sourceTree = "<group>"; };
 		4AD7D20219D10BA500D7F178 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		4AD7D20319D10BA500D7F178 /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
-		4AD7D20619D10C9900D7F178 /* NSObject+Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Singleton.h"; sourceTree = "<group>"; };
-		4AD7D20719D10C9900D7F178 /* NSObject+Singleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Singleton.m"; sourceTree = "<group>"; };
 		4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNetworkMacro.h; sourceTree = "<group>"; };
 		4AD7D21A19D1141400D7F178 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		4AD7D21B19D1141400D7F178 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
@@ -157,16 +152,8 @@
 		4AD7D22C19D1141400D7F178 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		4AD7D26319D11D6D00D7F178 /* liblibOpen.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibOpen.a; path = "../libOpen/build/Debug-iphoneos/liblibOpen.a"; sourceTree = "<group>"; };
-		4AD7D26C19D11EDF00D7F178 /* GlobalDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefine.h; path = ../../libOpen/libOpen/GlobalDefine.h; sourceTree = "<group>"; };
-		4AD7D26D19D11EF300D7F178 /* DSValueUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSValueUtil.h; path = ../../libOpen/libOpen/DSValueUtil.h; sourceTree = "<group>"; };
-		4AD7D26E19D11EF300D7F178 /* DSValueUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSValueUtil.m; path = ../../libOpen/libOpen/DSValueUtil.m; sourceTree = "<group>"; };
-		4AD7D27019D11F0400D7F178 /* DSDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSDeviceUtil.h; path = ../../libOpen/libOpen/DSDeviceUtil.h; sourceTree = "<group>"; };
-		4AD7D27119D11F0400D7F178 /* DSDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSDeviceUtil.m; path = ../../libOpen/libOpen/DSDeviceUtil.m; sourceTree = "<group>"; };
-		4AD7D27B19D149AF00D7F178 /* AGModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGModel.h; path = ../../libOpen/libOpen/AGModel.h; sourceTree = "<group>"; };
-		4AD7D27C19D149AF00D7F178 /* AGModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGModel.m; path = ../../libOpen/libOpen/AGModel.m; sourceTree = "<group>"; };
-		4AD7D28019D151A100D7F178 /* AGNetworkConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNetworkConfig.h; sourceTree = "<group>"; };
-		4AD7D28119D151A100D7F178 /* AGNetworkConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNetworkConfig.m; sourceTree = "<group>"; };
+		4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNetworkDefine.h; sourceTree = "<group>"; };
+		4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNetworkDefine.m; sourceTree = "<group>"; };
 		4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSReachabilityManager.h; sourceTree = "<group>"; };
 		4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSReachabilityManager.m; sourceTree = "<group>"; };
 		4AD7D29F19D1680600D7F178 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -181,13 +168,6 @@
 				4AD7D23919D1150700D7F178 /* MobileCoreServices.framework in Frameworks */,
 				4AD7D23719D1150200D7F178 /* SystemConfiguration.framework in Frameworks */,
 				4AD7D20419D10BA500D7F178 /* libFlurry_5.3.0.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4AD7D1D019D1064A00D7F178 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,10 +218,8 @@
 			isa = PBXGroup;
 			children = (
 				4AD7D1CA19D1064A00D7F178 /* AGNetwork */,
-				4AD7D1D419D1064A00D7F178 /* AGNetworkTests */,
 				4AD7D1C919D1064A00D7F178 /* Products */,
 				4AD7D20019D10BA500D7F178 /* Shared3rd */,
-				4AD7D26519D11E8C00D7F178 /* SharedLibs */,
 				E80D8FBEA8ED450FAF647832 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -250,7 +228,6 @@
 			isa = PBXGroup;
 			children = (
 				4AD7D1C819D1064A00D7F178 /* libAGNetwork.a */,
-				4AD7D1D319D1064A00D7F178 /* AGNetworkTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -275,26 +252,10 @@
 				4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */,
 				4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */,
 				4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */,
-				4AD7D28019D151A100D7F178 /* AGNetworkConfig.h */,
-				4AD7D28119D151A100D7F178 /* AGNetworkConfig.m */,
+				4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */,
+				4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */,
 			);
 			path = AGNetwork;
-			sourceTree = "<group>";
-		};
-		4AD7D1D419D1064A00D7F178 /* AGNetworkTests */ = {
-			isa = PBXGroup;
-			children = (
-				4AD7D1D519D1064A00D7F178 /* Supporting Files */,
-			);
-			path = AGNetworkTests;
-			sourceTree = "<group>";
-		};
-		4AD7D1D519D1064A00D7F178 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				4AD7D1D619D1064A00D7F178 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		4AD7D20019D10BA500D7F178 /* Shared3rd */ = {
@@ -303,7 +264,6 @@
 				4A3149E919D3CA1100A4EBA4 /* SDWebImage */,
 				4AD7D29E19D1680600D7F178 /* Reachability */,
 				4AD7D21919D1141400D7F178 /* AFNetworking */,
-				4AD7D20519D10C9900D7F178 /* NSObject+Singleton */,
 				4AD7D20119D10BA500D7F178 /* Flurry */,
 			);
 			path = Shared3rd;
@@ -316,15 +276,6 @@
 				4AD7D20319D10BA500D7F178 /* libFlurry_5.3.0.a */,
 			);
 			path = Flurry;
-			sourceTree = "<group>";
-		};
-		4AD7D20519D10C9900D7F178 /* NSObject+Singleton */ = {
-			isa = PBXGroup;
-			children = (
-				4AD7D20619D10C9900D7F178 /* NSObject+Singleton.h */,
-				4AD7D20719D10C9900D7F178 /* NSObject+Singleton.m */,
-			);
-			path = "NSObject+Singleton";
 			sourceTree = "<group>";
 		};
 		4AD7D21919D1141400D7F178 /* AFNetworking */ = {
@@ -353,20 +304,6 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
-		4AD7D26519D11E8C00D7F178 /* SharedLibs */ = {
-			isa = PBXGroup;
-			children = (
-				4AD7D27B19D149AF00D7F178 /* AGModel.h */,
-				4AD7D27C19D149AF00D7F178 /* AGModel.m */,
-				4AD7D27019D11F0400D7F178 /* DSDeviceUtil.h */,
-				4AD7D27119D11F0400D7F178 /* DSDeviceUtil.m */,
-				4AD7D26D19D11EF300D7F178 /* DSValueUtil.h */,
-				4AD7D26E19D11EF300D7F178 /* DSValueUtil.m */,
-				4AD7D26C19D11EDF00D7F178 /* GlobalDefine.h */,
-			);
-			path = SharedLibs;
-			sourceTree = "<group>";
-		};
 		4AD7D29E19D1680600D7F178 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -379,7 +316,6 @@
 		E80D8FBEA8ED450FAF647832 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4AD7D26319D11D6D00D7F178 /* liblibOpen.a */,
 				4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */,
 				4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */,
 			);
@@ -407,23 +343,6 @@
 			productReference = 4AD7D1C819D1064A00D7F178 /* libAGNetwork.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		4AD7D1D219D1064A00D7F178 /* AGNetworkTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4AD7D1DC19D1064A00D7F178 /* Build configuration list for PBXNativeTarget "AGNetworkTests" */;
-			buildPhases = (
-				4AD7D1CF19D1064A00D7F178 /* Sources */,
-				4AD7D1D019D1064A00D7F178 /* Frameworks */,
-				4AD7D1D119D1064A00D7F178 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AGNetworkTests;
-			productName = AGNetworkTests;
-			productReference = 4AD7D1D319D1064A00D7F178 /* AGNetworkTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -434,9 +353,6 @@
 				ORGANIZATIONNAME = AboveGEM;
 				TargetAttributes = {
 					4AD7D1C719D1064A00D7F178 = {
-						CreatedOnToolsVersion = 6.0.1;
-					};
-					4AD7D1D219D1064A00D7F178 = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
 				};
@@ -454,20 +370,9 @@
 			projectRoot = "";
 			targets = (
 				4AD7D1C719D1064A00D7F178 /* AGNetwork */,
-				4AD7D1D219D1064A00D7F178 /* AGNetworkTests */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		4AD7D1D119D1064A00D7F178 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		4A0CA5481B4F818F00DF9379 /* lipo */ = {
@@ -482,7 +387,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ID=${PRODUCT_NAME}\nFOR_SIMULATOR=${TARGET_BUILD_DIR}/../Debug-iphonesimulator/lib$ID.a\nFOR_DEVICE=${TARGET_BUILD_DIR}/../Debug-iphoneos/lib$ID.a\nFOR_BOTH_DIR=~/Desktop/$ID\nFOR_BOTH=$FOR_BOTH_DIR/lib$ID.a\nHEADERS_DIR=${TARGET_BUILD_DIR}/../Debug-iphonesimulator/include\n\necho $FOR_SIMULATOR\necho $FOR_DEVICE\necho $FOR_BOTH\n\nif [ -f $FOR_SIMULATOR ];then\n    if [ -f $FOR_DEVICE ];then\n\n        if [ -d $FOR_BOTH_DIR ];then\n            rm -r $FOR_BOTH_DIR\n        fi\n\n        mkdir $FOR_BOTH_DIR\n\n        lipo -create $FOR_SIMULATOR $FOR_DEVICE -output $FOR_BOTH\n\n        cp -r $HEADERS_DIR $FOR_BOTH_DIR\n    fi\nfi\n";
+			shellScript = "cd ../3rd\n./do_lipo_for_static_lib.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -491,7 +396,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4AD7D26219D11D5600D7F178 /* NSObject+Singleton.m in Sources */,
 				4A314A1319D3CA1100A4EBA4 /* SDWebImagePrefetcher.m in Sources */,
 				4AD7D26119D11D3B00D7F178 /* AGHTTPClient.m in Sources */,
 				4A314A1719D3CA1100A4EBA4 /* UIImage+WebP.m in Sources */,
@@ -518,7 +422,7 @@
 				4AD7D29A19D167C100D7F178 /* DSReachabilityManager.m in Sources */,
 				4A314A0B19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m in Sources */,
 				4AD7D1F219D1096500D7F178 /* AGRemoterResultError.m in Sources */,
-				4AD7D28219D151A100D7F178 /* AGNetworkConfig.m in Sources */,
+				4AD7D28219D151A100D7F178 /* AGNetworkDefine.m in Sources */,
 				4A314A1619D3CA1100A4EBA4 /* UIImage+MultiFormat.m in Sources */,
 				4AD7D1F019D1096500D7F178 /* AGMonitor.m in Sources */,
 				4A314A0E19D3CA1100A4EBA4 /* SDWebImageCompat.m in Sources */,
@@ -527,13 +431,6 @@
 				4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */,
 				4A314A1419D3CA1100A4EBA4 /* UIButton+WebCache.m in Sources */,
 				4AD7D1F119D1096500D7F178 /* AGRemoterResult.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4AD7D1CF19D1064A00D7F178 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,13 +517,19 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shared3rd/**",
+					../3rd/libOpen,
+					../3rd/thirdPartyOpenResources,
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-llibOpen",
+					"-lthirdPartyOpenResources",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "\"../3rd/thirdPartyOpenResources/include\" \"../3rd/libOpen/include\"";
 			};
 			name = Debug;
 		};
@@ -636,42 +539,18 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shared3rd/**",
+					../3rd/libOpen,
+					../3rd/thirdPartyOpenResources,
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-llibOpen",
+					"-lthirdPartyOpenResources",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = Release;
-		};
-		4AD7D1DD19D1064A00D7F178 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = AGNetworkTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		4AD7D1DE19D1064A00D7F178 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = AGNetworkTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"../3rd/thirdPartyOpenResources/include\" \"../3rd/libOpen/include\"";
 			};
 			name = Release;
 		};
@@ -692,15 +571,6 @@
 			buildConfigurations = (
 				4AD7D1DA19D1064A00D7F178 /* Debug */,
 				4AD7D1DB19D1064A00D7F178 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4AD7D1DC19D1064A00D7F178 /* Build configuration list for PBXNativeTarget "AGNetworkTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4AD7D1DD19D1064A00D7F178 /* Debug */,
-				4AD7D1DE19D1064A00D7F178 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -13,7 +13,7 @@
 #import "DSValueUtil.h"
 #import "AGNetworkMacro.h"
 #import "DSDeviceUtil.h"
-#import "AGNetworkConfig.h"
+#import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
 
 @implementation DSRequest
@@ -157,8 +157,8 @@
     [headers setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
     [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
     [headers setObject:@"gzip" forKey:@"Accept-Encoding"];
-    [headers setObject:[AGNetworkConfig singleton].clientID forKey:@"X-Client-Id"];
-    [headers setObject:[AGNetworkConfig singleton].clientSecret forKey:@"X-Client-Secret"];
+    [headers setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
+    [headers setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
 
     
 //    if ([AGNetworkConfig singleton].isOG){
