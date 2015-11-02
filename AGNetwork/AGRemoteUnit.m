@@ -106,9 +106,14 @@
     
     requestCompletion = completion;
     
+    TLOG(@"self.thirdPartyUrl -> %@", self.thirdPartyUrl);
     
     if (self.method == AGRemoteUnitMethodPOST) {
-        [self.remoter POST:self.requestType requestBody:self.requestBody forOrder:self.isForOrder];
+        if (self.thirdPartyUrl) {
+            [self.remoter POST3:self.thirdPartyUrl requestBody:self.requestBody];
+        }else{
+            [self.remoter POST:self.requestType requestBody:self.requestBody forOrder:self.isForOrder];
+        }
     }else if (self.method == AGRemoteUnitMethodDELETE){
         [self.remoter DELETE:self.requestType requestBody:self.requestBody];
     }else if (self.method == AGRemoteUnitMethodPUT){

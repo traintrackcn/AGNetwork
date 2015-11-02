@@ -16,12 +16,24 @@
 #import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
 
+
+@interface DSRequest(){
+}
+
+@end
+
 @implementation DSRequest
 
 
 + (instancetype)instanceWithRequestType:(NSString *)requestType{
     DSRequest *request = [[DSRequest alloc] initWithRequestType:requestType];
     return request;
+}
+
++ (instancetype)instanceWithThirdPartyUrl:(NSURL *)thirdPartyUrl{
+    DSRequest *requset = [[DSRequest alloc] initWithURL:thirdPartyUrl];
+    [requset setIsThirdParty:YES];
+    return requset;
 }
 
 - (instancetype)init{
@@ -107,11 +119,11 @@
     if ([self isThirdParty]) {
         
         [self assembleHeaderForThirdParty];
-    
+        [self assembleBody];
     }else{
         
         @try {
-            [self assembleCustomURL];
+            [self assembleURL];
             [self assembleHeaders];
             
             if (self.isForOrder){
@@ -127,8 +139,16 @@
 }
 
 
+//- (NSURL *)URL{
+//    if (![super URL]) {
+//        NSString *urlStr = [NSString stringWithFormat:@"%@%@", self.serverUrl, self.url];
+//        NSURL *URL = [[NSURL alloc] initWithString:urlStr];
+//        [self setURL:URL];
+//    }
+//    return [super URL];
+//}
 
-- (void)assembleCustomURL{
+- (void)assembleURL{
     NSString *urlStr = [NSString stringWithFormat:@"%@%@", self.serverUrl, self.url];
     NSURL *url = [[NSURL alloc] initWithString:urlStr];
     
@@ -157,8 +177,15 @@
     [headers setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
     [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
     [headers setObject:@"gzip" forKey:@"Accept-Encoding"];
-    [headers setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
-    [headers setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
+    
+    
+    if ([AGNetworkDefine singleton].clientID){
+        [headers setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
+    }
+    
+    if ([AGNetworkDefine singleton].clientSecret){
+        [headers setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
+    }
 
     
 //    if ([AGNetworkConfig singleton].isOG){
@@ -172,7 +199,7 @@
 //        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
         [headers setObject:self.token forKey:@"X-Authentication-Token"];
 //        if ([AGNetworkConfig singleton].isOG){
-            [headers setObject:self.token forKey:@"X-Organo-Authentication-Token"];
+//            [headers setObject:self.token forKey:@"X-Organo-Authentication-Token"];
 //            [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
 //        }
     }

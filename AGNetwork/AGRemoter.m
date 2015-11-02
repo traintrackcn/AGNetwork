@@ -149,8 +149,7 @@
     [req setIsForOrder:isForOrder];
     [req assemble];
     //    [self saveRequestForCallback:req];
-    TLOG(@"[Request] %@ %@ %@ %ld",[req method], [req URL].absoluteString, [req contentJSON],(unsigned long)[req contentBinary].length);
-//    TLOG(@"[Request] header -> %@", req.allHTTPHeaderFields);
+    TLOG(@"[Request] %@ %@ %@ %ld %@",[req method], [req URL].absoluteString, [req contentJSON],(unsigned long)[req contentBinary].length, req.allHTTPHeaderFields);
 //    if (![AGNetworkConfig singleton].isOG){
 //    TLOG(@"request headerFields -> %@", req.allHTTPHeaderFields);
 //    }
@@ -453,8 +452,7 @@
 }
 
 - (void)GET3:(NSURL *)thirdPartyUrl{
-    DSRequest *req = [[DSRequest alloc] initWithURL:thirdPartyUrl];
-    [req setIsThirdParty:YES];
+    DSRequest *req = [DSRequest instanceWithThirdPartyUrl:thirdPartyUrl];
     [self send:req forOrder:NO];
 }
 
@@ -490,6 +488,13 @@
 
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody{
     [self POST:requestType requestBody:requestBody forOrder:NO];
+}
+
+- (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody{
+//    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    DSRequest *req = [DSRequest instanceWithThirdPartyUrl:thirdPartyUrl];
+    [req setContentJSON:requestBody];
+    [self send:req forOrder:NO];
 }
 
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody{

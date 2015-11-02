@@ -7,22 +7,18 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>D0104DA1-AF25-4373-9D08-983B44B90760</string>
 	<key>IDESourceControlProjectName</key>
-	<string>AGNetwork</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>5048CBEBA4EEA3C63EEC9B3A29407B240BF0DE46</key>
 		<string>https://github.com/traintrackcn/AGNetwork.git</string>
-		<key>D5DD2827A0A6A296ED53B43020FE18DFB415137D</key>
-		<string>https://github.com/traintrackcn/libOpen.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>AGNetwork.xcodeproj</string>
+	<string>AGNetwork.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>5048CBEBA4EEA3C63EEC9B3A29407B240BF0DE46</key>
 		<string>../..</string>
-		<key>D5DD2827A0A6A296ED53B43020FE18DFB415137D</key>
-		<string>../../../libOpen</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/traintrackcn/AGNetwork.git</string>
@@ -39,14 +35,6 @@
 			<string>5048CBEBA4EEA3C63EEC9B3A29407B240BF0DE46</string>
 			<key>IDESourceControlWCCName</key>
 			<string>AGNetwork</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D5DD2827A0A6A296ED53B43020FE18DFB415137D</string>
-			<key>IDESourceControlWCCName</key>
-			<string>libOpen</string>
 		</dict>
 	</array>
 </dict>

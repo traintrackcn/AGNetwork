@@ -48,6 +48,7 @@
 - (void)GET:(NSString *)requestType;
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo;
+- (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody;
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody;
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder;
 - (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData;

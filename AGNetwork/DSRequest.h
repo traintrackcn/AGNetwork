@@ -23,6 +23,8 @@
 
 + (instancetype)instanceWithRequestType:(NSString *)requestType;
 
++ (instancetype)instanceWithThirdPartyUrl:(NSURL *)thirdPartyUrl;
+
 - (NSString *)url;
 - (NSString *)key;
 - (void)assemble;
