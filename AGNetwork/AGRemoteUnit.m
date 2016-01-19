@@ -10,7 +10,7 @@
 #import "AGRemoter.h"
 #import "DSValueUtil.h"
 #import "AGRemoterResult.h"
-#import "AGMonitor.h"
+//#import "AGFlurryMonitor.h"
 #import "GlobalDefine.h"
 
 @interface AGRemoteUnit()<AGRemoterDelegate>{
@@ -177,7 +177,7 @@
         @try {
             [self setData:[self processResponseData:responseData]];
         }@catch (NSException *exception) {
-            [AGMonitor logClientException:exception fnName:CURRENT_FUNCTION_NAME];
+//            [AGFlurryMonitor logClientException:exception fnName:CURRENT_FUNCTION_NAME];
         }
         [self executeBlock];
 //    }

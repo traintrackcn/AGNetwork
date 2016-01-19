@@ -18,7 +18,13 @@
 
 
 @interface DSRequest(){
+    
 }
+
+
+@property (nonatomic, strong) NSString *headerForPostingOrder;
+@property (nonatomic, strong) NSURL *defaultURL;
+@property (nonatomic, strong) NSMutableData *defaultBody;
 
 @end
 
@@ -51,21 +57,15 @@
 
 #pragma mark - properties
 
-- (NSString *)url{
-    NSMutableString* url = [NSMutableString stringWithString:@"/"];
-    if ([DSValueUtil isAvailable:self.protocolVersion]) {
-        [url appendString:self.protocolVersion];
+- (NSURL *)defaultURL{
+    if (!_defaultURL) {
+        NSMutableString* urlStr = [NSMutableString stringWithString:@"/"];
+        if (self.protocolVersion) [urlStr appendString:self.protocolVersion];
+        if (self.requestType) [urlStr appendFormat:@"/%@",self.requestType];
+        _defaultURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", self.serverUrl, urlStr]];
     }
-//    else{
-//        [url appendString:[AGConfigurationCoordinator singleton].protocolVersion];
-//    }
-    if (_requestType){
-        [url appendString:@"/"];
-        [url appendString:_requestType];
-    }
-    return url;
+    return _defaultURL;
 }
-
 
 - (NSData*)data{
     
@@ -98,15 +98,49 @@
     return [[self URL] absoluteString];
 }
 
+#pragma mark - headers 
 
-- (void)setRequestType:(NSString *)requestType{
-    _requestType = requestType;
-//    _requestType = [requestType stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-//    TLOG(@"requestTypep -> %@", requestType);
+
+- (NSMutableDictionary *)defaultHeaders{
+    if (!_defaultHeaders) {
+        
+        _defaultHeaders = [NSMutableDictionary dictionary];
+        [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_ACCEPT_TYPE];
+        [_defaultHeaders setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
+        
+        [_defaultHeaders setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
+        [_defaultHeaders setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
+        [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
+        [_defaultHeaders setObject:@"gzip" forKey:@"Accept-Encoding"];
+        
+        
+        if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
+        if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
+
+    }
+    
+    if (self.token) [_defaultHeaders setObject:self.token forKey:@"X-Authentication-Token"];
+    
+    return _defaultHeaders;
 }
 
-- (NSInteger)timeout{
-    return 300;
+- (NSMutableDictionary *)defaultHeadersForThirdParty{
+    if (!_defaultHeadersForThirdParty) {
+        _defaultHeadersForThirdParty = [NSMutableDictionary dictionary];
+        [_defaultHeadersForThirdParty setObject:@"application/json, text/*" forKey:HTTP_HEAD_ACCEPT_TYPE];
+        [_defaultHeadersForThirdParty setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
+        [_defaultHeadersForThirdParty setObject:@"compress, gzip" forKey:@"Accept-Encoding"];
+        //    [headers setObject:@"utf-8" forKey:@"Accept-Charset"];
+        [_defaultHeadersForThirdParty setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
+    }
+    return _defaultHeadersForThirdParty;
+}
+
+- (NSString *)headerForPostingOrder{
+    NSUUID *uuid = [[NSUUID alloc] init];
+    NSString *uuidStr = [uuid UUIDString];
+    uuidStr = [uuidStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    return uuidStr;
 }
 
 #pragma mark - assemble request
@@ -117,20 +151,16 @@
     [self setTimeoutInterval:300];
     
     if ([self isThirdParty]) {
-        
-        [self assembleHeaderForThirdParty];
-        [self assembleBody];
+        [self setAllHTTPHeaderFields:self.defaultHeadersForThirdParty];
+        if(self.defaultBody) [self setHTTPBody:self.defaultBody];
     }else{
         
         @try {
-            [self assembleURL];
-            [self assembleHeaders];
+            [self setURL:self.defaultURL];
+            [self setAllHTTPHeaderFields:self.defaultHeaders];
+            if(self.defaultBody) [self setHTTPBody:self.defaultBody];
+            if (self.isForOrder) [self setValue:self.headerForPostingOrder forHTTPHeaderField:@"X-Client-Request-Id"];
             
-            if (self.isForOrder){
-                [self assembleHeaderForPostingOrder];
-            }
-            
-            [self assembleBody];
         }@catch (NSException *exception) {
             TLOG(@"exception -> %@", exception);
         }
@@ -139,133 +169,37 @@
 }
 
 
-//- (NSURL *)URL{
-//    if (![super URL]) {
-//        NSString *urlStr = [NSString stringWithFormat:@"%@%@", self.serverUrl, self.url];
-//        NSURL *URL = [[NSURL alloc] initWithString:urlStr];
-//        [self setURL:URL];
-//    }
-//    return [super URL];
-//}
-
-- (void)assembleURL{
-    NSString *urlStr = [NSString stringWithFormat:@"%@%@", self.serverUrl, self.url];
-    NSURL *url = [[NSURL alloc] initWithString:urlStr];
-    
-    [self setURL:url];
-}
-
-- (void)assembleHeaderForThirdParty{
-    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
-    [headers setObject:@"application/json, text/*" forKey:HTTP_HEAD_ACCEPT_TYPE];
-    [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
-    [headers setObject:@"compress, gzip" forKey:@"Accept-Encoding"];
-//    [headers setObject:@"utf-8" forKey:@"Accept-Charset"];
-    [headers setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
-    [self setAllHTTPHeaderFields:headers];
-}
-
-- (void)assembleHeaders{
-    
-//    TLOG(@"[AGNetworkConfig singleton].clientID -> %@", [AGNetworkConfig singleton].clientID);
-    
-    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
-    [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_ACCEPT_TYPE];
-    [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
-    
-    [headers setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
-    [headers setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
-    [headers setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
-    [headers setObject:@"gzip" forKey:@"Accept-Encoding"];
-    
-    
-    if ([AGNetworkDefine singleton].clientID){
-        [headers setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
-    }
-    
-    if ([AGNetworkDefine singleton].clientSecret){
-        [headers setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
-    }
-
-    
-//    if ([AGNetworkConfig singleton].isOG){
-//        [headers setObject:[DSDeviceUtil identifier] forKey:HTTP_OG_HEAD_DEVICE_ID];
-//    }
-    
-    
-//    TLOG(@"token -> %@", self.token);
-    if ([DSValueUtil isAvailable:self.token]){
-//        TLOG(@"setToken");
-//        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
-        [headers setObject:self.token forKey:@"X-Authentication-Token"];
-//        if ([AGNetworkConfig singleton].isOG){
-//            [headers setObject:self.token forKey:@"X-Organo-Authentication-Token"];
-//            [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
-//        }
-    }
-    [self setAllHTTPHeaderFields:headers];
-}
-
-//- (void)assembleHeaders{
-////    NSString *token = [AGSession singleton].token;
-//    TLOG(@"token -> %@", self.token);
-//    if ([DSValueUtil isAvailable:self.token]){
-//        TLOG(@"setToken");
-//        [self setValue:self.token forHTTPHeaderField:@"X-Authentication-Token"];
-////        [self setValue:[AGNetworkConfig singleton].clientID forHTTPHeaderField:@"X-Client-Id"];
-////        [self setValue:[AGNetworkConfig singleton].clientSecret forHTTPHeaderField:@"X-Client-Secret"];
-//        
-////        if ([AGNetworkConfig singleton].isOG){
-//            [self setValue:self.token forHTTPHeaderField:@"X-Organo-Authentication-Token"];
-////        }
-//        
-//    }else{
-//        
-//    }
-//    
-//}
-
-- (void)assembleHeaderForPostingOrder{
-    NSUUID *uuid = [[NSUUID alloc] init];
-    NSString *uuidStr = [uuid UUIDString];
-    uuidStr = [uuidStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    
-    [self setValue:uuidStr forHTTPHeaderField:@"X-Client-Request-Id"];
-}
-
-- (void)assembleBody{
-    NSMutableData * body = [[self data] mutableCopy];
-    if (!body) return;
-    if ([self contentBinary]!=nil) {
-        NSString *hexRandom = [NSString stringWithFormat:@"%06X", (arc4random() % 16777216)];
-        NSString *boundary = hexRandom;
-        [self setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary] forHTTPHeaderField:HTTP_HEAD_CONTENT_TYPE];
+- (NSData *)defaultBody{
+    if (!_defaultBody) {
+        _defaultBody = [[self data] mutableCopy];
+        if (!_defaultBody) return nil;
         
-        body = [NSMutableData data];
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Disposition: form-data; name=\"avatar\"; filename=\"avatar.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[self data]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        
+        //write binary data to body
+        if ([self contentBinary]!=nil) {
+            NSString *hexRandom = [NSString stringWithFormat:@"%06X", (arc4random() % 16777216)];
+            NSString *boundary = hexRandom;
+            [self setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary] forHTTPHeaderField:HTTP_HEAD_CONTENT_TYPE];
+
+            _defaultBody = [NSMutableData data];
+            [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [_defaultBody appendData:[@"Content-Disposition: form-data; name=\"avatar\"; filename=\"avatar.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [_defaultBody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [_defaultBody appendData:[self data]];
+            [_defaultBody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+
         // Write to local disk for test
         //            NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
         //            [data writeToFile:[NSString stringWithFormat:@"%@/postBody", bundlePath] atomically:YES];
+            
+            NSString *headerForContentLength = [NSString stringWithFormat:@"%ld", (unsigned long)[_defaultBody length]];
+            [self setValue:headerForContentLength forHTTPHeaderField:@"Content-Length"];
+        }
+        
+        
     }
     
-    [self setValue:[NSString stringWithFormat:@"%ld", (unsigned long)[body length]] forHTTPHeaderField:@"Content-Length"];
-    [self setHTTPBody:body];
+    return _defaultBody;
 }
-
-#pragma mark - specific types
-
-//- (BOOL)isTypeOfGetOrderInfo{
-//    if ([self.url rangeOfString:@"orders/payment-methods?country-id"].location != NSNotFound) return YES;
-//    if ([self.url rangeOfString:@"orders/shipping-methods?country-id"].location != NSNotFound) return YES;
-//    if ([self.url rangeOfString:@"orders/adjustments"].location != NSNotFound) return YES;
-//    return NO;
-//}
-
 
 
 @end

@@ -10,35 +10,29 @@
 
 @interface DSRequest : NSMutableURLRequest
 
++ (instancetype)instanceWithRequestType:(NSString *)requestType;
++ (instancetype)instanceWithThirdPartyUrl:(NSURL *)thirdPartyUrl;
+
+//- (NSString *)url;
+- (NSString *)key;
+- (void)assemble;
 
 @property (nonatomic, retain) NSString* requestType;
 @property (nonatomic, strong) NSDictionary *userInfo;
 @property (nonatomic, strong) NSDictionary *contentJSON;
 @property (nonatomic, strong) NSData *contentBinary;
 
-
-@property (nonatomic, assign) BOOL isForOrder;
-
-//- (id) initWithRequestType:(NSString*) requestType;
-
-+ (instancetype)instanceWithRequestType:(NSString *)requestType;
-
-+ (instancetype)instanceWithThirdPartyUrl:(NSURL *)thirdPartyUrl;
-
-- (NSString *)url;
-- (NSString *)key;
-- (void)assemble;
-
-- (void)assembleHeaderForPostingOrder;
-
-
 @property (nonatomic, strong) NSString *method;
 @property (nonatomic, strong) NSString *protocolVersion;
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *serverUrl;
 
+@property (nonatomic, assign) BOOL isForOrder;
 @property (nonatomic, assign) BOOL isThirdParty;
-@property (nonatomic, assign) NSInteger timeout;
+
+
+@property (nonatomic, strong) NSMutableDictionary *defaultHeadersForThirdParty;
+@property (nonatomic, strong) NSMutableDictionary *defaultHeaders;
 
 
 

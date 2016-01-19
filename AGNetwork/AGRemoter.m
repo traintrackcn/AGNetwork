@@ -10,7 +10,7 @@
 #import "AGHTTPClient.h"
 #import "AGRemoterResult.h"
 #import "GlobalDefine.h"
-#import "AGMonitor.h"
+//#import "AGFlurryMonitor.h"
 #import "AGRemoterResultError.h"
 #import "DSValueUtil.h"
 #import "AGNetworkDefine.h"
@@ -283,7 +283,7 @@
         }
         
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
+//        [AGFlurryMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
     }
     
     //universal data handler
@@ -292,7 +292,7 @@
             [AGNetworkDefine singleton].dataReceivedBlock(responseData, request);
         }
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
+//        [AGFlurryMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
     }
 }
 
@@ -308,8 +308,8 @@
         }
         
     }@catch (NSException *exception) {
-        DSRequest *request = (DSRequest *)result.request;
-        [AGMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
+//        DSRequest *request = (DSRequest *)result.request;
+//        [AGFlurryMonitor logClientException:exception forRequest:request fnName:CURRENT_FUNCTION_NAME];
     }
     
     //universal error handler
@@ -318,7 +318,7 @@
             [AGNetworkDefine singleton].errorOccuredBlock(result);
         }
     }@catch (NSException *exception) {
-        [AGMonitor logClientException:exception forRequest:result.request fnName:CURRENT_FUNCTION_NAME];
+//        [AGFlurryMonitor logClientException:exception forRequest:result.request fnName:CURRENT_FUNCTION_NAME];
     }
     
     //Monitor actions
@@ -326,12 +326,12 @@
         if ([DSReachabilityManager singleton].isInternetReachable) {
             
             if ([DSReachabilityManager singleton].isHostReachable) {
-                [AGMonitor passCheckpoint:AGCPServerIsOops];
+//                [AGFlurryMonitor passCheckpoint:CHECKPOINT_SERVER_IS_OOPS];
             }else if (![DSReachabilityManager singleton].isHostReachable) {
-                [AGMonitor passCheckpoint:AGCPServerIsDown];
+//                [AGFlurryMonitor passCheckpoint:CHECKPOINT_SERVER_IS_DOWN];
             }
             
-            [AGMonitor logServerExceptionWithResult:result];
+//            [AGFlurryMonitor logServerExceptionWithResult:result];
 
         }
     }
@@ -339,7 +339,7 @@
     if (result.code != AGResultCodeInvalidAuthentication
         && result.code != AGResultCodeInvalidConnection
         && result.code != AGResultCodeOperationCancelled) {
-        [AGMonitor logServerExceptionWithResult:result];
+//        [AGFlurryMonitor logServerExceptionWithResult:result];
 
     }
 }
@@ -386,7 +386,7 @@
 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage{
     [imageView setImage:placeholderImage];
-    TLOG(@"imageURL -> %@", imageURL);
+//    TLOG(@"imageURL -> %@", imageURL);
     if ([DSValueUtil isNotAvailable:imageURL]) return;
     
     NSInteger lTag = 999;
