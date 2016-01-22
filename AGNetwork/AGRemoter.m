@@ -363,25 +363,6 @@
 
 }
 
-
-- (NSString *)defaultProtocolVersion{
-    return [AGNetworkDefine singleton].defaultProtocolVersion;
-}
-
-- (NSString *)defaultServerUrl{
-    return [AGNetworkDefine singleton].defaultServerUrl;
-}
-
-#pragma mark -
-
-- (DSRequest *)assembleDefaultRequestWithRequestType:(NSString *)requestType{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setProtocolVersion: self.defaultProtocolVersion];
-    [req setServerUrl: self.defaultServerUrl];
-    [req setToken:[AGNetworkDefine singleton].token];
-    return req;
-}
-
 #pragma mark -
 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage{
@@ -457,37 +438,37 @@
 }
 
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setProtocolVersion:protocolVersion];
     [self send:req forOrder:NO];
 }
 
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setUserInfo:userInfo];
     [self send:req forOrder:NO];
 }
 
 - (void)GET:(NSString *)requestType{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [self send:req forOrder:NO];
 }
 
 - (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setContentBinary:binaryData];
     [self send:req forOrder:NO];
 }
 
-
-- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder protocolVersion:(NSString *)protocolVersion{
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setContentJSON:requestBody];
+    if(protocolVersion) [req setProtocolVersion:protocolVersion];
     [self send:req forOrder:isForOrder];
 }
 
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody{
-    [self POST:requestType requestBody:requestBody forOrder:NO];
+    [self POST:requestType requestBody:requestBody forOrder:NO protocolVersion:nil];
 }
 
 - (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody{
@@ -498,14 +479,14 @@
 }
 
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setContentJSON:requestBody];
     [req setMethod:@"PUT"];
     [self send:req forOrder:NO];
 }
 
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
 //    TLOG(@"requestBody -> %@", requestBody);
     if (!requestBody) {
         requestBody = @{};

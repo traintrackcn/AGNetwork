@@ -7,6 +7,9 @@
 //
 
 #import "AGNetworkDefine.h"
+#import "NSObject+Singleton.h"
+#import "DSDeviceUtil.h"
+#import "AGNetworkMacro.h"
 
 @implementation AGNetworkDefine
 
@@ -33,6 +36,50 @@
     [aCoder encodeObject:self.clientID forKey:@"client-id"];
     [aCoder encodeObject:self.clientSecret forKey:@"client-secret"];
 //    [aCoder encodeObject:[NSNumber numberWithBool:self.isOG] forKey:@"is-og"];
+}
+
+
+
+#pragma mark - headers
+
+
+- (NSMutableDictionary *)defaultHeaders{
+    if (!_defaultHeaders) {
+        
+        _defaultHeaders = [NSMutableDictionary dictionary];
+        [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_ACCEPT_TYPE];
+        [_defaultHeaders setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
+        
+        [_defaultHeaders setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
+        [_defaultHeaders setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
+        [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
+        [_defaultHeaders setObject:@"gzip" forKey:@"Accept-Encoding"];
+        
+        
+        if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
+        if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
+        
+    }
+    
+    if (self.token) {
+        [_defaultHeaders setObject:self.token forKey:@"X-Authentication-Token"];
+    }else{
+        [_defaultHeaders removeObjectForKey:@"X-Authentication-Token"];
+    }
+    
+    return _defaultHeaders;
+}
+
+- (NSMutableDictionary *)defaultHeadersForThirdParty{
+    if (!_defaultHeadersForThirdParty) {
+        _defaultHeadersForThirdParty = [NSMutableDictionary dictionary];
+        [_defaultHeadersForThirdParty setObject:@"application/json, text/*" forKey:HTTP_HEAD_ACCEPT_TYPE];
+        [_defaultHeadersForThirdParty setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
+        [_defaultHeadersForThirdParty setObject:@"compress, gzip" forKey:@"Accept-Encoding"];
+        //    [headers setObject:@"utf-8" forKey:@"Accept-Charset"];
+        [_defaultHeadersForThirdParty setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
+    }
+    return _defaultHeadersForThirdParty;
 }
 
 @end

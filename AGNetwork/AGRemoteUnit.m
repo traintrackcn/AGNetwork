@@ -112,7 +112,7 @@
         if (self.thirdPartyUrl) {
             [self.remoter POST3:self.thirdPartyUrl requestBody:self.requestBody];
         }else{
-            [self.remoter POST:self.requestType requestBody:self.requestBody forOrder:self.isForOrder];
+            [self.remoter POST:self.requestType requestBody:self.requestBody forOrder:self.isForOrder protocolVersion:self.protocolVersion];
         }
     }else if (self.method == AGRemoteUnitMethodDELETE){
         [self.remoter DELETE:self.requestType requestBody:self.requestBody];

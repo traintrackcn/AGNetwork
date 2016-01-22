@@ -50,7 +50,7 @@
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo;
 - (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody;
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody;
-- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder;
+- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder protocolVersion:(NSString *)protocolVersion;
 - (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData;
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody;
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody;

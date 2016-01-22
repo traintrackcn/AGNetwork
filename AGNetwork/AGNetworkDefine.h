@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSString *clientSecret;
 //@property (nonatomic, assign) BOOL isOG;
 
+@property (nonatomic, strong) NSMutableDictionary *defaultHeadersForThirdParty;
+@property (nonatomic, strong) NSMutableDictionary *defaultHeaders;
 
 
 @property (nonatomic, copy) void(^dataReceivedBlock)(id responseData, DSRequest *request);

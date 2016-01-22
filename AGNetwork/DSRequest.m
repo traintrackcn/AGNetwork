@@ -98,49 +98,23 @@
     return [[self URL] absoluteString];
 }
 
-#pragma mark - headers 
 
-
-- (NSMutableDictionary *)defaultHeaders{
-    if (!_defaultHeaders) {
-        
-        _defaultHeaders = [NSMutableDictionary dictionary];
-        [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_ACCEPT_TYPE];
-        [_defaultHeaders setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
-        
-        [_defaultHeaders setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
-        [_defaultHeaders setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
-        [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
-        [_defaultHeaders setObject:@"gzip" forKey:@"Accept-Encoding"];
-        
-        
-        if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
-        if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
-
-    }
-    
-    if (self.token) [_defaultHeaders setObject:self.token forKey:@"X-Authentication-Token"];
-    
-    return _defaultHeaders;
-}
-
-- (NSMutableDictionary *)defaultHeadersForThirdParty{
-    if (!_defaultHeadersForThirdParty) {
-        _defaultHeadersForThirdParty = [NSMutableDictionary dictionary];
-        [_defaultHeadersForThirdParty setObject:@"application/json, text/*" forKey:HTTP_HEAD_ACCEPT_TYPE];
-        [_defaultHeadersForThirdParty setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
-        [_defaultHeadersForThirdParty setObject:@"compress, gzip" forKey:@"Accept-Encoding"];
-        //    [headers setObject:@"utf-8" forKey:@"Accept-Charset"];
-        [_defaultHeadersForThirdParty setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
-    }
-    return _defaultHeadersForThirdParty;
-}
 
 - (NSString *)headerForPostingOrder{
     NSUUID *uuid = [[NSUUID alloc] init];
     NSString *uuidStr = [uuid UUIDString];
     uuidStr = [uuidStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
     return uuidStr;
+}
+
+- (NSString *)protocolVersion{
+    if (!_protocolVersion) return [AGNetworkDefine singleton].defaultProtocolVersion;
+    return _protocolVersion;
+}
+
+- (NSString *)serverUrl{
+    if (!_serverUrl) return [AGNetworkDefine singleton].defaultServerUrl;
+    return _serverUrl;
 }
 
 #pragma mark - assemble request
@@ -151,13 +125,13 @@
     [self setTimeoutInterval:300];
     
     if ([self isThirdParty]) {
-        [self setAllHTTPHeaderFields:self.defaultHeadersForThirdParty];
+        [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeadersForThirdParty];
         if(self.defaultBody) [self setHTTPBody:self.defaultBody];
     }else{
         
         @try {
             [self setURL:self.defaultURL];
-            [self setAllHTTPHeaderFields:self.defaultHeaders];
+            [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeaders];
             if(self.defaultBody) [self setHTTPBody:self.defaultBody];
             if (self.isForOrder) [self setValue:self.headerForPostingOrder forHTTPHeaderField:@"X-Client-Request-Id"];
             

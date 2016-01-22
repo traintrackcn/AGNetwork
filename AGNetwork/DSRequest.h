@@ -24,15 +24,13 @@
 
 @property (nonatomic, strong) NSString *method;
 @property (nonatomic, strong) NSString *protocolVersion;
-@property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *serverUrl;
 
 @property (nonatomic, assign) BOOL isForOrder;
 @property (nonatomic, assign) BOOL isThirdParty;
 
 
-@property (nonatomic, strong) NSMutableDictionary *defaultHeadersForThirdParty;
-@property (nonatomic, strong) NSMutableDictionary *defaultHeaders;
+
 
 
 
