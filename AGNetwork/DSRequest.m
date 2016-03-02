@@ -38,7 +38,7 @@
 
 + (instancetype)instanceWithThirdPartyUrl:(NSURL *)thirdPartyUrl{
     DSRequest *requset = [[DSRequest alloc] initWithURL:thirdPartyUrl];
-    [requset setIsThirdParty:YES];
+    [requset setThirdParty:YES];
     return requset;
 }
 
@@ -67,23 +67,6 @@
     return _defaultURL;
 }
 
-- (NSData*)data{
-    
-    if (self.requestBinary) return self.requestBinary.data;
-    
-    if (self.requestBody)  {
-        NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:self.requestBody options:NSJSONWritingPrettyPrinted error:&error];
-        if(error){
-            TLOG(@"error occurend when converting to JSON %@", error);
-            return nil;
-        }
-        return data;
-    }
-    
-    return nil;
-}
-
 - (NSString *)method{
     if (_method) return _method;
     
@@ -97,8 +80,6 @@
 - (NSString *)key{
     return [[self URL] absoluteString];
 }
-
-
 
 - (NSString *)headerForPostingOrder{
     NSUUID *uuid = [[NSUUID alloc] init];
@@ -124,7 +105,7 @@
     [self setHTTPMethod:[self method]];
     [self setTimeoutInterval:300];
     
-    if ([self isThirdParty]) {
+    if ([self thirdParty]) {
         [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeadersForThirdParty];
         if(self.defaultBody) [self setHTTPBody:self.defaultBody];
     }else{

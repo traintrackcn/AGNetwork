@@ -32,7 +32,7 @@
 @property (nonatomic, strong) NSString *serverUrl;
 
 @property (nonatomic, assign) BOOL forOrder;
-@property (nonatomic, assign) BOOL isThirdParty;
+@property (nonatomic, assign) BOOL thirdParty;
 
 
 
