@@ -12,6 +12,7 @@
 #import "AGRemoterResult.h"
 //#import "AGFlurryMonitor.h"
 #import "GlobalDefine.h"
+#import "AGNetworkDefine.h"
 
 @interface AGRemoteUnit()<AGRemoterDelegate>{
     void(^requestCompletion)(id data, id error);
@@ -52,6 +53,13 @@
 }
 
 #pragma mark - properties
+
+- (NSString *)methodStr{
+    if (self.method == AGRemoteUnitMethodDELETE) return @"DELETE";
+    if (self.method == AGRemoteUnitMethodPOST) return @"POST";
+    if (self.method == AGRemoteUnitMethodPUT) return @"PUT";
+    return @"GET";
+}
 
 - (AGRemoter *)remoter{
     if (!_remoter) {
@@ -108,11 +116,20 @@
     
     TLOG(@"self.thirdPartyUrl -> %@", self.thirdPartyUrl);
     
+    
+    if (self.requestBinary) {
+        NSString *methodStr = [self methodStr];
+        [self.remoter REQUEST:self.requestType method:methodStr requestBody:self.requestBody requestBinary:self.requestBinary forOrder:self.forOrder protocolVersion:self.protocolVersion];
+         return;
+    }
+    
+    
+    
     if (self.method == AGRemoteUnitMethodPOST) {
         if (self.thirdPartyUrl) {
             [self.remoter POST3:self.thirdPartyUrl requestBody:self.requestBody];
         }else{
-            [self.remoter POST:self.requestType requestBody:self.requestBody forOrder:self.isForOrder protocolVersion:self.protocolVersion];
+            [self.remoter POST:self.requestType requestBody:self.requestBody forOrder:self.forOrder protocolVersion:self.protocolVersion];
         }
     }else if (self.method == AGRemoteUnitMethodDELETE){
         [self.remoter DELETE:self.requestType requestBody:self.requestBody];

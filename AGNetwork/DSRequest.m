@@ -15,7 +15,7 @@
 #import "DSDeviceUtil.h"
 #import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
-
+#import "AGRequestBinary.h"
 
 @interface DSRequest(){
     
@@ -69,11 +69,11 @@
 
 - (NSData*)data{
     
-    if ([self contentBinary] != nil) return [self contentBinary];
+    if (self.requestBinary) return self.requestBinary.data;
     
-    if ([self contentJSON] != nil)  {
+    if (self.requestBody)  {
         NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:[self contentJSON] options:NSJSONWritingPrettyPrinted error:&error];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:self.requestBody options:NSJSONWritingPrettyPrinted error:&error];
         if(error){
             TLOG(@"error occurend when converting to JSON %@", error);
             return nil;
@@ -85,10 +85,10 @@
 }
 
 - (NSString *)method{
-    if (_method!=nil) return _method;
+    if (_method) return _method;
     
-    if ([self contentBinary] != nil) return HTTP_METHOD_PUT;
-    if ([self contentJSON] != nil) return HTTP_METHOD_POST;
+    if (self.requestBinary) return HTTP_METHOD_PUT;
+    if (self.requestBody) return HTTP_METHOD_POST;
     
     return HTTP_METHOD_GET;
 }
@@ -133,7 +133,7 @@
             [self setURL:self.defaultURL];
             [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeaders];
             if(self.defaultBody) [self setHTTPBody:self.defaultBody];
-            if (self.isForOrder) [self setValue:self.headerForPostingOrder forHTTPHeaderField:@"X-Client-Request-Id"];
+            if (self.forOrder) [self setValue:self.headerForPostingOrder forHTTPHeaderField:@"X-Client-Request-Id"];
             
         }@catch (NSException *exception) {
             TLOG(@"exception -> %@", exception);
@@ -144,35 +144,48 @@
 
 
 - (NSData *)defaultBody{
+    
+    if (!self.requestBody&&!self.requestBinary) return nil;
+    
     if (!_defaultBody) {
-        _defaultBody = [[self data] mutableCopy];
-        if (!_defaultBody) return nil;
+        _defaultBody = [NSMutableData data];
         
-        //write binary data to body
-        if ([self contentBinary]!=nil) {
-            NSString *hexRandom = [NSString stringWithFormat:@"%06X", (arc4random() % 16777216)];
-            NSString *boundary = hexRandom;
-            [self setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary] forHTTPHeaderField:HTTP_HEAD_CONTENT_TYPE];
-
-            _defaultBody = [NSMutableData data];
+        NSString *boundary = [self boundaryInstance];
+        
+        [self setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary] forHTTPHeaderField:HTTP_HEAD_CONTENT_TYPE];
+        
+        for (NSString *paramKey in self.requestBody) {
+            NSString *paramValue = [self.requestBody objectForKey:paramKey];
             [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-            [_defaultBody appendData:[@"Content-Disposition: form-data; name=\"avatar\"; filename=\"avatar.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-            [_defaultBody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-            [_defaultBody appendData:[self data]];
-            [_defaultBody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-
-        // Write to local disk for test
-        //            NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
-        //            [data writeToFile:[NSString stringWithFormat:@"%@/postBody", bundlePath] atomically:YES];
-            
-            NSString *headerForContentLength = [NSString stringWithFormat:@"%ld", (unsigned long)[_defaultBody length]];
-            [self setValue:headerForContentLength forHTTPHeaderField:@"Content-Length"];
+            [_defaultBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", paramKey] dataUsingEncoding:NSUTF8StringEncoding]];
+            [_defaultBody appendData:[[NSString stringWithFormat:@"%@\r\n", paramValue] dataUsingEncoding:NSUTF8StringEncoding]];
         }
         
         
+        if (self.requestBinary) {
+            [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [_defaultBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", self.requestBinary.name, self.requestBinary.file] dataUsingEncoding:NSUTF8StringEncoding]];
+//            [_defaultBody appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [_defaultBody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [_defaultBody appendData:self.requestBinary.data];
+            [_defaultBody appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        
+// Write to local disk for test
+//        NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
+//        [data writeToFile:[NSString stringWithFormat:@"%@/postBody", bundlePath] atomically:YES];
+        
+        [_defaultBody appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        NSString *headerForContentLength = [NSString stringWithFormat:@"%ld", (unsigned long)[_defaultBody length]];
+        [self setValue:headerForContentLength forHTTPHeaderField:@"Content-Length"];
+
     }
-    
     return _defaultBody;
+}
+
+- (NSString *)boundaryInstance{
+    NSString *hexRandom = [NSString stringWithFormat:@"%06X", (arc4random() % 16777216)];
+    return hexRandom;
 }
 
 

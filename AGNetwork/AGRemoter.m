@@ -22,6 +22,7 @@
 
 #import "UIImageView+WebCache.h"
 #import "UIImageView+AFNetworking.h"
+#import "AGRequestBinary.h"
 
 #define kErrorCode @"code"
 
@@ -145,11 +146,10 @@
 
 #pragma mark -
 
-- (void)send:(DSRequest *)req forOrder:(BOOL)isForOrder{
-    [req setIsForOrder:isForOrder];
+- (void)send:(DSRequest *)req{
     [req assemble];
     //    [self saveRequestForCallback:req];
-    TLOG(@"[Request] %@ %@ %@ %ld %@",[req method], [req URL].absoluteString, [req contentJSON],(unsigned long)[req contentBinary].length, req.allHTTPHeaderFields);
+    TLOG(@"[Request] %@ %@ %@ %ld %@",[req method], [req URL].absoluteString, req.requestBody,(unsigned long)[req requestBinary].data.length, req.allHTTPHeaderFields);
 //    if (![AGNetworkConfig singleton].isOG){
 //    TLOG(@"request headerFields -> %@", req.allHTTPHeaderFields);
 //    }
@@ -432,39 +432,47 @@
     }];
 }
 
+
+- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion{
+    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
+    [req setRequestBinary:requestBinary];
+    [req setRequestBody:requestBody];
+    [req setMethod:method];
+    [req setProtocolVersion:protocolVersion];
+    [req setForOrder:forOrder];
+    [self send:req];
+}
+
+#pragma mark -
+
 - (void)GET3:(NSURL *)thirdPartyUrl{
     DSRequest *req = [DSRequest instanceWithThirdPartyUrl:thirdPartyUrl];
-    [self send:req forOrder:NO];
+    [self send:req];
 }
 
 - (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setProtocolVersion:protocolVersion];
-    [self send:req forOrder:NO];
+    [self send:req];
 }
 
 - (void)GET:(NSString *)requestType userInfo:(id)userInfo{
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
     [req setUserInfo:userInfo];
-    [self send:req forOrder:NO];
+    [self send:req];
 }
 
 - (void)GET:(NSString *)requestType{
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [self send:req forOrder:NO];
+    [self send:req];
 }
 
-- (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData{
+- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion{
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setContentBinary:binaryData];
-    [self send:req forOrder:NO];
-}
-
-- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder protocolVersion:(NSString *)protocolVersion{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setContentJSON:requestBody];
+    [req setRequestBody:requestBody];
     if(protocolVersion) [req setProtocolVersion:protocolVersion];
-    [self send:req forOrder:isForOrder];
+    [req setForOrder:forOrder];
+    [self send:req];
 }
 
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody{
@@ -474,27 +482,28 @@
 - (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody{
 //    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
     DSRequest *req = [DSRequest instanceWithThirdPartyUrl:thirdPartyUrl];
-    [req setContentJSON:requestBody];
-    [self send:req forOrder:NO];
+    [req setRequestBody:requestBody];
+    [self send:req];
 }
 
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody{
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setContentJSON:requestBody];
-    [req setMethod:@"PUT"];
-    [self send:req forOrder:NO];
+    [req setRequestBody:requestBody];
+    [req setMethod:HTTP_METHOD_PUT];
+    [self send:req];
 }
 
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody{
     DSRequest *req = [DSRequest instanceWithRequestType:requestType];
 //    TLOG(@"requestBody -> %@", requestBody);
-    if (!requestBody) {
-        requestBody = @{};
-    }
-    [req setContentJSON:requestBody];
-    [req setMethod:@"DELETE"];
-    [self send:req forOrder:NO];
+    if (!requestBody) requestBody = @{};
+    [req setRequestBody:requestBody];
+    [req setMethod:HTTP_METHOD_DELETE];
+    [self send:req];
 }
+
+
+
 
 
 @end

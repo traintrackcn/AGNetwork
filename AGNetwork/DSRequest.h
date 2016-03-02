@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+
+@class AGRequestBinary;
 @interface DSRequest : NSMutableURLRequest
 
 + (instancetype)instanceWithRequestType:(NSString *)requestType;
@@ -17,16 +19,19 @@
 - (NSString *)key;
 - (void)assemble;
 
-@property (nonatomic, retain) NSString* requestType;
+
+@property (nonatomic, strong) NSDictionary *requestBody;
+@property (nonatomic, strong) AGRequestBinary *requestBinary;
+
+@property (nonatomic, retain) NSString *requestType;
 @property (nonatomic, strong) NSDictionary *userInfo;
-@property (nonatomic, strong) NSDictionary *contentJSON;
-@property (nonatomic, strong) NSData *contentBinary;
+
 
 @property (nonatomic, strong) NSString *method;
 @property (nonatomic, strong) NSString *protocolVersion;
 @property (nonatomic, strong) NSString *serverUrl;
 
-@property (nonatomic, assign) BOOL isForOrder;
+@property (nonatomic, assign) BOOL forOrder;
 @property (nonatomic, assign) BOOL isThirdParty;
 
 

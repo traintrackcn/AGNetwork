@@ -14,7 +14,6 @@
 		4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E319D1083200D7F178 /* AGRemoter.h */; };
 		4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EC19D1096500D7F178 /* AGRemoterResult.h */; };
 		4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */; };
-		4A0CA5461B4F810F00DF9379 /* AGNetworkMacro.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */; };
 		4A0CA5471B4F810F00DF9379 /* AGNetworkDefine.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */; };
 		4A314A0B19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149EB19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m */; };
 		4A314A0C19D3CA1100A4EBA4 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3149ED19D3CA1100A4EBA4 /* NSData+ImageContentType.m */; };
@@ -32,6 +31,8 @@
 		4A314A1819D3CA1100A4EBA4 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A314A0619D3CA1100A4EBA4 /* UIImageView+HighlightedWebCache.m */; };
 		4A314A1919D3CA1100A4EBA4 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A314A0819D3CA1100A4EBA4 /* UIImageView+WebCache.m */; };
 		4A314A1A19D3CA1100A4EBA4 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A314A0A19D3CA1100A4EBA4 /* UIView+WebCacheOperation.m */; };
+		4A3700621C86E21500A4C1D8 /* AGRequestBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3700611C86E21500A4C1D8 /* AGRequestBinary.m */; };
+		4A3700631C86ED8400A4C1D8 /* AGRequestBinary.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A3700601C86E21500A4C1D8 /* AGRequestBinary.h */; };
 		4A61A7171A6DE79D002D3E2E /* AGRemoteUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */; };
 		4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E419D1083200D7F178 /* AGRemoter.m */; };
 		4AD7D1E919D1091300D7F178 /* DSRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E819D1091300D7F178 /* DSRequest.m */; };
@@ -61,6 +62,7 @@
 			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
+				4A3700631C86ED8400A4C1D8 /* AGRequestBinary.h in CopyFiles */,
 				4A0CA53E1B4F810F00DF9379 /* AGRemoteUnit.h in CopyFiles */,
 				4A0CA53F1B4F810F00DF9379 /* DSReachabilityManager.h in CopyFiles */,
 				4A0CA5401B4F810F00DF9379 /* DSRequest.h in CopyFiles */,
@@ -68,7 +70,6 @@
 				4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */,
 				4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */,
 				4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */,
-				4A0CA5461B4F810F00DF9379 /* AGNetworkMacro.h in CopyFiles */,
 				4A0CA5471B4F810F00DF9379 /* AGNetworkDefine.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,6 +110,8 @@
 		4A314A0819D3CA1100A4EBA4 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		4A314A0919D3CA1100A4EBA4 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		4A314A0A19D3CA1100A4EBA4 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		4A3700601C86E21500A4C1D8 /* AGRequestBinary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRequestBinary.h; sourceTree = "<group>"; };
+		4A3700611C86E21500A4C1D8 /* AGRequestBinary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRequestBinary.m; sourceTree = "<group>"; };
 		4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoteUnit.h; sourceTree = "<group>"; };
 		4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoteUnit.m; sourceTree = "<group>"; };
 		4AD7D1C819D1064A00D7F178 /* libAGNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAGNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,7 +127,6 @@
 		4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoterResultError.m; sourceTree = "<group>"; };
 		4AD7D20219D10BA500D7F178 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		4AD7D20319D10BA500D7F178 /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
-		4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNetworkMacro.h; sourceTree = "<group>"; };
 		4AD7D21A19D1141400D7F178 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		4AD7D21B19D1141400D7F178 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		4AD7D21C19D1141400D7F178 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -242,9 +244,10 @@
 				4AD7D1ED19D1096500D7F178 /* AGRemoterResult.m */,
 				4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */,
 				4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */,
-				4AD7D20B19D1106300D7F178 /* AGNetworkMacro.h */,
 				4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */,
 				4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */,
+				4A3700601C86E21500A4C1D8 /* AGRequestBinary.h */,
+				4A3700611C86E21500A4C1D8 /* AGRequestBinary.m */,
 			);
 			path = AGNetwork;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 			files = (
 				4A314A1319D3CA1100A4EBA4 /* SDWebImagePrefetcher.m in Sources */,
 				4AD7D26119D11D3B00D7F178 /* AGHTTPClient.m in Sources */,
+				4A3700621C86E21500A4C1D8 /* AGRequestBinary.m in Sources */,
 				4A314A1719D3CA1100A4EBA4 /* UIImage+WebP.m in Sources */,
 				4A314A1919D3CA1100A4EBA4 /* UIImageView+WebCache.m in Sources */,
 				4A314A1119D3CA1100A4EBA4 /* SDWebImageDownloaderOperation.m in Sources */,

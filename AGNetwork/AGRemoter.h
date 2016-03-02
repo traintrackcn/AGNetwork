@@ -14,6 +14,7 @@
 //#import "UIImageView+AFNetworking.h"
 
 @class AGRemoterResult;
+@class AGRequestBinary;
 
 @protocol AGRemoterDelegate <NSObject>
 
@@ -33,7 +34,7 @@
 
 
 + (AGRemoter *)instanceWithDelegate:(id < AGRemoterDelegate>)aDelegate;
-- (void)send:(DSRequest *)req forOrder:(BOOL)isForOrder;
+- (void)send:(DSRequest *)req;
 - (void)cancelAllRequests;
 - (void)cancelAllImageRequests;
 - (BOOL)isLoadingAnyImageRequest;
@@ -43,6 +44,7 @@
 #pragma mark - 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
 - (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error, NSInteger cacheType))completion;
+- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion;
 
 - (void)GET3:(NSURL *)thirdPartyUrl;
 - (void)GET:(NSString *)requestType;
@@ -51,9 +53,11 @@
 - (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody;
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody;
 - (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder protocolVersion:(NSString *)protocolVersion;
-- (void)POST:(NSString *)requestType binaryData:(NSData *)binaryData;
+
 - (void)PUT:(NSString *)requestType requestBody:(id)requestBody;
 - (void)DELETE:(NSString *)requestType requestBody:(id)requestBody;
+
+
 
 @property (nonatomic, weak) id < AGRemoterDelegate> delegate;
 
