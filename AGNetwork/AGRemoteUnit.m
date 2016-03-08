@@ -137,7 +137,9 @@
         [self.remoter PUT:self.requestType requestBody:self.requestBody];
     }else if(self.method == AGRemoteUnitMethodGET){ //AGRemoteUnitMethodGET
         
-        if (self.thirdPartyUrl) {
+        if (self.userInfo) {
+            [self.remoter GET:self.requestType userInfo:self.userInfo];
+        }else if (self.thirdPartyUrl) {
             [self.remoter GET3:self.thirdPartyUrl];
         }else if (self.protocolVersion) {
             [self.remoter GET:self.requestType protocolVersion:self.protocolVersion];
