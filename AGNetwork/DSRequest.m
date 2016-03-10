@@ -128,6 +128,16 @@
     
     if (!self.requestBody&&!self.requestBinary) return nil;
     
+    if (self.requestBody&&!self.requestBinary) {
+        NSError *error;
+         NSData *data = [NSJSONSerialization dataWithJSONObject:self.requestBody options:NSJSONWritingPrettyPrinted error:&error];
+        if (!_defaultBody) {
+            _defaultBody = [NSMutableData dataWithData:data];
+        }
+        return _defaultBody;
+    }
+    
+    // requestBody & requestBinary
     if (!_defaultBody) {
         _defaultBody = [NSMutableData data];
         
@@ -135,12 +145,25 @@
         
         [self setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary] forHTTPHeaderField:HTTP_HEAD_CONTENT_TYPE];
         
-        for (NSString *paramKey in self.requestBody) {
-            NSString *paramValue = [self.requestBody objectForKey:paramKey];
-            [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-            [_defaultBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", paramKey] dataUsingEncoding:NSUTF8StringEncoding]];
-            [_defaultBody appendData:[[NSString stringWithFormat:@"%@\r\n", paramValue] dataUsingEncoding:NSUTF8StringEncoding]];
-        }
+        
+//        for (NSString *paramKey in self.requestBody) {
+//            NSString *paramValue = [self.requestBody objectForKey:paramKey];
+//            [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//            [_defaultBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", paramKey] dataUsingEncoding:NSUTF8StringEncoding]];
+//            [_defaultBody appendData:[[NSString stringWithFormat:@"%@\r\n", paramValue] dataUsingEncoding:NSUTF8StringEncoding]];
+//        }
+        
+        //json data
+//        if (self.requestBody) {
+//            NSError *error;
+//            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.requestBody options:0 error:&error];
+//            [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//            [_defaultBody appendData:[@"Content-Disposition: form-data; name=\"data\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//            [_defaultBody appendData:[@"Content-Type: application/json\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//            [_defaultBody appendData:jsonData];
+//            [_defaultBody appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+//        }
+        
         
         
         if (self.requestBinary) {
@@ -163,6 +186,7 @@
     }
     return _defaultBody;
 }
+
 
 - (NSString *)boundaryInstance{
     NSString *hexRandom = [NSString stringWithFormat:@"%06X", (arc4random() % 16777216)];
