@@ -177,18 +177,13 @@
     
     if (responseHeaders != nil) {
         NSString *serverCurrentTime = [responseHeaders objectForKey:@"X-SERVER-CURRENT-TIME"];
-
         if ([AGNetworkDefine singleton].serverCurrentTimeReceivedBlock) {
             [AGNetworkDefine singleton].serverCurrentTimeReceivedBlock(serverCurrentTime);
         }
-        
     }
     
     id responseData = [responseDataRaw objectForKey:@"response"];
-    if (!responseData) {
-        responseData = responseDataRaw;
-    }
-    
+    if (!responseData) responseData = responseDataRaw;
     
     [result setCode: operation.response.statusCode ];
     [result setRequest: (DSRequest *)[operation request] ];
@@ -199,16 +194,10 @@
 }
 
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
-//    TLOG(@"operation.responseString -> %@",operation.responseString);
-//    @try {
-//        NSString *str = [operation.responseString substringWithRange:NSMakeRange(1427, 20)];
-//        TLOG(@"str -> %@", str);
-//    }
-//    @catch (NSException *exception) {
-//        
-//    }
     
     AGRemoterResult *result = [self assembleResultForError:error];
+    DSRequest *request = (DSRequest *)operation.request;
+    TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
     
     if (operation.isCancelled) {
         [result setCode:AGResultCodeOperationCancelled];
@@ -222,20 +211,10 @@
 
 - (AGRemoterResult *)assembleResultForError:(NSError *)error{
     AGRemoterResult *result = [AGRemoterResult instance];
-    TLOG(@"error -> %@", error);
-    if ([DSValueUtil isAvailable:error]) {
+    
+    if (error) {
         AGRemoterResultError *parsedError = [[AGRemoterResultError alloc] init];
-        NSDictionary *userInfo = error.userInfo;
-        NSString *recoverySuggestionStr = [userInfo objectForKey:@"NSLocalizedRecoverySuggestion"];
-        if ([DSValueUtil isAvailable:recoverySuggestionStr ]) {
-            NSData *recoverySuggestionData = [recoverySuggestionStr dataUsingEncoding:NSUTF8StringEncoding];
-            NSDictionary *recoverySuggestionObj  = [NSJSONSerialization JSONObjectWithData:recoverySuggestionData options:NSJSONReadingAllowFragments error:nil];
-            NSDictionary *meta = [recoverySuggestionObj objectForKey:@"meta"];
-            id errorRaw = [meta objectForKey:@"error"];
-            [parsedError updateWithRaw:errorRaw];
-        }
-        [parsedError setLocalizedDesc:[userInfo objectForKey:@"NSLocalizedDescription"]];
-        [parsedError setFailingURL:[userInfo objectForKey:@"NSErrorFailingURLKey"]];
+        [parsedError updateWithOriginalErrorUserInfo:error.userInfo];
         [result setErrorParsed:parsedError];
         [result setErrorOrigin:error];
     }
@@ -255,12 +234,11 @@
     }
     
     TLOG(@"[Response %@] %@ %@ ", resultStr.uppercaseString,[request method], [request URL]);
-    
 //    TLOG(@"result isError -> %d", result.isError);
     if ( [result isError]){
         [self dispatchRemoterErrorOccured:result];
     }else{
-        [self dispatchRemoterDataReceived:result.responseData withRequest:(DSRequest *)result.request];
+        [self dispatchRemoterResultReceived:result];
     }
     
 }
@@ -271,15 +249,22 @@
 
 #pragma mark - dispatchers
 
-- (void)dispatchRemoterDataReceived:(id)responseData withRequest:(DSRequest *)request{
+- (void)dispatchRemoterResultReceived:(AGRemoterResult *)result{
+    id responseData = result.responseData;
+    DSRequest *request = (DSRequest *)result.request;
+    NSString *requestType = request.requestType;
     
     @try {
-        if (delegate&&[delegate respondsToSelector:@selector(remoterDataReceived:withRequestData:)]) {
-            [delegate remoterDataReceived:responseData withRequestData:request];
-        }
+//        if (delegate&&[delegate respondsToSelector:@selector(remoterDataReceived:withRequestData:)]) {
+//            [delegate remoterDataReceived:responseData withRequestData:request];
+//        }
         
         if (delegate && [delegate respondsToSelector:@selector(remoterDataReceived:requestType:)]) {
-            [delegate remoterDataReceived:responseData requestType:request.requestType];
+            [delegate remoterDataReceived:responseData requestType:requestType];
+        }
+        
+        if (delegate && [delegate respondsToSelector:@selector(remoterResultReceived:requestType:)]) {
+            [delegate remoterResultReceived:result requestType:requestType];
         }
         
     }@catch (NSException *exception) {
@@ -297,13 +282,13 @@
 }
 
 - (void)dispatchRemoterErrorOccured:(AGRemoterResult *)result{
-    
+    TLOG(@"");
     @try {
-        if ([delegate respondsToSelector:@selector(remoterErrorOccured:)]) {
-            [delegate remoterErrorOccured:result];
-        }
+//        if ([delegate respondsToSelector:@selector(remoterErrorOccured:)]) {
+//            [delegate remoterErrorOccured:result];
+//        }
         
-        if ([delegate respondsToSelector:@selector(remoterDataReceived:requestType:)]) {
+        if ([delegate respondsToSelector:@selector(remoterErrorOccured:requestType:)]) {
             [delegate remoterErrorOccured:result requestType:result.request.requestType];
         }
         
@@ -420,13 +405,13 @@
         
 //        TLOG(@"cache type -> %ld", cacheType);
         
-        if ([DSValueUtil isAvailable:error]) {
+        if (error) {
             AGRemoterResult *result = [self assembleResultForError:error];
             [result setRequest:(DSRequest *)req];
 //            [AGMonitor logServerExceptionWithResult:result];
         }
         
-        if([DSValueUtil isAvailable:completion]) completion(image, error, cacheType);
+        if(completion) completion(image, error, cacheType);
         [self removeImageReqest:imageURL];
         
     }];

@@ -23,13 +23,21 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 + (instancetype)instanceWithRequestType:(NSString *)requestType;
 + (instancetype)instanceWithMethod:(AGRemoteUnitMethod)method requestType:(NSString *)requestType requestBody:(id)requestBody;
 
-- (id)processResponseData:(id)responseData;
+//- (id)processResponseData:(id)responseData;
+- (id)didGetResponseData:(id)responseData;
+- (id)didGetResponseHeaders:(id)responseHeaders;
+
+
 - (void)requestWithCompletion:(void(^)(id data, id error))completion;
 - (void)reset;
 - (void)cancel;
 
 - (BOOL)isRequesting;
 - (BOOL)isDataCached;
+
+- (id)responseData;
+- (id)responseHeaders;
+- (id)responseError;
 
 @property (nonatomic, assign) AGRemoteUnitMethod method;
 @property (nonatomic, strong) NSString *requestType;

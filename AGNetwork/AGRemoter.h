@@ -18,13 +18,15 @@
 
 @protocol AGRemoterDelegate <NSObject>
 
+//@optional
+//- (void)remoterDataReceived:(id)responseData withRequestData:(DSRequest *)request NS_DEPRECATED_IOS(7_0, 7_1,"Use - remoterDataReceived:requestType:");
+//- (void)remoterErrorOccured:(AGRemoterResult *)result NS_DEPRECATED_IOS(7_0, 7_1,"Use - remoterErrorOccured:requestType:");
+
+
 @optional
-- (void)remoterDataReceived:(id)responseData withRequestData:(DSRequest *)request NS_DEPRECATED_IOS(7_0, 7_1,"Use - remoterDataReceived:requestType:");
-- (void)remoterErrorOccured:(AGRemoterResult *)result NS_DEPRECATED_IOS(7_0, 7_1,"Use - remoterErrorOccured:requestType:");
-
-
-- (void)remoterErrorOccured:(AGRemoterResult *)result requestType:(NSString *)requestType;
 - (void)remoterDataReceived:(id)responseData requestType:(NSString *)requestType;
+- (void)remoterResultReceived:(AGRemoterResult *)result requestType:(NSString *)requestType;
+- (void)remoterErrorOccured:(AGRemoterResult *)result requestType:(NSString *)requestType;
 
 @end
 

@@ -16,11 +16,13 @@
 
 @interface AGRemoteUnit()<AGRemoterDelegate>{
     void(^requestCompletion)(id data, id error);
+    void(^requestCompletionWithHeaders)(id data, id headers, id error);
 }
 
 @property (nonatomic, strong) AGRemoter *remoter;
-@property (nonatomic, strong) id data;
-@property (nonatomic, strong) id error;
+@property (nonatomic, strong) id responseData;
+@property (nonatomic, strong) id responseHeaders;
+@property (nonatomic, strong) id responseError;
 
 
 
@@ -72,18 +74,25 @@
 
 #pragma mark - events
 
-- (id)processResponseData:(id)responseData{
+
+- (id)didGetResponseData:(id)responseData{
     return responseData;
+}
+
+- (id)didGetResponseHeaders:(id)responseHeaders{
+    return responseHeaders;
 }
 
 #pragma mark - availability
 
 - (BOOL)isDataCached{
-    return [DSValueUtil isAvailable:self.data];
+    if(self.responseData) return YES;
+    return NO;
 }
 
 - (BOOL)isRequesting{
-    return [DSValueUtil isAvailable:_remoter];
+    if (_remoter) return YES;
+    return NO;
 }
 
 #pragma mark - ops
@@ -153,7 +162,7 @@
     if ([DSValueUtil isAvailable:requestCompletion]) {
         @try {
 //            TLOG(@"requestCompletion -> %@ %@", requestCompletion, [self.data raw]);
-            requestCompletion(self.data, self.error);
+            requestCompletion(self.responseData, self.responseError);
         }
         @catch (NSException *exception) {
             TLOG(@"exception -> %@", exception);
@@ -172,12 +181,12 @@
 
 - (void)requestFlowEnd{
     [self setRemoter:nil];
-    [self setError:nil];
+    [self setResponseError:nil];
     requestCompletion = nil;
 }
 
 - (void)reset{
-    [self setData:nil];
+    [self setResponseData:nil];
     [self requestFlowEnd];
 }
 
@@ -188,25 +197,24 @@
 
 #pragma mark - AGRemoterDelegate
 
-- (void)remoterDataReceived:(id)responseData requestType:(NSString *)requestType{
-    
-//    TLOG(@"requestType %@ self.requestType %@", requestType, self.requestType);
-    
-//    if ([requestType isEqualToString:self.requestType]) {
-        @try {
-            [self setData:[self processResponseData:responseData]];
-        }@catch (NSException *exception) {
-//            [AGFlurryMonitor logClientException:exception fnName:CURRENT_FUNCTION_NAME];
-        }
-        [self executeBlock];
-//    }
-    
+- (void)remoterResultReceived:(AGRemoterResult *)result requestType:(NSString *)requestType{
+    id responseData = result.responseData;
+    id responseHeaders = result.responseHeaders;
+    @try {
+        id processedData = [self didGetResponseData:responseData];
+        id processedHeaders = [self didGetResponseHeaders:responseHeaders];
+        [self setResponseData:processedData];
+        [self setResponseHeaders:processedHeaders];
+    }@catch (NSException *exception) {
+        //            [AGFlurryMonitor logClientException:exception fnName:CURRENT_FUNCTION_NAME];
+    }
+    [self executeBlock];
 }
 
 - (void)remoterErrorOccured:(AGRemoterResult *)result requestType:(NSString *)requestType{
-//    TLOG(@"");
+    TLOG(@"");
 //    if ([requestType isEqualToString:self.requestType]) {
-        [self setError:result.errorParsed];
+        [self setResponseError:result.errorParsed];
         [self executeBlock];
 //    }
     

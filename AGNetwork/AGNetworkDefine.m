@@ -27,7 +27,7 @@
     return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)aCoder {
+- (void)encodeWithCoder:(NSCoder *)aCoder {
     [super encodeWithCoder:aCoder];
     [aCoder encodeObject:self.defaultProtocolVersion forKey:@"default-protocol-version"];
     //    [aCoder encodeObject:self.token forKey:@"token"];
@@ -45,7 +45,6 @@
 
 - (NSMutableDictionary *)defaultHeaders{
     if (!_defaultHeaders) {
-        
         _defaultHeaders = [NSMutableDictionary dictionary];
         [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_ACCEPT_TYPE];
         [_defaultHeaders setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
@@ -54,12 +53,10 @@
         [_defaultHeaders setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
         [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
         [_defaultHeaders setObject:@"gzip" forKey:@"Accept-Encoding"];
-        
-        
-        if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
-        if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
-        
     }
+    
+    if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
+    if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
     
     if (self.token) {
         [_defaultHeaders setObject:self.token forKey:@"X-Authentication-Token"];

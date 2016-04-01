@@ -10,6 +10,9 @@
 
 @interface AGRemoterResultError : AGModel
 
+- (void)updateWithOriginalErrorUserInfo:(id)userInfo;
+//- (void)updateWithRecoverySuggestionString:(NSString *)recoverySuggestionStr;
+
 //@property (nonatomic, strong) id raw;
 @property (nonatomic, strong) NSString *code;
 @property (nonatomic, strong) NSString *message;
