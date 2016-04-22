@@ -10,6 +10,7 @@
 #import "NSObject+Singleton.h"
 #import "DSDeviceUtil.h"
 #import "AGNetworkMacro.h"
+#import "GlobalDefine.h"
 
 @implementation AGNetworkDefine
 
@@ -51,12 +52,14 @@
         
         [_defaultHeaders setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
         [_defaultHeaders setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
-        [_defaultHeaders setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
+        [_defaultHeaders setObject:@"application/json; charset=utf-8" forKey:HTTP_HEAD_CONTENT_TYPE];
         [_defaultHeaders setObject:@"gzip" forKey:@"Accept-Encoding"];
     }
     
     if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
     if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
+    
+    TLOG(@"token -> %@", self.token);
     
     if (self.token) {
         [_defaultHeaders setObject:self.token forKey:@"X-Authentication-Token"];

@@ -144,15 +144,22 @@
 //    TLOG(@"%@ ===== end", self);
 }
 
-#pragma mark -
+#pragma mark - main ops
 
 - (void)send:(DSRequest *)req{
     [req assemble];
     //    [self saveRequestForCallback:req];
-    TLOG(@"[Request] %@ %@ %@ %ld %@",[req method], [req URL].absoluteString, req.requestBody,(unsigned long)[req requestBinary].data.length, req.allHTTPHeaderFields);
-//    if (![AGNetworkConfig singleton].isOG){
-//    TLOG(@"request headerFields -> %@", req.allHTTPHeaderFields);
-//    }
+    NSString *jsonStr = [[NSString alloc] initWithData:req.HTTPBody encoding:NSUTF8StringEncoding];
+    TLOG(@"[Request] %@ %@ %ld %@ %@",[req method], [req URL].absoluteString,(unsigned long)[req requestBinary].data.length, req.allHTTPHeaderFields, jsonStr);
+
+//
+//    NSError *jsonError;
+//    NSData *jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
+//    NSDictionary *jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData
+//                                                         options:NSJSONReadingMutableContainers
+//                                                           error:&jsonError];
+//    TLOG(@"json obj -> %@ jsonError -> %@", jsonObj, jsonError);
+    
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:req success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self operation:operation successfulWithResponse:responseObject];
@@ -182,7 +189,12 @@
         }
     }
     
-    id responseData = [responseDataRaw objectForKey:@"response"];
+    id responseData;
+    
+    if ([responseDataRaw isKindOfClass:[NSDictionary class]]) {
+        responseData = [responseDataRaw objectForKey:@"response"];
+    }
+    
     if (!responseData) responseData = responseDataRaw;
     
     [result setCode: operation.response.statusCode ];

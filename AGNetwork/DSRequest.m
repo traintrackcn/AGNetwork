@@ -131,6 +131,8 @@
     if (self.requestBody&&!self.requestBinary) {
         NSError *error;
          NSData *data = [NSJSONSerialization dataWithJSONObject:self.requestBody options:NSJSONWritingPrettyPrinted error:&error];
+        
+        
         if (!_defaultBody) {
             _defaultBody = [NSMutableData dataWithData:data];
         }
