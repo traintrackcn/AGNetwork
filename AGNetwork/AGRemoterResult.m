@@ -16,6 +16,7 @@
 - (BOOL)isError{
     if (self.code == 200) return NO;
     if (self.code == 201) return NO;
+    if (self.code == 204) return NO;
     return YES;
 }
 
