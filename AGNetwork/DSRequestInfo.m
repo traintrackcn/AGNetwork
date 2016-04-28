@@ -91,7 +91,7 @@
         }else{
             [self setURL:self.defaultURL];
             [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeaders];
-            if (self.forOrder) [self setValue:self.headerForPostingOrder forHTTPHeaderField:@"X-Client-Request-Id"];
+            if (self.randomRequestId) [self setValue:self.headerForPostingOrder forHTTPHeaderField:@"X-Client-Request-Id"];
         }
         if (self.defaultBody) [self setHTTPBody:self.defaultBody];
         
@@ -112,7 +112,7 @@
     return _defaultBody;
 }
 
-- (NSData *)defaultBodyWithRequestBinary{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
+- (NSData *)defaultBodyWithRequestBinaryAsForm{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
     if (!_defaultBody){
         NSString *boundary = [self boundaryInstance];
         _defaultBody = [NSMutableData data];
@@ -156,7 +156,7 @@
     return _defaultBody;
 }
 
-- (NSData *)defaultBodyWithRequestBinaryNew{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
+- (NSData *)defaultBodyWithRequestBinary{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
     if (!_defaultBody){
         _defaultBody = [NSMutableData data];
         [_defaultBody appendData:self.requestBinary.data];
@@ -174,7 +174,10 @@
 - (NSData *)defaultBody{
 //    TLOG(@"self.requestBinary -> %@", self.requestBinary);
     if (self.requestBody&&!self.requestBinary) return [self defaultBodyWithRequestBody];
-    if (!self.requestBody&&self.requestBinary) return [self defaultBodyWithRequestBinaryNew];
+    if (!self.requestBody&&self.requestBinary) {
+        if (self.requestBinary.sendAsForm) return [self defaultBodyWithRequestBinaryAsForm];
+        return [self defaultBodyWithRequestBinary];
+    }
     return [NSData data];
 }
 

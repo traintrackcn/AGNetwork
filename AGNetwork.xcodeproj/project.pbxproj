@@ -36,6 +36,8 @@
 		4A61A7171A6DE79D002D3E2E /* AGRemoteUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */; };
 		4AC3CC7E1CCF39B50025410B /* DARequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AC3CC7D1CCF39B50025410B /* DARequest.m */; };
 		4AC3CC7F1CCF39C10025410B /* DARequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AC3CC7C1CCF39B50025410B /* DARequest.h */; };
+		4AC3CCB11CD1CF460025410B /* DARequestUniversal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AC3CCB01CD1CF460025410B /* DARequestUniversal.m */; };
+		4AC3CCB21CD1CF670025410B /* DARequestUniversal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AC3CCAF1CD1CF460025410B /* DARequestUniversal.h */; };
 		4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E419D1083200D7F178 /* AGRemoter.m */; };
 		4AD7D1E919D1091300D7F178 /* DSRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E819D1091300D7F178 /* DSRequestInfo.m */; };
 		4AD7D1F119D1096500D7F178 /* AGRemoterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1ED19D1096500D7F178 /* AGRemoterResult.m */; };
@@ -64,6 +66,7 @@
 			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
+				4AC3CCB21CD1CF670025410B /* DARequestUniversal.h in CopyFiles */,
 				4AC3CC7F1CCF39C10025410B /* DARequest.h in CopyFiles */,
 				4A3700631C86ED8400A4C1D8 /* AGRequestBinary.h in CopyFiles */,
 				4A0CA53E1B4F810F00DF9379 /* AGRemoteUnit.h in CopyFiles */,
@@ -119,6 +122,8 @@
 		4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoteUnit.m; sourceTree = "<group>"; };
 		4AC3CC7C1CCF39B50025410B /* DARequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DARequest.h; sourceTree = "<group>"; };
 		4AC3CC7D1CCF39B50025410B /* DARequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DARequest.m; sourceTree = "<group>"; };
+		4AC3CCAF1CD1CF460025410B /* DARequestUniversal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DARequestUniversal.h; sourceTree = "<group>"; };
+		4AC3CCB01CD1CF460025410B /* DARequestUniversal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DARequestUniversal.m; sourceTree = "<group>"; };
 		4AD7D1C819D1064A00D7F178 /* libAGNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAGNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD7D1E119D1083200D7F178 /* AGHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGHTTPClient.h; sourceTree = "<group>"; };
 		4AD7D1E219D1083200D7F178 /* AGHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGHTTPClient.m; sourceTree = "<group>"; };
@@ -255,6 +260,8 @@
 				4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */,
 				4A3700601C86E21500A4C1D8 /* AGRequestBinary.h */,
 				4A3700611C86E21500A4C1D8 /* AGRequestBinary.m */,
+				4AC3CCAF1CD1CF460025410B /* DARequestUniversal.h */,
+				4AC3CCB01CD1CF460025410B /* DARequestUniversal.m */,
 			);
 			path = AGNetwork;
 			sourceTree = "<group>";
@@ -399,6 +406,7 @@
 			files = (
 				4A314A1319D3CA1100A4EBA4 /* SDWebImagePrefetcher.m in Sources */,
 				4AD7D26119D11D3B00D7F178 /* AGHTTPClient.m in Sources */,
+				4AC3CCB11CD1CF460025410B /* DARequestUniversal.m in Sources */,
 				4A3700621C86E21500A4C1D8 /* AGRequestBinary.m in Sources */,
 				4A314A1719D3CA1100A4EBA4 /* UIImage+WebP.m in Sources */,
 				4A314A1919D3CA1100A4EBA4 /* UIImageView+WebCache.m in Sources */,

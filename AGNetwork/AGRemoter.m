@@ -430,14 +430,14 @@
 }
 
 
-- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion{
+- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion{
     DSRequestInfo *req = [DSRequestInfo instance];
     [req setRequestType:requestType];
     [req setRequestBinary:requestBinary];
     [req setRequestBody:requestBody];
     [req setMethod:method];
     [req setProtocolVersion:protocolVersion];
-    [req setForOrder:forOrder];
+    [req setRandomRequestId:randomRequestId];
     [self send:req];
 }
 

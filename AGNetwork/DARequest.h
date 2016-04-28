@@ -29,4 +29,6 @@
 - (void)requestWithCompletion:(void (^)(id, id))completion userInfo:(id)userInfo;
 - (void)requestSuccessfulWithCompletion:(void (^)(id, id))completion data:(id)data  userInfo:(id)userInfo;
 
+@property (nonatomic, assign) BOOL randomRequestId;
+
 @end

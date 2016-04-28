@@ -61,7 +61,7 @@
         _requestInfo = [DSRequestInfo instance];
     }
     [_requestInfo setMethod:self.methodStr];
-    [_requestInfo setForOrder:self.forOrder];
+    [_requestInfo setRandomRequestId:self.randomRequestId];
     if (self.requestType) [_requestInfo setRequestType:self.requestType];
     if (self.requestBody) [_requestInfo setRequestBody:self.requestBody];
     if (self.requestBinary) [_requestInfo setRequestBinary:self.requestBinary];

@@ -72,6 +72,8 @@
     if (thirdPartyHeaders) [_rUnit setThirdPartyHeaders:thirdPartyHeaders];
 //    TLOG(@"thirdPartyUrl -> %@", thirdPartyUrl);
     
+    [_rUnit setRandomRequestId:self.randomRequestId];
+    
     return _rUnit;
 }
 

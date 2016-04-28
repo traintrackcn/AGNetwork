@@ -47,7 +47,7 @@
 #pragma mark - 
 - (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
 - (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error, NSInteger cacheType))completion;
-- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion;
+- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion;
 
 //- (void)GET3:(NSURL *)thirdPartyUrl;
 //- (void)GET:(NSString *)requestType;

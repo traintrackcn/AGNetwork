@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *file;
 @property (nonatomic, strong) NSData *data;
+@property (nonatomic, assign) BOOL sendAsForm;
 
 
 @end

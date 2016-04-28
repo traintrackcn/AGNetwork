@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 @property (nonatomic, strong) id thirdPartyHeaders;
 @property (nonatomic, strong) id userInfo;
 
-@property (nonatomic, assign) BOOL forOrder;
+@property (nonatomic, assign) BOOL randomRequestId;
 @property (nonatomic, assign) BOOL cacheEnabled;
 
 @end
