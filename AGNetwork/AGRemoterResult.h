@@ -25,7 +25,7 @@ typedef enum {
     DSErrorServiceUnavailable = 503
 }AGResultCode;
 
-@class DSRequest;
+@class DSRequestInfo;
 
 @interface AGRemoterResult : AGModel
 
@@ -36,7 +36,7 @@ typedef enum {
 
 @property (nonatomic, assign) NSInteger code;
 
-@property (nonatomic, strong) DSRequest *request;
+@property (nonatomic, strong) DSRequestInfo *request;
 @property (nonatomic, strong) id responseData;
 @property (nonatomic, strong) AGRemoterResultError *errorParsed;
 @property (nonatomic, strong) NSError *errorOrigin;

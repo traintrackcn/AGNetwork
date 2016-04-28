@@ -8,6 +8,7 @@
 
 #import "DARequest.h"
 #import "AGRemoteUnit.h"
+#import "GlobalDefine.h"
 
 @interface DARequest(){
     AGRemoteUnit *_rUnit;
@@ -66,9 +67,9 @@
     if (requestType) [_rUnit setRequestType:requestType];
     if (requestBody) [_rUnit setRequestBody:requestBody];
     if (requestBinary) [_rUnit setRequestBinary:requestBinary];
-    if (thirdPartyUrl) {
-        [_rUnit setThirdPartyUrl:thirdPartyUrl];
-    }
+    if (thirdPartyUrl) [_rUnit setThirdPartyUrl:thirdPartyUrl];
+    
+//    TLOG(@"thirdPartyUrl -> %@", thirdPartyUrl);
     
     return _rUnit;
 }

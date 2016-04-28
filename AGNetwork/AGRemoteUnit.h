@@ -20,13 +20,10 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 @interface AGRemoteUnit : NSObject
 
 + (instancetype)instance;
-+ (instancetype)instanceWithRequestType:(NSString *)requestType;
-+ (instancetype)instanceWithMethod:(AGRemoteUnitMethod)method requestType:(NSString *)requestType requestBody:(id)requestBody;
 
 //- (id)processResponseData:(id)responseData;
 - (id)didGetResponseData:(id)responseData;
 - (id)didGetResponseHeaders:(id)responseHeaders;
-
 
 - (void)requestWithCompletion:(void(^)(id data, id error))completion;
 - (void)reset;

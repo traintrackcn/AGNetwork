@@ -10,33 +10,25 @@
 
 
 @class AGRequestBinary;
-@interface DSRequest : NSMutableURLRequest
+@interface DSRequestInfo : NSMutableURLRequest
 
-+ (instancetype)instanceWithRequestType:(NSString *)requestType;
-+ (instancetype)instanceWithThirdPartyUrl:(NSURL *)thirdPartyUrl;
++ (instancetype)instance;
 
-//- (NSString *)url;
 - (NSString *)key;
 - (void)assemble;
 
-
-@property (nonatomic, strong) NSDictionary *requestBody;
-@property (nonatomic, strong) AGRequestBinary *requestBinary;
-
-@property (nonatomic, retain) NSString *requestType;
-@property (nonatomic, strong) NSDictionary *userInfo;
-
+@property (nonatomic, strong) NSString *serverUrl;
+@property (nonatomic, strong) NSURL *thirdPartyUrl;
+@property (nonatomic, strong) NSMutableDictionary *thirdPartyHeaders;
 
 @property (nonatomic, strong) NSString *method;
 @property (nonatomic, strong) NSString *protocolVersion;
-@property (nonatomic, strong) NSString *serverUrl;
+@property (nonatomic, retain) NSString *requestType;
+@property (nonatomic, strong) NSDictionary *requestBody;
+@property (nonatomic, strong) AGRequestBinary *requestBinary;
+
+@property (nonatomic, strong) NSDictionary *userInfo;
 
 @property (nonatomic, assign) BOOL forOrder;
-@property (nonatomic, assign) BOOL thirdParty;
-
-
-
-
-
 
 @end

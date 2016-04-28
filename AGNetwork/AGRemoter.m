@@ -17,7 +17,7 @@
 #import "NSObject+Singleton.h"
 //#import "UIImageView+AFNetworking.h"
 
-#import "DSRequest.h"
+#import "DSRequestInfo.h"
 #import "DSReachabilityManager.h"
 
 #import "UIImageView+WebCache.h"
@@ -146,7 +146,7 @@
 
 #pragma mark - main ops
 
-- (void)send:(DSRequest *)req{
+- (void)send:(DSRequestInfo *)req{
     [req assemble];
     //    [self saveRequestForCallback:req];
     NSString *jsonStr = [[NSString alloc] initWithData:req.HTTPBody encoding:NSUTF8StringEncoding];
@@ -198,7 +198,7 @@
     if (!responseData) responseData = responseDataRaw;
     
     [result setCode: operation.response.statusCode ];
-    [result setRequest: (DSRequest *)[operation request] ];
+    [result setRequest: (DSRequestInfo *)[operation request] ];
     [result setResponseData: responseData ];
     [result setResponseHeaders:operation.response.allHeaderFields];
     
@@ -208,7 +208,7 @@
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
     
     AGRemoterResult *result = [self assembleResultForError:error];
-    DSRequest *request = (DSRequest *)operation.request;
+    DSRequestInfo *request = (DSRequestInfo *)operation.request;
     TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
     
     if (operation.isCancelled) {
@@ -217,7 +217,7 @@
         [result setCode: operation.response.statusCode ];
     }
     
-    [result setRequest:(DSRequest *)[operation request] ];
+    [result setRequest:(DSRequestInfo *)[operation request] ];
     [self processResult:result];
 }
 
@@ -234,7 +234,7 @@
 }
 
 - (void)processResult:(AGRemoterResult *)result{
-    DSRequest *request = (DSRequest *)result.request;
+    DSRequestInfo *request = (DSRequestInfo *)result.request;
     
     NSInteger resultCode = [result code];
     NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultCode];
@@ -263,7 +263,7 @@
 
 - (void)dispatchRemoterResultReceived:(AGRemoterResult *)result{
     id responseData = result.responseData;
-    DSRequest *request = (DSRequest *)result.request;
+    DSRequestInfo *request = (DSRequestInfo *)result.request;
     NSString *requestType = request.requestType;
     
     @try {
@@ -419,7 +419,7 @@
         
         if (error) {
             AGRemoterResult *result = [self assembleResultForError:error];
-            [result setRequest:(DSRequest *)req];
+            [result setRequest:(DSRequestInfo *)req];
 //            [AGMonitor logServerExceptionWithResult:result];
         }
         
@@ -431,7 +431,8 @@
 
 
 - (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
+    DSRequestInfo *req = [DSRequestInfo instance];
+    [req setRequestType:requestType];
     [req setRequestBinary:requestBinary];
     [req setRequestBody:requestBody];
     [req setMethod:method];
@@ -439,66 +440,6 @@
     [req setForOrder:forOrder];
     [self send:req];
 }
-
-#pragma mark -
-
-- (void)GET3:(NSURL *)thirdPartyUrl{
-    DSRequest *req = [DSRequest instanceWithThirdPartyUrl:thirdPartyUrl];
-    [self send:req];
-}
-
-- (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setProtocolVersion:protocolVersion];
-    [self send:req];
-}
-
-- (void)GET:(NSString *)requestType userInfo:(id)userInfo{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setUserInfo:userInfo];
-    [self send:req];
-}
-
-- (void)GET:(NSString *)requestType{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [self send:req];
-}
-
-- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setRequestBody:requestBody];
-    if(protocolVersion) [req setProtocolVersion:protocolVersion];
-    [req setForOrder:forOrder];
-    [self send:req];
-}
-
-- (void)POST:(NSString *)requestType requestBody:(id)requestBody{
-    [self POST:requestType requestBody:requestBody forOrder:NO protocolVersion:nil];
-}
-
-- (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody{
-//    DSRequest *req = [self assembleDefaultRequestWithRequestType:requestType];
-    DSRequest *req = [DSRequest instanceWithThirdPartyUrl:thirdPartyUrl];
-    [req setRequestBody:requestBody];
-    [self send:req];
-}
-
-- (void)PUT:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-    [req setRequestBody:requestBody];
-    [req setMethod:HTTP_METHOD_PUT];
-    [self send:req];
-}
-
-- (void)DELETE:(NSString *)requestType requestBody:(id)requestBody{
-    DSRequest *req = [DSRequest instanceWithRequestType:requestType];
-//    TLOG(@"requestBody -> %@", requestBody);
-    if (!requestBody) requestBody = @{};
-    [req setRequestBody:requestBody];
-    [req setMethod:HTTP_METHOD_DELETE];
-    [self send:req];
-}
-
 
 
 

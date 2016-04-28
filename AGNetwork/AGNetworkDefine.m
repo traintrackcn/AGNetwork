@@ -70,16 +70,6 @@
     return _defaultHeaders;
 }
 
-- (NSMutableDictionary *)defaultHeadersForThirdParty{
-    if (!_defaultHeadersForThirdParty) {
-        _defaultHeadersForThirdParty = [NSMutableDictionary dictionary];
-        [_defaultHeadersForThirdParty setObject:@"application/json, text/*" forKey:HTTP_HEAD_ACCEPT_TYPE];
-        [_defaultHeadersForThirdParty setObject:DS_SERVER_CONTENT_TYPE_JSON forKey:HTTP_HEAD_CONTENT_TYPE];
-        [_defaultHeadersForThirdParty setObject:@"compress, gzip" forKey:@"Accept-Encoding"];
-        //    [headers setObject:@"utf-8" forKey:@"Accept-Charset"];
-        [_defaultHeadersForThirdParty setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
-    }
-    return _defaultHeadersForThirdParty;
-}
+
 
 @end

@@ -28,7 +28,7 @@
 #define DS_SERVER_CONTENT_TYPE_JSON @"application/json"
 
 
-@class DSRequest;
+@class DSRequestInfo;
 @class AGRemoterResult;
 
 
@@ -41,11 +41,11 @@
 @property (nonatomic, strong) NSString *clientSecret;
 //@property (nonatomic, assign) BOOL isOG;
 
-@property (nonatomic, strong) NSMutableDictionary *defaultHeadersForThirdParty;
+//@property (nonatomic, strong) NSMutableDictionary *defaultHeadersForThirdParty;
 @property (nonatomic, strong) NSMutableDictionary *defaultHeaders;
 
 
-@property (nonatomic, copy) void(^dataReceivedBlock)(id responseData, DSRequest *request);
+@property (nonatomic, copy) void(^dataReceivedBlock)(id responseData, DSRequestInfo *request);
 @property (nonatomic, copy) void(^errorOccuredBlock)(AGRemoterResult *result);
 @property (nonatomic, copy) void(^serverCurrentTimeReceivedBlock)(NSString *serverCurrentTime);
 

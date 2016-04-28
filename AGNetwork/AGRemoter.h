@@ -9,7 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "DSRequest.h"
+#import "DSRequestInfo.h"
 //#import "UIImageView+WebCache.h"
 //#import "UIImageView+AFNetworking.h"
 
@@ -36,7 +36,8 @@
 
 
 + (AGRemoter *)instanceWithDelegate:(id < AGRemoterDelegate>)aDelegate;
-- (void)send:(DSRequest *)req;
+- (void)send:(DSRequestInfo *)req;
+//- (void)reset;
 - (void)cancelAllRequests;
 - (void)cancelAllImageRequests;
 - (BOOL)isLoadingAnyImageRequest;
@@ -48,16 +49,16 @@
 - (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error, NSInteger cacheType))completion;
 - (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary forOrder:(BOOL)forOrder protocolVersion:(NSString *)protocolVersion;
 
-- (void)GET3:(NSURL *)thirdPartyUrl;
-- (void)GET:(NSString *)requestType;
-- (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
-- (void)GET:(NSString *)requestType userInfo:(id)userInfo;
-- (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody;
-- (void)POST:(NSString *)requestType requestBody:(id)requestBody;
-- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder protocolVersion:(NSString *)protocolVersion;
-
-- (void)PUT:(NSString *)requestType requestBody:(id)requestBody;
-- (void)DELETE:(NSString *)requestType requestBody:(id)requestBody;
+//- (void)GET3:(NSURL *)thirdPartyUrl;
+//- (void)GET:(NSString *)requestType;
+//- (void)GET:(NSString *)requestType protocolVersion:(NSString *)protocolVersion;
+//- (void)GET:(NSString *)requestType userInfo:(id)userInfo;
+//- (void)POST3:(NSURL *)thirdPartyUrl requestBody:(id)requestBody;
+//- (void)POST:(NSString *)requestType requestBody:(id)requestBody;
+//- (void)POST:(NSString *)requestType requestBody:(id)requestBody forOrder:(BOOL)isForOrder protocolVersion:(NSString *)protocolVersion;
+//
+//- (void)PUT:(NSString *)requestType requestBody:(id)requestBody;
+//- (void)DELETE:(NSString *)requestType requestBody:(id)requestBody;
 
 
 
