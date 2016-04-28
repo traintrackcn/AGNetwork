@@ -63,12 +63,13 @@
     id requestBody = [self requestBody:userInfo];
     id requestBinary = [self requestBinary:userInfo];
     id thirdPartyUrl = [self thirdPartyUrl:userInfo];
+    id thirdPartyHeaders = [self thirdParthHeaders:userInfo];
     
     if (requestType) [_rUnit setRequestType:requestType];
     if (requestBody) [_rUnit setRequestBody:requestBody];
     if (requestBinary) [_rUnit setRequestBinary:requestBinary];
     if (thirdPartyUrl) [_rUnit setThirdPartyUrl:thirdPartyUrl];
-    
+    if (thirdPartyHeaders) [_rUnit setThirdPartyHeaders:thirdPartyHeaders];
 //    TLOG(@"thirdPartyUrl -> %@", thirdPartyUrl);
     
     return _rUnit;
@@ -87,6 +88,10 @@
 }
 
 - (id)thirdPartyUrl:(id)userInfo{
+    return nil;
+}
+
+- (id)thirdParthHeaders:(id)userInfo{
     return nil;
 }
 

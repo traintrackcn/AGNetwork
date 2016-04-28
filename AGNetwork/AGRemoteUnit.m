@@ -67,6 +67,7 @@
     if (self.requestBinary) [_requestInfo setRequestBinary:self.requestBinary];
     if (self.protocolVersion) [_requestInfo setProtocolVersion:self.protocolVersion];
     if (self.thirdPartyUrl) [_requestInfo setThirdPartyUrl:self.thirdPartyUrl];
+    if (self.thirdPartyHeaders) [_requestInfo setThirdPartyHeaders:self.thirdPartyHeaders];
     return _requestInfo;
 }
 

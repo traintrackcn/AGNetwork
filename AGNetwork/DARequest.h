@@ -23,6 +23,7 @@
 - (id)requestBody:(id)userInfo;
 - (id)requestBinary:(id)userInfo;
 - (id)thirdPartyUrl:(id)userInfo;
+- (id)thirdParthHeaders:(id)userInfo;
 
 - (void)requestWithCompletion:(void (^)(id, id))completion;
 - (void)requestWithCompletion:(void (^)(id, id))completion userInfo:(id)userInfo;
