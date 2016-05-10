@@ -84,10 +84,10 @@
 
 #pragma mark - availability
 
-- (BOOL)isDataCached{
-    if(self.responseData) return YES;
-    return NO;
-}
+//- (BOOL)isDataCached{
+//    if(self.responseData) return YES;
+//    return NO;
+//}
 
 - (BOOL)isRequesting{
     if (_remoter) return YES;
@@ -108,11 +108,11 @@
     
 //    TLOG(@"completion -> %@", completion);
     
-    if ([self isDataCached]) {
-        requestCompletion = completion;
-        [self executeBlock];
-        return;
-    }
+//    if ([self isDataCached]) {
+//        requestCompletion = completion;
+//        [self executeBlock];
+//        return;
+//    }
     
     //processing another request, wait 1s
     if ([self isRequesting]) {

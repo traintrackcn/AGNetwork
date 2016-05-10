@@ -149,9 +149,9 @@
 - (void)send:(DSRequestInfo *)req{
     [req assemble];
     //    [self saveRequestForCallback:req];
-    NSString *jsonStr = [[NSString alloc] initWithData:req.HTTPBody encoding:NSUTF8StringEncoding];
-    TLOG(@"[Request] %@ %@ %ld %@ %@",[req method], [req URL].absoluteString,(unsigned long)[req requestBinary].data.length, req.allHTTPHeaderFields, jsonStr);
-
+//    NSString *jsonStr = [[NSString alloc] initWithData:req.HTTPBody encoding:NSUTF8StringEncoding];
+//    TLOG(@"[Request] %@ %@ %ld %@ %@",[req method], [req URL].absoluteString,(unsigned long)[req requestBinary].data.length, req.allHTTPHeaderFields, [req requestBody]);
+    TLOG(@"[Request] %@ %@ %ld %@",[req method], [req URL].absoluteString,(unsigned long)[req requestBinary].data.length,  [req requestBody]);
 //
 //    NSError *jsonError;
 //    NSData *jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];

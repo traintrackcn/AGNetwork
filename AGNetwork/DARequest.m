@@ -32,19 +32,23 @@
 }
 
 - (void)requestWithCompletion:(void (^)(id, id))completion userInfo:(id)userInfo{
+//    TLOG(@"");
     AGRemoteUnit *rUnit = [self rUnit:userInfo];
     [rUnit requestWithCompletion:^(id data, id error) {
+//        TLOG(@"");
         [self.ws requestCallbackWithCompletion:completion data:data error:error userInfo:userInfo];
     }];
 }
 
 - (void)requestCallbackWithCompletion:(void (^)(id, id))completion data:(id)data error:(id)error userInfo:(id)userInfo{
+//        TLOG(@"data -> %@", data);
+    
     if (error) {
         completion(nil, error);
         return;
     }
     
-//    TLOG(@"data -> %@", data);
+
     
     [self requestSuccessfulWithCompletion:completion data:data userInfo:userInfo];
 }
@@ -71,6 +75,8 @@
     if (thirdPartyUrl) [_rUnit setThirdPartyUrl:thirdPartyUrl];
     if (thirdPartyHeaders) [_rUnit setThirdPartyHeaders:thirdPartyHeaders];
 //    TLOG(@"thirdPartyUrl -> %@", thirdPartyUrl);
+    
+//    TLOG(@"requestBody -> %@ rUnit.requestBody -> %@", requestBody, _rUnit.requestBody);
     
     [_rUnit setRandomRequestId:self.randomRequestId];
     

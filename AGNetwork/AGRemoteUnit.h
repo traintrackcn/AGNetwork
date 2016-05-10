@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 - (void)cancel;
 
 - (BOOL)isRequesting;
-- (BOOL)isDataCached;
+//- (BOOL)isDataCached;
 
 - (id)responseData;
 - (id)responseHeaders;
