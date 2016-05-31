@@ -88,7 +88,7 @@
     if (self.randomRequestId) [self setValue:self.randomRequestIdStr forHTTPHeaderField:@"X-Client-Request-Id"];
     
     //headers only in this request
-    TLOG(@"self.headers -> %@", self.headers);
+//    TLOG(@"self.headers -> %@", self.headers);
     if (self.headers) {
         for (NSInteger i = 0; i<self.headers.allKeys.count; i++) {
             NSString *key = [self.headers.allKeys objectAtIndex:i];

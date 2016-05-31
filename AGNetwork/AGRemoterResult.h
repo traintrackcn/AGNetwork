@@ -30,6 +30,10 @@ typedef enum {
 @interface AGRemoterResult : AGModel
 
 - (BOOL)isError;
+- (BOOL)isTimeout;
+- (BOOL)isCanceled;
+- (BOOL)isNotModified;
+- (NSString *)type;
 
 - (NSString *)errorType;
 - (NSString *)errorMessage;

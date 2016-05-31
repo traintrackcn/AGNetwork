@@ -118,7 +118,7 @@
         [result setCode: operation.response.statusCode ];
     }
     
-    if ([result isError]) TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
+    if ([result isError] && ![result isTimeout]) TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
     
     [result setRequest:(DSRequestInfo *)[operation request] ];
     [self processResult:result];
@@ -139,18 +139,7 @@
 - (void)processResult:(AGRemoterResult *)result{
     DSRequestInfo *request = (DSRequestInfo *)result.request;
     
-    NSInteger resultCode = [result code];
-    NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultCode];
-    
-    if (resultCode == 1) {
-        resultStr = @"CANCELED";
-    }else if(resultCode == 0 || resultCode == 504){
-        resultStr = @"TIMEOUT";
-    }else if (resultCode == 304){
-        resultStr = @"Not Modified";
-    }
-    
-    TLOG(@"[Response %@] %@ %@ ", resultStr.uppercaseString,[request method], [request URL]);
+    TLOG(@"[Response %@] %@ %@ ", result.type.uppercaseString,[request method], [request URL]);
 //    TLOG(@"result isError -> %d", result.isError);
     if ( [result isError]){
         [self dispatchRemoterErrorOccured:result];
