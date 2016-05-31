@@ -15,6 +15,7 @@
 }
 
 + (instancetype)instance;
+- (void)cancel;
 
 - (AGRemoteUnit *)rUnit;
 
@@ -24,6 +25,7 @@
 - (id)requestBinary:(id)userInfo;
 - (id)thirdPartyUrl:(id)userInfo;
 - (id)thirdParthHeaders:(id)userInfo;
+- (id)headers:(id)userInfo;
 
 - (void)requestWithCompletion:(void (^)(id, id))completion;
 - (void)requestWithCompletion:(void (^)(id, id))completion userInfo:(id)userInfo;

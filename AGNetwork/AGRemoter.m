@@ -20,8 +20,6 @@
 #import "DSRequestInfo.h"
 #import "DSReachabilityManager.h"
 
-#import "UIImageView+WebCache.h"
-#import "UIImageView+AFNetworking.h"
 #import "AGRequestBinary.h"
 
 #define kErrorCode @"code"
@@ -29,12 +27,10 @@
 
 
 @interface AGRemoter(){
-    int errorOcurredRecent;
-    AFHTTPClient *client;
-    NSMutableDictionary *imagesLoading;
+    
 }
 
-@property (nonatomic, strong) UIImage *dummyImage;
+
 
 @end
 
@@ -43,24 +39,7 @@
 @synthesize delegate;
 
 + (void)initialize{
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-//    [AFImageRequestOperation addAcceptableContentTypes:
-//     [NSSet setWithObjects:@"image/pjpeg",
-//      @"binary/octet-stream",
-//      nil]
-//     ];
-}
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        if (client == nil) {
-            client = [AGHTTPClient instance];
-            imagesLoading = [NSMutableDictionary dictionary];
-        }
-    }
-    return self;
+//    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 }
 
 + (AGRemoter *)instanceWithDelegate:(id< AGRemoterDelegate>)aDelegate{
@@ -69,107 +48,30 @@
     return instance;
 }
 
-- (void)cancelAllRequests{
-    [client.operationQueue cancelAllOperations];
-    [self cancelAllImageRequests];
-}
-
-#pragma mark - images request ops
-
-- (NSString *)keyOfImageRequest:(NSURL *)url{
-    return url.absoluteString;
-}
-
-- (void)setImageRequest:(NSURL *)url forImageView:(UIImageView *)imageView{
-    NSString *key = [self keyOfImageRequest:url];
-//    TLOG(@"key -> %@", key);
-    [imagesLoading setObject:imageView forKey:key];
-}
-
-- (BOOL)isLoadingImageRequest:(NSURL *)url{
-    NSString *key = [self keyOfImageRequest:url];
-    if ([imagesLoading objectForKey:key] != nil) return YES;
-    return NO;
-}
-
-- (BOOL)isLoadingAnyImageRequest{
-    if (imagesLoading.allKeys.count > 0) return YES;
-    return NO;
-}
-
-- (void)removeImageReqest:(NSURL *)url{
-    NSString *key = [self keyOfImageRequest:url];
-    [self removeImageReqestForKey:key];
-}
-
-- (UIImage *)dummyImage{
-    if (!_dummyImage) {
-        _dummyImage = [[UIImage alloc] init];
-    }
-    return _dummyImage;
-}
-
-- (void)removeImageReqestForKey:(NSString *)key{
-//    TLOG(@"key -> %@", key);
-    UIImageView *imgV = [imagesLoading objectForKey:key];
-    @try {
-//        TLOG(@"[imgV respondsToSelector:@selector(cancelImageRequestOperation)] -> %d",[imgV respondsToSelector:@selector(cancelImageRequestOperation)] );
-        [imgV setImage:self.dummyImage];
-        [imgV cancelImageRequestOperation];
-        
-        
-    }@catch (NSException *exception) {
-        TLOG(@"exception -> %@", exception);
-        
-    }
-    
-    @try {
-        [imgV sd_cancelCurrentImageLoad];
-    }
-    @catch (NSException *exception) {
-        TLOG(@"exception -> %@", exception);
-    }
-    
-    [imagesLoading removeObjectForKey:key];
-    
-}
-
-- (void)cancelAllImageRequests{
-    if (imagesLoading.allKeys.count == 0) return;
-//    TLOG(@"%@ ===== start",self);
-    while (imagesLoading.allKeys.count > 0) {
-        NSString *key = [imagesLoading.allKeys objectAtIndex:0];
-        [self removeImageReqestForKey:key];
-    }
-//    TLOG(@"%@ ===== end", self);
-}
-
 #pragma mark - main ops
 
-- (void)send:(DSRequestInfo *)req{
-    [req assemble];
-    //    [self saveRequestForCallback:req];
-//    NSString *jsonStr = [[NSString alloc] initWithData:req.HTTPBody encoding:NSUTF8StringEncoding];
-//    TLOG(@"[Request] %@ %@ %ld %@ %@",[req method], [req URL].absoluteString,(unsigned long)[req requestBinary].data.length, req.allHTTPHeaderFields, [req requestBody]);
-    TLOG(@"[Request] %@ %@ %ld %@",[req method], [req URL].absoluteString,(unsigned long)[req requestBinary].data.length,  [req requestBody]);
-//
-//    NSError *jsonError;
-//    NSData *jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
-//    NSDictionary *jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData
-//                                                         options:NSJSONReadingMutableContainers
-//                                                           error:&jsonError];
-//    TLOG(@"json obj -> %@ jsonError -> %@", jsonObj, jsonError);
+- (void)send:(DSRequestInfo *)requestInfo{
+    
+    [requestInfo assemble];
+    TLOG(@"[Request] %@ %@ %ld %@",[requestInfo method], [requestInfo URL].absoluteString,(unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+    TLOG(@"[Request Headers] %@", [requestInfo allHTTPHeaderFields]);
+    
+    [self.client enqueueHTTPRequestOperation: [self operationInstanceWithRequestInfo:requestInfo] ];
+}
+
+- (AFJSONRequestOperation *)operationInstanceWithRequestInfo:(DSRequestInfo *)requestInfo{
     
     
-    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:req success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFJSONRequestOperation *item = [[AFJSONRequestOperation alloc] initWithRequest:requestInfo];
+    [item setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self operation:operation successfulWithResponse:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self operation:operation failedWithError:error];
     }];
     
-    [client enqueueHTTPRequestOperation:operation];
-    
+    return item;
 }
+
 
 
 #pragma mark -
@@ -209,13 +111,14 @@
     
     AGRemoterResult *result = [self assembleResultForError:error];
     DSRequestInfo *request = (DSRequestInfo *)operation.request;
-    TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
     
     if (operation.isCancelled) {
         [result setCode:AGResultCodeOperationCancelled];
     }else{
         [result setCode: operation.response.statusCode ];
     }
+    
+    if ([result isError]) TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
     
     [result setRequest:(DSRequestInfo *)[operation request] ];
     [self processResult:result];
@@ -241,8 +144,10 @@
     
     if (resultCode == 1) {
         resultStr = @"CANCELED";
-    }else if(resultCode == 0){
+    }else if(resultCode == 0 || resultCode == 504){
         resultStr = @"TIMEOUT";
+    }else if (resultCode == 304){
+        resultStr = @"Not Modified";
     }
     
     TLOG(@"[Response %@] %@ %@ ", resultStr.uppercaseString,[request method], [request URL]);
@@ -254,10 +159,6 @@
     }
     
 }
-
-
-
-
 
 #pragma mark - dispatchers
 
@@ -362,73 +263,6 @@
 
 #pragma mark -
 
-- (void)REQUEST:(NSURL *)imageURL forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage{
-    [imageView setImage:placeholderImage];
-//    TLOG(@"imageURL -> %@", imageURL);
-    if ([DSValueUtil isNotAvailable:imageURL]) return;
-    
-    NSInteger lTag = 999;
-    UIActivityIndicatorView *l = (UIActivityIndicatorView *)[imageView viewWithTag:lTag];
-    
-    if ([DSValueUtil isNotAvailable:l]) {
-        //loading icon
-        CGFloat w = 40;
-        CGFloat h = 40;
-        CGFloat x = (imageView.frame.size.width-w)/2.0;
-        CGFloat y = (imageView.frame.size.height-h)/2.0;
-        l = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(x, y, w, h)];
-        [l setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        [l setBackgroundColor:RGBA(242, 242, 242, 1)];
-        [l setTag:lTag];
-    }
-    
-    [imageView addSubview:l];
-    [l startAnimating];
-    
-    
-    __block UIImageView *v = imageView;
-    [self REQUEST:imageURL completion:^(UIImage *image, NSError *error, NSInteger cacheType) {
-        [l stopAnimating];
-        [l removeFromSuperview];
-        if ([DSValueUtil isAvailable:image]) {
-            [v setImage:image];
-            
-            if (cacheType == 0) {
-                [v setAlpha:0];
-                [UIView animateWithDuration:.33 animations:^{
-                    [v setAlpha:1];
-                }];
-            }
-            
-            
-        }
-        
-        
-    }];
-}
-
-
-- (void)REQUEST:(NSURL *)imageURL completion:(void(^)(UIImage *image, NSError *error, NSInteger cacheType))completion{
-    NSURLRequest *req = [[NSURLRequest alloc] initWithURL:imageURL];
-    UIImageView *v = [[UIImageView alloc] init];
-    
-    [self setImageRequest:imageURL forImageView:v];
-    [v sd_setImageWithURL:imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-//        TLOG(@"cache type -> %ld", cacheType);
-        
-        if (error) {
-            AGRemoterResult *result = [self assembleResultForError:error];
-            [result setRequest:(DSRequestInfo *)req];
-//            [AGMonitor logServerExceptionWithResult:result];
-        }
-        
-        if(completion) completion(image, error, cacheType);
-        [self removeImageReqest:imageURL];
-        
-    }];
-}
-
 
 - (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion{
     DSRequestInfo *req = [DSRequestInfo instance];
@@ -440,7 +274,6 @@
     [req setRandomRequestId:randomRequestId];
     [self send:req];
 }
-
 
 
 

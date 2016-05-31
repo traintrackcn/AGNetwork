@@ -59,7 +59,7 @@
     if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
     if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
     
-    TLOG(@"token -> %@", self.token);
+//    TLOG(@"token -> %@", self.token);
     
     if (self.token) {
         [_defaultHeaders setObject:self.token forKey:@"X-Authentication-Token"];

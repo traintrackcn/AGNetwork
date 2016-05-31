@@ -17,9 +17,11 @@
 - (NSString *)key;
 - (void)assemble;
 
+
 @property (nonatomic, strong) NSString *serverUrl;
 @property (nonatomic, strong) NSURL *thirdPartyUrl;
-@property (nonatomic, strong) NSMutableDictionary *thirdPartyHeaders;
+@property (nonatomic, strong) NSDictionary *thirdPartyHeaders;
+@property (nonatomic, strong) NSDictionary *headers;
 
 @property (nonatomic, strong) NSString *method;
 @property (nonatomic, strong) NSString *protocolVersion;

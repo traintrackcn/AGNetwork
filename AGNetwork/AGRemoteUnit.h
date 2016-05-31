@@ -44,6 +44,7 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 
 @property (nonatomic, strong) NSURL *thirdPartyUrl;
 @property (nonatomic, strong) id thirdPartyHeaders;
+@property (nonatomic, strong) id headers;
 @property (nonatomic, strong) id userInfo;
 
 @property (nonatomic, assign) BOOL randomRequestId;

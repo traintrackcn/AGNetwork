@@ -25,6 +25,12 @@
     return [[self.class alloc] init];
 }
 
+#pragma mark - 
+
+- (void)cancel{
+    [_rUnit cancel];
+}
+
 #pragma mark - remote stuff
 
 - (void)requestWithCompletion:(void (^)(id, id))completion{
@@ -68,12 +74,14 @@
     id requestBinary = [self requestBinary:userInfo];
     id thirdPartyUrl = [self thirdPartyUrl:userInfo];
     id thirdPartyHeaders = [self thirdParthHeaders:userInfo];
+    id headers = [self headers:userInfo];
     
     if (requestType) [_rUnit setRequestType:requestType];
     if (requestBody) [_rUnit setRequestBody:requestBody];
     if (requestBinary) [_rUnit setRequestBinary:requestBinary];
     if (thirdPartyUrl) [_rUnit setThirdPartyUrl:thirdPartyUrl];
     if (thirdPartyHeaders) [_rUnit setThirdPartyHeaders:thirdPartyHeaders];
+    if (headers) [_rUnit setHeaders:headers];
 //    TLOG(@"thirdPartyUrl -> %@", thirdPartyUrl);
     
 //    TLOG(@"requestBody -> %@ rUnit.requestBody -> %@", requestBody, _rUnit.requestBody);
@@ -100,6 +108,10 @@
 }
 
 - (id)thirdParthHeaders:(id)userInfo{
+    return nil;
+}
+
+- (id)headers:(id)userInfo{
     return nil;
 }
 

@@ -22,7 +22,7 @@
 }
 
 
-@property (nonatomic, strong) NSString *headerForPostingOrder;
+//@property (nonatomic, strong) NSString *headerForPostingOrder;
 @property (nonatomic, strong) NSURL *defaultURL;
 @property (nonatomic, strong) NSMutableData *defaultBody;
 
@@ -36,6 +36,7 @@
 
 + (instancetype)instance{
     DSRequestInfo *requestInfo = [[DSRequestInfo alloc] init];
+    [requestInfo setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     return requestInfo;
 }
 
@@ -58,7 +59,7 @@
     return [[self URL] absoluteString];
 }
 
-- (NSString *)headerForPostingOrder{
+- (NSString *)randomRequestIdStr{
     NSUUID *uuid = [[NSUUID alloc] init];
     NSString *uuidStr = [uuid UUIDString];
     uuidStr = [uuidStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
@@ -77,6 +78,27 @@
 
 #pragma mark - assemble request
 
+- (void)setThirdPartyHeaders{
+    //            TLOG(@"self.thirdPartyHeaders -> %@", self.thirdPartyHeaders);
+    if (self.thirdPartyHeaders) [self setAllHTTPHeaderFields:self.thirdPartyHeaders];
+}
+
+- (void)setHeaders{
+    [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeaders];
+    if (self.randomRequestId) [self setValue:self.randomRequestIdStr forHTTPHeaderField:@"X-Client-Request-Id"];
+    
+    //headers only in this request
+    TLOG(@"self.headers -> %@", self.headers);
+    if (self.headers) {
+        for (NSInteger i = 0; i<self.headers.allKeys.count; i++) {
+            NSString *key = [self.headers.allKeys objectAtIndex:i];
+            NSString *value = [self.headers valueForKey:key];
+            [self setValue:value forHTTPHeaderField:key];
+        }
+    }
+    
+}
+
 - (void)assemble{
      @try {
         [self setHTTPMethod:[self method]];
@@ -84,12 +106,10 @@
 
         if ([self thirdPartyUrl]) {
             [self setURL:self.thirdPartyUrl];
-        //            TLOG(@"self.thirdPartyHeaders -> %@", self.thirdPartyHeaders);
-            if (self.thirdPartyHeaders) [self setAllHTTPHeaderFields:self.thirdPartyHeaders];
+            [self setThirdPartyHeaders];
         }else{
             [self setURL:self.defaultURL];
-            [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeaders];
-            if (self.randomRequestId) [self setValue:self.headerForPostingOrder forHTTPHeaderField:@"X-Client-Request-Id"];
+            [self setHeaders];
         }
          
         id defaultBody = self.defaultBody;

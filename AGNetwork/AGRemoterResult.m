@@ -17,6 +17,7 @@
     if (self.code == 200) return NO;
     if (self.code == 201) return NO;
     if (self.code == 204) return NO;
+    if (self.code == 304) return NO; //content not modified
     return YES;
 }
 

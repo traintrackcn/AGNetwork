@@ -68,6 +68,7 @@
     if (self.protocolVersion) [_requestInfo setProtocolVersion:self.protocolVersion];
     if (self.thirdPartyUrl) [_requestInfo setThirdPartyUrl:self.thirdPartyUrl];
     if (self.thirdPartyHeaders) [_requestInfo setThirdPartyHeaders:self.thirdPartyHeaders];
+    if (self.headers) [_requestInfo setHeaders:self.headers];
     return _requestInfo;
 }
 
@@ -159,7 +160,7 @@
 
 - (void)cancel{
     [NSObject cancelPreviousPerformRequestsWithTarget:self]; //also cancel in queue requests
-    [_remoter cancelAllRequests];
+    [_remoter cancel];
 }
 
 #pragma mark - AGRemoterDelegate
@@ -167,6 +168,9 @@
 - (void)remoterResultReceived:(AGRemoterResult *)result requestType:(NSString *)requestType{
     id responseData = result.responseData;
     id responseHeaders = result.responseHeaders;
+    
+//    TLOG(@"responseData -> %@", responseData);
+    
     @try {
         id processedData = [self didGetResponseData:responseData];
         id processedHeaders = [self didGetResponseHeaders:responseHeaders];
