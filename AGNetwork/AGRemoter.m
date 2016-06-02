@@ -54,7 +54,7 @@
     
     [requestInfo assemble];
     TLOG(@"[Request] %@ %@ %ld %@",[requestInfo method], [requestInfo URL].absoluteString,(unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
-    TLOG(@"[Request Headers] %@", [requestInfo allHTTPHeaderFields]);
+//    TLOG(@"[Request Headers] %@", [requestInfo allHTTPHeaderFields]);
     
     [self.client enqueueHTTPRequestOperation: [self operationInstanceWithRequestInfo:requestInfo] ];
 }
