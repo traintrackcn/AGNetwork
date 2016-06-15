@@ -10,21 +10,6 @@
 
 @class AGRemoterResultError;
 
-typedef enum {
-    AGResultCodeUnknown = -9999,
-    AGResultCodeInvalidConnection = 0,
-    AGResultCodeOperationCancelled = 1,
-    AGResultCodeTimeout = 2,
-    
-    DSErrorBadRequest = 400,
-    AGResultCodeInvalidAuthentication= 401,
-    DSErrorForbidden = 403,
-    AGResultCodeCannotFindPage = 404,
-    DSErrorServerInternal = 500,
-    DSErrorNotImplemented = 501,
-    DSErrorServiceUnavailable = 503
-}AGResultCode;
-
 @class DSRequestInfo;
 
 @interface AGRemoterResult : AGModel
@@ -33,13 +18,15 @@ typedef enum {
 - (BOOL)isTimeout;
 - (BOOL)isCanceled;
 - (BOOL)isNotModified;
+- (BOOL)isInvalidAuthentication;
+- (BOOL)isInvalidConnection;
 - (NSString *)type;
 
 - (NSString *)errorType;
 - (NSString *)errorMessage;
 
 @property (nonatomic, assign) NSInteger code;
-
+@property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) DSRequestInfo *request;
 @property (nonatomic, strong) id responseData;
 @property (nonatomic, strong) AGRemoterResultError *errorParsed;

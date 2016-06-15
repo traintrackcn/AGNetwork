@@ -53,8 +53,12 @@
 - (void)send:(DSRequestInfo *)requestInfo{
     
     [requestInfo assemble];
-    TLOG(@"[Request] %@ %@ %ld %@",[requestInfo method], [requestInfo URL].absoluteString,(unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
-//    TLOG(@"[Request Headers] %@", [requestInfo allHTTPHeaderFields]);
+    
+    //log without headers
+    TLOG(@"[Request] %@ %@  %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+    
+    // log with headers
+//    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo allHTTPHeaderFields], (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
     
     [self.client enqueueHTTPRequestOperation: [self operationInstanceWithRequestInfo:requestInfo] ];
 }
@@ -63,9 +67,11 @@
     
     
     AFJSONRequestOperation *item = [[AFJSONRequestOperation alloc] initWithRequest:requestInfo];
+//    TLOG(@"before setCompletionBlock");
     [item setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self operation:operation successfulWithResponse:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        TLOG(@"before failure callback");
         [self operation:operation failedWithError:error];
     }];
     
@@ -98,7 +104,7 @@
     }
     
     if (!responseData) responseData = responseDataRaw;
-    
+//    TLOG(@"before setCode");
     [result setCode: operation.response.statusCode ];
     [result setRequest: (DSRequestInfo *)[operation request] ];
     [result setResponseData: responseData ];
@@ -109,14 +115,16 @@
 
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
     
+//    TLOG(@"before assemble error");
     AGRemoterResult *result = [self assembleResultForError:error];
     DSRequestInfo *request = (DSRequestInfo *)operation.request;
     
     if (operation.isCancelled) {
-        [result setCode:AGResultCodeOperationCancelled];
+        [result setCode:1];
     }else{
         [result setCode: operation.response.statusCode ];
     }
+//    TLOG(@"before print error detail");
     
     if ([result isError] && ![result isTimeout]) TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
     
@@ -130,8 +138,10 @@
     if (error) {
         AGRemoterResultError *parsedError = [[AGRemoterResultError alloc] init];
         [parsedError updateWithOriginalErrorUserInfo:error.userInfo];
+        [parsedError setResult:result];
         [result setErrorParsed:parsedError];
         [result setErrorOrigin:error];
+        
     }
     return result;
 }
@@ -209,7 +219,7 @@
     }
     
     //Monitor actions
-    if(result.code == AGResultCodeInvalidConnection){
+    if([result isInvalidAuthentication]){
         if ([DSReachabilityManager singleton].isInternetReachable) {
             
             if ([DSReachabilityManager singleton].isHostReachable) {
@@ -223,9 +233,9 @@
         }
     }
     
-    if (result.code != AGResultCodeInvalidAuthentication
-        && result.code != AGResultCodeInvalidConnection
-        && result.code != AGResultCodeOperationCancelled) {
+    if (![result isInvalidAuthentication]
+        && ![result isInvalidConnection]
+        && ![result isCanceled]) {
 //        [AGFlurryMonitor logServerExceptionWithResult:result];
 
     }

@@ -37,8 +37,18 @@
     return NO;
 }
 
+- (BOOL)isInvalidAuthentication{
+    if (self.code == 401) return YES;
+    return NO;
+}
+
 - (BOOL)isCanceled{
     if (self.code == 1) return YES;
+    return NO;
+}
+
+- (BOOL)isInvalidConnection{
+    if (self.code == 0) return YES;
     return NO;
 }
 
@@ -57,7 +67,7 @@
 
 
 - (NSString *)errorType{
-    return self.errorParsed.code;
+    return self.errorParsed.type;
 }
 
 - (NSString *)errorMessage{

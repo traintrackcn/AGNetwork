@@ -39,6 +39,8 @@
 		4A7EDF721CEDC49F00A311D2 /* DAFileLoader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A7EDF6E1CEDC16A00A311D2 /* DAFileLoader.h */; };
 		4A7EDF751CEDDD8400A311D2 /* DANetworkLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A7EDF741CEDDD8400A311D2 /* DANetworkLoader.m */; };
 		4A7EDF761CEDE74700A311D2 /* DANetworkLoader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A7EDF731CEDDD8400A311D2 /* DANetworkLoader.h */; };
+		4AB650601D10FBB800F5735C /* NSObject+ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB6505F1D10FBB800F5735C /* NSObject+ImageLoader.m */; };
+		4AB650611D10FBEC00F5735C /* NSObject+ImageLoader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AB6505E1D10FBB800F5735C /* NSObject+ImageLoader.h */; };
 		4AC3CC7E1CCF39B50025410B /* DARequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AC3CC7D1CCF39B50025410B /* DARequest.m */; };
 		4AC3CC7F1CCF39C10025410B /* DARequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AC3CC7C1CCF39B50025410B /* DARequest.h */; };
 		4AC3CCB11CD1CF460025410B /* DARequestUniversal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AC3CCB01CD1CF460025410B /* DARequestUniversal.m */; };
@@ -70,6 +72,7 @@
 			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
+				4AB650611D10FBEC00F5735C /* NSObject+ImageLoader.h in CopyFiles */,
 				4A7EDF761CEDE74700A311D2 /* DANetworkLoader.h in CopyFiles */,
 				4A7EDF711CEDC49F00A311D2 /* DAImageLoader.h in CopyFiles */,
 				4A7EDF721CEDC49F00A311D2 /* DAFileLoader.h in CopyFiles */,
@@ -132,6 +135,8 @@
 		4A7EDF6F1CEDC16A00A311D2 /* DAFileLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAFileLoader.m; sourceTree = "<group>"; };
 		4A7EDF731CEDDD8400A311D2 /* DANetworkLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DANetworkLoader.h; sourceTree = "<group>"; };
 		4A7EDF741CEDDD8400A311D2 /* DANetworkLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DANetworkLoader.m; sourceTree = "<group>"; };
+		4AB6505E1D10FBB800F5735C /* NSObject+ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ImageLoader.h"; sourceTree = "<group>"; };
+		4AB6505F1D10FBB800F5735C /* NSObject+ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ImageLoader.m"; sourceTree = "<group>"; };
 		4AC3CC7C1CCF39B50025410B /* DARequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DARequest.h; sourceTree = "<group>"; };
 		4AC3CC7D1CCF39B50025410B /* DARequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DARequest.m; sourceTree = "<group>"; };
 		4AC3CCAF1CD1CF460025410B /* DARequestUniversal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DARequestUniversal.h; sourceTree = "<group>"; };
@@ -229,6 +234,15 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
+		4AB6505D1D10FBB800F5735C /* ObjPoolRelated */ = {
+			isa = PBXGroup;
+			children = (
+				4AB6505E1D10FBB800F5735C /* NSObject+ImageLoader.h */,
+				4AB6505F1D10FBB800F5735C /* NSObject+ImageLoader.m */,
+			);
+			path = ObjPoolRelated;
+			sourceTree = "<group>";
+		};
 		4AD7D1BF19D1064A00D7F178 = {
 			isa = PBXGroup;
 			children = (
@@ -250,6 +264,7 @@
 		4AD7D1CA19D1064A00D7F178 /* AGNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				4AB6505D1D10FBB800F5735C /* ObjPoolRelated */,
 				4AC3CC7C1CCF39B50025410B /* DARequest.h */,
 				4AC3CC7D1CCF39B50025410B /* DARequest.m */,
 				4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */,
@@ -456,6 +471,7 @@
 				4AD7D1E919D1091300D7F178 /* DSRequestInfo.m in Sources */,
 				4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */,
 				4A314A1419D3CA1100A4EBA4 /* UIButton+WebCache.m in Sources */,
+				4AB650601D10FBB800F5735C /* NSObject+ImageLoader.m in Sources */,
 				4AD7D1F119D1096500D7F178 /* AGRemoterResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

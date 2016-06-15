@@ -46,6 +46,7 @@
     if (self.method == AGRemoteUnitMethodDELETE) return @"DELETE";
     if (self.method == AGRemoteUnitMethodPOST) return @"POST";
     if (self.method == AGRemoteUnitMethodPUT) return @"PUT";
+    if (self.method == AGRemoteUnitMethodHEAD) return @"HEAD";
     return @"GET";
 }
 

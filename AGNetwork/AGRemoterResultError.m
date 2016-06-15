@@ -41,16 +41,14 @@
 
 - (void)updateWithRaw:(id)raw{
     
-    
-    
     [self setRaw:raw];
     
     if ([self isAvailableForKey:@"error-code"]) {
-        [self setCode:[self stringForKey:@"error-code"]];
+        [self setType:[self stringForKey:@"error-code"]];
     }
     
     if ([self isAvailableForKey:@"code"]) {
-        [self setCode:[self stringForKey:@"code"]];
+        [self setType:[self stringForKey:@"code"]];
     }
     
     if ([self isAvailableForKey:@"message"]) {

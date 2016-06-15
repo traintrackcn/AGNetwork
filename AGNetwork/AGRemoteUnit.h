@@ -12,7 +12,8 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
     AGRemoteUnitMethodGET,
     AGRemoteUnitMethodPOST,
     AGRemoteUnitMethodPUT,
-    AGRemoteUnitMethodDELETE
+    AGRemoteUnitMethodDELETE,
+    AGRemoteUnitMethodHEAD
 };
 
 
