@@ -69,13 +69,15 @@
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self operation:operation successfulWithResponse:responseObject];
+        [self dequeue:operation];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //        TLOG(@"before failure callback");
         [self operation:operation failedWithError:error];
+        [self dequeue:operation];
     }];
     
     
-    [operation start];
+    [self enqueue:operation];
     
     
 }
@@ -119,7 +121,7 @@
     
 //    TLOG(@"before assemble error");
     AGRemoterResult *result = [self assembleResultForError:error];
-    DSRequestInfo *request = (DSRequestInfo *)operation.request;
+//    DSRequestInfo *request = (DSRequestInfo *)operation.request;
     
     if (operation.isCancelled) {
         [result setCode:1];
@@ -128,7 +130,7 @@
     }
 //    TLOG(@"before print error detail");
     
-    if ([result isError] && ![result isTimeout]) TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
+//    if ([result isError] && ![result isTimeout]) TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
     
     [result setRequest:(DSRequestInfo *)[operation request] ];
     [self processResult:result];
@@ -154,6 +156,7 @@
     TLOG(@"[Response %@] %@ %@ ", result.type.uppercaseString,[request method], [request URL]);
 //    TLOG(@"result isError -> %d", result.isError);
     if ( [result isError]){
+        TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], result.errorOrigin);
         [self dispatchRemoterErrorOccured:result];
     }else{
         [self dispatchRemoterResultReceived:result];

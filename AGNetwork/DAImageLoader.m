@@ -116,7 +116,7 @@
     }
     TLOG(@"%@ imageURL -> %@", self, url);
     AFHTTPRequestOperation *operation = [self operationInstanceWithURL:url completion:completion];
-    [operation start];
+    [self enqueue:operation];
 }
 
 #pragma mark -

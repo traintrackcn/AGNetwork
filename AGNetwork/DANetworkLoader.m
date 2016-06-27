@@ -10,6 +10,15 @@
 #import "GlobalDefine.h"
 //#import "AFHTTPClient.h"
 #import "AGNetworkDefine.h"
+#import "AFHTTPRequestOperation.h"
+
+@interface DANetworkLoader(){
+    
+}
+
+@property (nonatomic, strong) NSMutableArray *queue;
+
+@end
 
 @implementation DANetworkLoader
 
@@ -27,12 +36,43 @@
 #pragma mark - op
 
 - (void)cancel{
-//    TLOG(@"%@", self);
-//    [_client.operationQueue cancelAllOperations];
-//    _client = nil;
+    while (self.queue.count > 0) {
+        AFHTTPRequestOperation *operation = self.queue.firstObject;
+        [self dequeue:operation];
+    }
+}
+
+- (void)enqueue:(AFHTTPRequestOperation *)operation{
+    [self.queue addObject:operation];
+    if (AG_NETWORK_DEFINE.allowInvalidSSL) [operation setSecurityPolicy:self.securityPolicy];
+    [operation start];
+}
+
+- (id)securityPolicy{
+    AFSecurityPolicy *policy= [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    [policy setAllowInvalidCertificates:YES];
+    [policy setValidatesDomainName:NO];
+//    [policy setValidatesCertificateChain:NO];
+//    operation.securityPolicy=sec;
+    return policy;
+}
+
+- (void)dequeue:(AFHTTPRequestOperation *)operation{
+    if ([self.queue containsObject:operation]) {
+        [self.queue removeObject:operation];
+        [operation cancel];
+        operation = nil;
+    }
 }
 
 #pragma mark - properties
+
+- (NSMutableArray *)queue{
+    if (!_queue) {
+        _queue = [NSMutableArray array];
+    }
+    return _queue;
+}
 
 //- (AFHTTPClient *)client{
 //    if (!_client) {

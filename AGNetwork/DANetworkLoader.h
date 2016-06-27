@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@class AFHTTPRequestOperation;
+
 //@class AFHTTPClient;
 @interface DANetworkLoader : NSObject
 
 + (instancetype)instance;
 
 - (void)cancel;
+- (void)enqueue:(AFHTTPRequestOperation *)operation;
+- (void)dequeue:(AFHTTPRequestOperation *)operation;
 //@property (nonatomic, strong) AFHTTPClient *client;
 
 @end

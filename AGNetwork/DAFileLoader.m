@@ -36,7 +36,7 @@
 //    [self.client enqueueHTTPRequestOperation:operation];
     
     AFHTTPRequestOperation *operation = [self operationInstanceWithFileURL:fileURL localURL:localURL completion:completion];
-    [operation start];
+    [self enqueue:operation];
 }
 
 - (AFHTTPRequestOperation *)operationInstanceWithFileURL:(NSURL *)fileURL localURL:(NSURL *)localURL completion:(void(^)(id, id))completion{
@@ -50,8 +50,10 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         completion(responseObject, nil);
         TLOG(@"file completed %@", localURL.absoluteString);
+        [self dequeue:operation];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         completion(nil, error);
+        [self dequeue:operation];
     }];
     
 //    [operation start];
