@@ -18,7 +18,7 @@
 //#import "UIImageView+AFNetworking.h"
 
 #import "DSRequestInfo.h"
-#import "DSReachabilityManager.h"
+//#import "DSReachabilityManager.h"
 
 #import "AGRequestBinary.h"
 //#import "AFHTTPClient.h"
@@ -76,6 +76,8 @@
         [self dequeue:operation];
     }];
     
+    
+//    oper
     
     [self enqueue:operation];
     
@@ -225,17 +227,17 @@
     
     //Monitor actions
     if([result isInvalidAuthentication]){
-        if ([DSReachabilityManager singleton].isInternetReachable) {
-            
-            if ([DSReachabilityManager singleton].isHostReachable) {
-//                [AGFlurryMonitor passCheckpoint:CHECKPOINT_SERVER_IS_OOPS];
-            }else if (![DSReachabilityManager singleton].isHostReachable) {
-//                [AGFlurryMonitor passCheckpoint:CHECKPOINT_SERVER_IS_DOWN];
-            }
-            
-//            [AGFlurryMonitor logServerExceptionWithResult:result];
-
-        }
+//        if ([DSReachabilityManager singleton].isInternetReachable) {
+//            
+//            if ([DSReachabilityManager singleton].isHostReachable) {
+////                [AGFlurryMonitor passCheckpoint:CHECKPOINT_SERVER_IS_OOPS];
+//            }else if (![DSReachabilityManager singleton].isHostReachable) {
+////                [AGFlurryMonitor passCheckpoint:CHECKPOINT_SERVER_IS_DOWN];
+//            }
+//            
+////            [AGFlurryMonitor logServerExceptionWithResult:result];
+//
+//        }
     }
     
     if (![result isInvalidAuthentication]

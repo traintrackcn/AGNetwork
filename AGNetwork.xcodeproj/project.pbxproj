@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A0533101D211E90009D3CAA /* AFNetworkActivityIndicatorManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AB9C0611D20E04100549476 /* AFNetworkActivityIndicatorManager.h */; };
 		4A0CA53E1B4F810F00DF9379 /* AGRemoteUnit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */; };
-		4A0CA53F1B4F810F00DF9379 /* DSReachabilityManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */; };
 		4A0CA5401B4F810F00DF9379 /* DSRequestInfo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E719D1091300D7F178 /* DSRequestInfo.h */; };
 		4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E319D1083200D7F178 /* AGRemoter.h */; };
 		4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EC19D1096500D7F178 /* AGRemoterResult.h */; };
@@ -69,8 +69,6 @@
 		4AD7D23719D1150200D7F178 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */; };
 		4AD7D23919D1150700D7F178 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */; };
 		4AD7D28219D151A100D7F178 /* AGNetworkDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */; };
-		4AD7D29A19D167C100D7F178 /* DSReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */; };
-		4AD7D2A119D1680600D7F178 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D2A019D1680600D7F178 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -80,6 +78,7 @@
 			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
+				4A0533101D211E90009D3CAA /* AFNetworkActivityIndicatorManager.h in CopyFiles */,
 				4AB650611D10FBEC00F5735C /* NSObject+ImageLoader.h in CopyFiles */,
 				4A7EDF761CEDE74700A311D2 /* DANetworkLoader.h in CopyFiles */,
 				4A7EDF711CEDC49F00A311D2 /* DAImageLoader.h in CopyFiles */,
@@ -88,7 +87,6 @@
 				4AC3CC7F1CCF39C10025410B /* DARequest.h in CopyFiles */,
 				4A3700631C86ED8400A4C1D8 /* AGRequestBinary.h in CopyFiles */,
 				4A0CA53E1B4F810F00DF9379 /* AGRemoteUnit.h in CopyFiles */,
-				4A0CA53F1B4F810F00DF9379 /* DSReachabilityManager.h in CopyFiles */,
 				4A0CA5401B4F810F00DF9379 /* DSRequestInfo.h in CopyFiles */,
 				4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */,
 				4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */,
@@ -201,10 +199,6 @@
 		4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNetworkDefine.h; sourceTree = "<group>"; };
 		4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNetworkDefine.m; sourceTree = "<group>"; };
-		4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSReachabilityManager.h; sourceTree = "<group>"; };
-		4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSReachabilityManager.m; sourceTree = "<group>"; };
-		4AD7D29F19D1680600D7F178 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		4AD7D2A019D1680600D7F178 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,8 +340,6 @@
 				4AC3CC7D1CCF39B50025410B /* DARequest.m */,
 				4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */,
 				4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */,
-				4AD7D29819D167C100D7F178 /* DSReachabilityManager.h */,
-				4AD7D29919D167C100D7F178 /* DSReachabilityManager.m */,
 				4AD7D1E719D1091300D7F178 /* DSRequestInfo.h */,
 				4AD7D1E819D1091300D7F178 /* DSRequestInfo.m */,
 				4AD7D1E319D1083200D7F178 /* AGRemoter.h */,
@@ -378,7 +370,6 @@
 				4AB9C04C1D20E04100549476 /* AFNetworking */,
 				4AB9C0601D20E04100549476 /* UIKit+AFNetworking */,
 				4A3149E919D3CA1100A4EBA4 /* SDWebImage */,
-				4AD7D29E19D1680600D7F178 /* Reachability */,
 				4AD7D20119D10BA500D7F178 /* Flurry */,
 			);
 			path = Shared3rd;
@@ -391,15 +382,6 @@
 				4AD7D20319D10BA500D7F178 /* libFlurry_5.3.0.a */,
 			);
 			path = Flurry;
-			sourceTree = "<group>";
-		};
-		4AD7D29E19D1680600D7F178 /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				4AD7D29F19D1680600D7F178 /* Reachability.h */,
-				4AD7D2A019D1680600D7F178 /* Reachability.m */,
-			);
-			path = Reachability;
 			sourceTree = "<group>";
 		};
 		E80D8FBEA8ED450FAF647832 /* Frameworks */ = {
@@ -504,7 +486,6 @@
 				4AB9C0801D20E04100549476 /* UIImageView+AFNetworking.m in Sources */,
 				4A314A1A19D3CA1100A4EBA4 /* UIView+WebCacheOperation.m in Sources */,
 				4AB9C0751D20E04100549476 /* AFHTTPSessionManager.m in Sources */,
-				4AD7D2A119D1680600D7F178 /* Reachability.m in Sources */,
 				4AB9C0831D20E04100549476 /* UIWebView+AFNetworking.m in Sources */,
 				4AB9C0821D20E04100549476 /* UIRefreshControl+AFNetworking.m in Sources */,
 				4AB9C0761D20E04100549476 /* AFNetworkReachabilityManager.m in Sources */,
@@ -512,7 +493,6 @@
 				4AB9C0781D20E04100549476 /* AFURLConnectionOperation.m in Sources */,
 				4A7EDF6D1CEDBF2200A311D2 /* DAImageLoader.m in Sources */,
 				4A314A1519D3CA1100A4EBA4 /* UIImage+GIF.m in Sources */,
-				4AD7D29A19D167C100D7F178 /* DSReachabilityManager.m in Sources */,
 				4AB9C0811D20E04100549476 /* UIProgressView+AFNetworking.m in Sources */,
 				4A314A0B19D3CA1100A4EBA4 /* MKAnnotationView+WebCache.m in Sources */,
 				4AB9C0731D20E04100549476 /* AFHTTPRequestOperation.m in Sources */,

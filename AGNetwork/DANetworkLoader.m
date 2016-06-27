@@ -11,6 +11,7 @@
 //#import "AFHTTPClient.h"
 #import "AGNetworkDefine.h"
 #import "AFHTTPRequestOperation.h"
+#import "AFNetworkActivityIndicatorManager.h"
 
 @interface DANetworkLoader(){
     
@@ -24,6 +25,10 @@
 
 + (instancetype)instance{
     return [[self.class alloc] init];
+}
+
++ (void)initialize{
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 }
 
 #pragma mark - lifecycle
@@ -42,9 +47,23 @@
     }
 }
 
+
+
 - (void)enqueue:(AFHTTPRequestOperation *)operation{
+    [self enqueue:operation hideActivityIndicator:NO];
+    
+}
+
+- (void)enqueue:(AFHTTPRequestOperation *)operation hideActivityIndicator:(BOOL)hideActivityIndicator{
     [self.queue addObject:operation];
     if (AG_NETWORK_DEFINE.allowInvalidSSL) [operation setSecurityPolicy:self.securityPolicy];
+    
+    if (hideActivityIndicator){
+        [operation setUserInfo:@{
+                                 @"hide-activity-indicator":@(YES)
+                                 }];
+    }
+    
     [operation start];
 }
 

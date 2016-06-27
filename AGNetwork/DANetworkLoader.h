@@ -17,6 +17,7 @@
 
 - (void)cancel;
 - (void)enqueue:(AFHTTPRequestOperation *)operation;
+- (void)enqueue:(AFHTTPRequestOperation *)operation hideActivityIndicator:(BOOL)hideActivityIndicator;
 - (void)dequeue:(AFHTTPRequestOperation *)operation;
 //@property (nonatomic, strong) AFHTTPClient *client;
 
