@@ -7,10 +7,12 @@
 //
 
 #import "DAImageLoader.h"
-#import "AFHTTPClient.h"
-#import "AFImageRequestOperation.h"
+//#import "AFHTTPClient.h"
+//#import "AFImageRequestOperation.h"
 #import "GlobalDefine.h"
 #import "DAFileUtil.h"
+#import "AFHTTPRequestOperation.h"
+#import "AFURLResponseSerialization.h"
 
 @interface DAImageLoader(){
     
@@ -22,6 +24,21 @@
 @end
 
 @implementation DAImageLoader
+
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        
+//        TLOG(@"[AFImageRequestOperation acceptableContentTypes] -> %@", [AFImageRequestOperation acceptableContentTypes]);
+//        
+//        if ([AFImageRequestOperation acceptableContentTypes]){
+//            
+//        }
+        
+//        [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"binary/octet-stream"]];
+    }
+         return self;
+}
 
 #pragma mark - images request ops
 
@@ -54,12 +71,21 @@
 
 - (void)REQUEST:(NSURL *)url forImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage{
     [imageView setImage:placeholderImage];
-    //    TLOG(@"imageURL -> %@", imageURL);
+    
     if (!url) return;
+    
+    NSURL *localURL = [DA_FILE_UTIL localURLWithDownloadURL:url];
+//    TLOG(@"localURL -> %@", localURL.absoluteString);
+    if ([DA_FILE_UTIL isExistLocalURL:localURL]) {
+        UIImage *img = [UIImage imageWithContentsOfFile:localURL.absoluteString];
+        [imageView setImage:img];
+        return;
+    }
+    
     
     UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[imageView viewWithTag:self.indicatorViewTag];
     
-    if (indicatorView) {
+    if (!indicatorView) {
         indicatorView = [self indicatorViewInstanceForImageView:imageView];
         [imageView addSubview:indicatorView];
     }
@@ -70,6 +96,7 @@
     [self REQUEST:url completion:^(id data, id error) {
         [indicatorView stopAnimating];
         [indicatorView removeFromSuperview];
+//        TLOG(@"data -> %@", data);
         if (data) {
             [v setImage:data];
             [v setAlpha:0];
@@ -87,26 +114,28 @@
         completion(img, nil);
         return;
     }
-    
-    AFImageRequestOperation *item = [self operationInstanceWithURL:url completion:completion];
-    [self.client enqueueHTTPRequestOperation:item];
+    TLOG(@"%@ imageURL -> %@", self, url);
+    AFHTTPRequestOperation *operation = [self operationInstanceWithURL:url completion:completion];
+    [operation start];
 }
 
 #pragma mark -
 
-- (AFImageRequestOperation *)operationInstanceWithURL:(NSURL *)url completion:(void(^)(id, id))completion{
+- (AFHTTPRequestOperation *)operationInstanceWithURL:(NSURL *)url completion:(void(^)(id, id))completion{
     NSURLRequest *req = [[NSURLRequest alloc] initWithURL:url];
-    AFImageRequestOperation *item = [[AFImageRequestOperation alloc] initWithRequest:req];
-    [item setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:req];
+    operation.responseSerializer = [AFImageResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        TLOG(@"responseObject -> %@", responseObject);
         NSURL *localURL = [DA_FILE_UTIL localURLWithDownloadURL:url];
         [DA_FILE_UTIL writeImage:responseObject toLocalURL:localURL];
         
         completion(responseObject, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        TLOG(@"error -> %@", error);
         completion(nil, error);
     }];
-    return item;
+    return operation;
 }
 
 @end

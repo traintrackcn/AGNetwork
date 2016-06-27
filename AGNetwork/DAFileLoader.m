@@ -9,7 +9,9 @@
 #import "DAFileLoader.h"
 #import "AFHTTPRequestOperation.h"
 #import "GlobalDefine.h"
-#import "AFHTTPClient.h"
+//#import "AFHTTPClient.h"
+@import UIKit;
+#import "DAFileUtil.h"
 
 @interface DAFileLoader(){
     
@@ -21,8 +23,20 @@
 
 
 - (void)REQUEST:(NSURL *)fileURL localURL:(NSURL *)localURL completion:(void(^)(id data, id error))completion{
+    
+    if ([DA_FILE_UTIL isExistLocalURL:localURL]) {
+        NSData *data = [NSData dataWithContentsOfFile:localURL.absoluteString];
+        TLOG(@"[in cache] %@", localURL.absoluteString);
+        completion(data, nil);
+        return;
+    }
+    
+    
+//    AFHTTPRequestOperation *operation = [self operationInstanceWithFileURL:fileURL localURL:localURL completion:completion];
+//    [self.client enqueueHTTPRequestOperation:operation];
+    
     AFHTTPRequestOperation *operation = [self operationInstanceWithFileURL:fileURL localURL:localURL completion:completion];
-    [self.client enqueueHTTPRequestOperation:operation];
+    [operation start];
 }
 
 - (AFHTTPRequestOperation *)operationInstanceWithFileURL:(NSURL *)fileURL localURL:(NSURL *)localURL completion:(void(^)(id, id))completion{

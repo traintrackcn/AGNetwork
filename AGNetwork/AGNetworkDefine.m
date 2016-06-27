@@ -9,7 +9,7 @@
 #import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
 #import "DSDeviceUtil.h"
-#import "AGNetworkMacro.h"
+//#import "AGNetworkMacro.h"
 #import "GlobalDefine.h"
 
 @implementation AGNetworkDefine

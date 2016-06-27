@@ -7,7 +7,7 @@
 //
 
 #import "AGRemoter.h"
-#import "AGHTTPClient.h"
+//#import "AGHTTPClient.h"
 #import "AGRemoterResult.h"
 #import "GlobalDefine.h"
 //#import "AGFlurryMonitor.h"
@@ -21,6 +21,10 @@
 #import "DSReachabilityManager.h"
 
 #import "AGRequestBinary.h"
+//#import "AFHTTPClient.h"
+#import "AFHTTPRequestOperation.h"
+#import "AFURLResponseSerialization.h"
+//#import "AFJSONRequestOperation.h"
 
 #define kErrorCode @"code"
 
@@ -60,22 +64,20 @@
     // log with headers
 //    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo allHTTPHeaderFields], (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
     
-    [self.client enqueueHTTPRequestOperation: [self operationInstanceWithRequestInfo:requestInfo] ];
-}
-
-- (AFJSONRequestOperation *)operationInstanceWithRequestInfo:(DSRequestInfo *)requestInfo{
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:requestInfo];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    
-    AFJSONRequestOperation *item = [[AFJSONRequestOperation alloc] initWithRequest:requestInfo];
-//    TLOG(@"before setCompletionBlock");
-    [item setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self operation:operation successfulWithResponse:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        TLOG(@"before failure callback");
+        //        TLOG(@"before failure callback");
         [self operation:operation failedWithError:error];
     }];
     
-    return item;
+    
+    [operation start];
+    
+    
 }
 
 

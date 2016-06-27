@@ -7,7 +7,7 @@
 //
 
 #import "AGModel.h"
-
+#import "NSObject+Singleton.h"
 
 #define HTTP_METHOD_POST @"POST"
 #define HTTP_METHOD_GET @"GET"
@@ -32,6 +32,8 @@
 @class AGRemoterResult;
 
 
+#define AG_NETWORK_DEFINE [AGNetworkDefine singleton]
+
 @interface AGNetworkDefine : AGModel
 
 @property (nonatomic, strong) NSString *defaultProtocolVersion;
@@ -39,6 +41,7 @@
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *clientID;
 @property (nonatomic, strong) NSString *clientSecret;
+@property (nonatomic, assign) BOOL allowInvalidSSL;
 //@property (nonatomic, assign) BOOL isOG;
 
 //@property (nonatomic, strong) NSMutableDictionary *defaultHeadersForThirdParty;

@@ -11,7 +11,7 @@
 #import "DSRequestInfo.h"
 #import "GlobalDefine.h"
 #import "DSValueUtil.h"
-#import "AGNetworkMacro.h"
+//#import "AGNetworkMacro.h"
 #import "DSDeviceUtil.h"
 #import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
@@ -102,7 +102,7 @@
 - (void)assemble{
      @try {
         [self setHTTPMethod:[self method]];
-        [self setTimeoutInterval:300];
+        [self setTimeoutInterval:60];
 
         if ([self thirdPartyUrl]) {
             [self setURL:self.thirdPartyUrl];

@@ -8,7 +8,8 @@
 
 #import "DANetworkLoader.h"
 #import "GlobalDefine.h"
-#import "AFHTTPClient.h"
+//#import "AFHTTPClient.h"
+#import "AGNetworkDefine.h"
 
 @implementation DANetworkLoader
 
@@ -19,27 +20,30 @@
 #pragma mark - lifecycle
 
 - (void)dealloc{
+//    TLOG(@"");
     [self cancel];
 }
 
 #pragma mark - op
 
 - (void)cancel{
-    [_client.operationQueue cancelAllOperations];
-    _client = nil;
+//    TLOG(@"%@", self);
+//    [_client.operationQueue cancelAllOperations];
+//    _client = nil;
 }
 
 #pragma mark - properties
 
-- (AFHTTPClient *)client{
-    if (!_client) {
-        _client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@""]];
-#ifdef DEBUG
-        TLOG(@"allow invalid certificate");
-        [_client setAllowsInvalidSSLCertificate:YES];
-#endif
-    }
-    return _client;
-}
+//- (AFHTTPClient *)client{
+//    if (!_client) {
+//        NSURL *baseURL = [NSURL URLWithString:@""];
+//        _client = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
+//        if (AG_NETWORK_DEFINE.allowInvalidSSL){
+//            TLOG(@"allow invalid certificate");
+//            [_client setAllowsInvalidSSLCertificate:YES];
+//        }
+//    }
+//    return _client;
+//}
 
 @end

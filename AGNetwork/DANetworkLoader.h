@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class AFHTTPClient;
+//@class AFHTTPClient;
 @interface DANetworkLoader : NSObject
 
 + (instancetype)instance;
 
 - (void)cancel;
-@property (nonatomic, strong) AFHTTPClient *client;
+//@property (nonatomic, strong) AFHTTPClient *client;
 
 @end

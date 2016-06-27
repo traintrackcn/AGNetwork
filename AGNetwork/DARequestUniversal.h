@@ -9,7 +9,7 @@
 #import "DARequest.h"
 #import "NSObject+Singleton.h"
 
-#define DA_REQUEST_UNIVERSAL [DARequestUniversal singleton]
+#define DA_REQUEST_UNIVERSAL_INSTANCE [DARequestUniversal instance]
 
 @interface DARequestUniversal : DARequest
 

@@ -12,11 +12,17 @@
 
 @interface DARequestUniversal(){
     AGRemoteUnitMethod _method;
+    
+    NSString *_requestType;
 }
 
 @end
 
 @implementation DARequestUniversal
+
+-(void)dealloc{
+    TLOG(@"%@", _requestType);
+}
 
 - (void)requestWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody{
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
@@ -25,11 +31,12 @@
     if (requestType) [userInfo setValue:requestType forKey:@"request-type"];
     if (requestBody) [userInfo setValue:requestBody forKey:@"request-body"];
     
+    _requestType = requestType;
     
     _method = method;
     
     
-    TLOG(@"requestType -> %@ requestBody -> %@", requestType, requestBody);
+//    TLOG(@"requestType -> %@ requestBody -> %@ method -> %d", requestType, requestBody, method);
     
     [self requestWithCompletion:completion userInfo:userInfo];
 }
@@ -46,6 +53,7 @@
 }
 
 - (NSInteger)method{
+//    TLOG(@"_method -> %d", _method);
     return _method;
 }
 
