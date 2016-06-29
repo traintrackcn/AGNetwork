@@ -12,7 +12,7 @@
 		4A0CA5401B4F810F00DF9379 /* DSRequestInfo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E719D1091300D7F178 /* DSRequestInfo.h */; };
 		4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1E319D1083200D7F178 /* AGRemoter.h */; };
 		4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EC19D1096500D7F178 /* AGRemoterResult.h */; };
-		4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */; };
+		4A0CA5451B4F810F00DF9379 /* AGRemoterError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D1EE19D1096500D7F178 /* AGRemoterError.h */; };
 		4A0CA5471B4F810F00DF9379 /* AGNetworkDefine.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */; };
 		4A3700621C86E21500A4C1D8 /* AGRequestBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3700611C86E21500A4C1D8 /* AGRequestBinary.m */; };
 		4A3700631C86ED8400A4C1D8 /* AGRequestBinary.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A3700601C86E21500A4C1D8 /* AGRequestBinary.h */; };
@@ -49,7 +49,7 @@
 		4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E419D1083200D7F178 /* AGRemoter.m */; };
 		4AD7D1E919D1091300D7F178 /* DSRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1E819D1091300D7F178 /* DSRequestInfo.m */; };
 		4AD7D1F119D1096500D7F178 /* AGRemoterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1ED19D1096500D7F178 /* AGRemoterResult.m */; };
-		4AD7D1F219D1096500D7F178 /* AGRemoterResultError.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */; };
+		4AD7D1F219D1096500D7F178 /* AGRemoterError.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D1EF19D1096500D7F178 /* AGRemoterError.m */; };
 		4AD7D23719D1150200D7F178 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */; };
 		4AD7D23919D1150700D7F178 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */; };
 		4AD7D28219D151A100D7F178 /* AGNetworkDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */; };
@@ -74,7 +74,7 @@
 				4A0CA5401B4F810F00DF9379 /* DSRequestInfo.h in CopyFiles */,
 				4A0CA5421B4F810F00DF9379 /* AGRemoter.h in CopyFiles */,
 				4A0CA5441B4F810F00DF9379 /* AGRemoterResult.h in CopyFiles */,
-				4A0CA5451B4F810F00DF9379 /* AGRemoterResultError.h in CopyFiles */,
+				4A0CA5451B4F810F00DF9379 /* AGRemoterError.h in CopyFiles */,
 				4A0CA5471B4F810F00DF9379 /* AGNetworkDefine.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -142,8 +142,8 @@
 		4AD7D1E819D1091300D7F178 /* DSRequestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSRequestInfo.m; sourceTree = "<group>"; };
 		4AD7D1EC19D1096500D7F178 /* AGRemoterResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoterResult.h; sourceTree = "<group>"; };
 		4AD7D1ED19D1096500D7F178 /* AGRemoterResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoterResult.m; sourceTree = "<group>"; };
-		4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoterResultError.h; sourceTree = "<group>"; };
-		4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoterResultError.m; sourceTree = "<group>"; };
+		4AD7D1EE19D1096500D7F178 /* AGRemoterError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoterError.h; sourceTree = "<group>"; };
+		4AD7D1EF19D1096500D7F178 /* AGRemoterError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoterError.m; sourceTree = "<group>"; };
 		4AD7D20219D10BA500D7F178 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		4AD7D20319D10BA500D7F178 /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -257,8 +257,8 @@
 				4AD7D1E419D1083200D7F178 /* AGRemoter.m */,
 				4AD7D1EC19D1096500D7F178 /* AGRemoterResult.h */,
 				4AD7D1ED19D1096500D7F178 /* AGRemoterResult.m */,
-				4AD7D1EE19D1096500D7F178 /* AGRemoterResultError.h */,
-				4AD7D1EF19D1096500D7F178 /* AGRemoterResultError.m */,
+				4AD7D1EE19D1096500D7F178 /* AGRemoterError.h */,
+				4AD7D1EF19D1096500D7F178 /* AGRemoterError.m */,
 				4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */,
 				4AD7D28119D151A100D7F178 /* AGNetworkDefine.m */,
 				4A3700601C86E21500A4C1D8 /* AGRequestBinary.h */,
@@ -394,7 +394,7 @@
 				4AB9C0811D20E04100549476 /* UIProgressView+AFNetworking.m in Sources */,
 				4AB9C0731D20E04100549476 /* AFHTTPRequestOperation.m in Sources */,
 				4AB9C07B1D20E04100549476 /* AFURLSessionManager.m in Sources */,
-				4AD7D1F219D1096500D7F178 /* AGRemoterResultError.m in Sources */,
+				4AD7D1F219D1096500D7F178 /* AGRemoterError.m in Sources */,
 				4AD7D28219D151A100D7F178 /* AGNetworkDefine.m in Sources */,
 				4AC3CC7E1CCF39B50025410B /* DARequest.m in Sources */,
 				4AB9C0771D20E04100549476 /* AFSecurityPolicy.m in Sources */,

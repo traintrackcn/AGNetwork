@@ -9,19 +9,21 @@
 #import "AGModel.h"
 
 @class AGRemoterResult;
-@interface AGRemoterResultError : AGModel
+@interface AGRemoterError : AGModel
 
-- (void)updateWithOriginalErrorUserInfo:(id)userInfo;
-//- (void)updateWithRecoverySuggestionString:(NSString *)recoverySuggestionStr;
+- (void)parseErrorUserInfo:(id)userInfo;
 
-//@property (nonatomic, strong) id raw;
-//@property (nonatomic, assign) NSInteger code;
+- (id)request;
+- (id)response;
+- (id)recoverySuggestion;
+- (id)headers;
+
 @property (nonatomic, weak) AGRemoterResult *result;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic, strong) NSString *developMessage;
-//@property (nonatomic, strong) NSArray *failures;
 @property (nonatomic, strong) NSString *localizedDesc;
 @property (nonatomic, strong) NSURL *failingURL;
+
 
 @end

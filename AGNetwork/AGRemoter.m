@@ -7,24 +7,16 @@
 //
 
 #import "AGRemoter.h"
-//#import "AGHTTPClient.h"
 #import "AGRemoterResult.h"
 #import "GlobalDefine.h"
-//#import "AGFlurryMonitor.h"
-#import "AGRemoterResultError.h"
+#import "AGRemoterError.h"
 #import "DSValueUtil.h"
 #import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
-//#import "UIImageView+AFNetworking.h"
-
 #import "DSRequestInfo.h"
-//#import "DSReachabilityManager.h"
-
 #import "AGRequestBinary.h"
-//#import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 #import "AFURLResponseSerialization.h"
-//#import "AFJSONRequestOperation.h"
 
 #define kErrorCode @"code"
 
@@ -59,10 +51,10 @@
     [requestInfo assemble];
     
     //log without headers
-    TLOG(@"[Request] %@ %@  %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+//    TLOG(@"[Request] %@ %@  %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
     
     // log with headers
-//    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo allHTTPHeaderFields], (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo allHTTPHeaderFields], (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:requestInfo];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -140,15 +132,7 @@
 
 - (AGRemoterResult *)assembleResultForError:(NSError *)error{
     AGRemoterResult *result = [AGRemoterResult instance];
-    
-    if (error) {
-        AGRemoterResultError *parsedError = [[AGRemoterResultError alloc] init];
-        [parsedError updateWithOriginalErrorUserInfo:error.userInfo];
-        [parsedError setResult:result];
-        [result setErrorParsed:parsedError];
-        [result setErrorOrigin:error];
-        
-    }
+    if (error) [result parseError:error];
     return result;
 }
 
@@ -158,7 +142,7 @@
     TLOG(@"[Response %@] %@ %@ ", result.type.uppercaseString,[request method], [request URL]);
 //    TLOG(@"result isError -> %d", result.isError);
     if ( [result isError]){
-        TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], result.errorOrigin);
+        TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], result.errorParsed.recoverySuggestion);
         [self dispatchRemoterErrorOccured:result];
     }else{
         [self dispatchRemoterResultReceived:result];

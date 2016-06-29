@@ -8,7 +8,7 @@
 
 #import "AGModel.h"
 
-@class AGRemoterResultError;
+@class AGRemoterError;
 
 @class DSRequestInfo;
 
@@ -25,12 +25,13 @@
 - (NSString *)errorType;
 - (NSString *)errorMessage;
 
+- (void)parseError:(NSError *)error;
+
 @property (nonatomic, assign) NSInteger code;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) DSRequestInfo *request;
 @property (nonatomic, strong) id responseData;
-@property (nonatomic, strong) AGRemoterResultError *errorParsed;
-@property (nonatomic, strong) NSError *errorOrigin;
+@property (nonatomic, strong) AGRemoterError *errorParsed;
 @property (nonatomic, strong) id responseHeaders;
 
 @end

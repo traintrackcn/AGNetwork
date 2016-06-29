@@ -7,7 +7,7 @@
 //
 
 #import "AGRemoterResult.h"
-#import "AGRemoterResultError.h"
+#import "AGRemoterError.h"
 
 @implementation AGRemoterResult
 
@@ -60,6 +60,15 @@
     return YES;
 }
 
+
+#pragma mark - 
+
+- (void)parseError:(NSError *)error{
+    AGRemoterError *item = [[AGRemoterError alloc] init];
+    [item parseErrorUserInfo:error.userInfo];
+    [item setResult:self];
+    [self setErrorParsed:item];
+}
 
 
 #pragma mark - properties
