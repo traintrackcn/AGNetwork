@@ -51,10 +51,12 @@
     [requestInfo assemble];
     
     //log without headers
-//    TLOG(@"[Request] %@ %@  %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+    NSInteger dataLen = (unsigned long)[requestInfo requestBinary].data.length;
+    NSString *dataLenStr = dataLen > 0?[NSString stringWithFormat:@"binary:%@",[NSNumber numberWithInteger:dataLen]]:@"";
+    TLOG(@"[Request] %@ %@ %@ %@ ",[requestInfo method], [requestInfo URL].absoluteString, dataLenStr,  [requestInfo requestBody]);
     
     // log with headers
-    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo allHTTPHeaderFields], (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+//    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo allHTTPHeaderFields], (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:requestInfo];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -71,7 +73,7 @@
     
 //    oper
     
-    [self enqueue:operation];
+    [self enqueue:operation hideActivityIndicator:requestInfo.hideActivityIndicator];
     
     
 }
@@ -112,7 +114,8 @@
 }
 
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
-    
+//    TLOG(@"operation.responseString -> %@",operation.responseString);
+//    TLOG(@"error -> %@", error);
 //    TLOG(@"before assemble error");
     AGRemoterResult *result = [self assembleResultForError:error];
 //    DSRequestInfo *request = (DSRequestInfo *)operation.request;
@@ -122,10 +125,19 @@
     }else{
         [result setCode: operation.response.statusCode ];
     }
-//    TLOG(@"before print error detail");
+
+    if (![result isError]) { //filter invalid strings
+        NSString *responseString = operation.responseString;
+        responseString = [responseString stringByReplacingOccurrencesOfString:@"NaN" withString:@"null"];
+//        TLOG(@"responseString -> %@", responseString);
+        NSData *responseBinaryData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+        id responseJSON = [NSJSONSerialization JSONObjectWithData:responseBinaryData options:NSJSONReadingAllowFragments error:nil];
+//        TLOG(@"responseJSON -> %@", responseJSON);
+        [result setResponseData: [responseJSON objectForKey:@"response"] ];
+        
+    }
     
-//    if ([result isError] && ![result isTimeout]) TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], error);
-    
+    [result setResponseHeaders:operation.response.allHeaderFields];
     [result setRequest:(DSRequestInfo *)[operation request] ];
     [self processResult:result];
 }

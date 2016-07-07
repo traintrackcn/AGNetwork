@@ -22,13 +22,17 @@
         str = @"TIMEOUT";
     }else if ([self isNotModified]){
         str = @"Not Modified";
+    }else if ([self isInvalidConnection]){
+        str = @"Invalid Connection";
+    }else if ([self isInvalidAuthentication]){
+        str = @"Invalid Authentication";
     }
     
     return str;
 }
 
 - (BOOL)isTimeout{
-    if (self.code==504 || self.code == 0) return YES;
+    if (self.code==504) return YES;
     return NO;
 }
 
@@ -68,6 +72,7 @@
     [item parseErrorUserInfo:error.userInfo];
     [item setResult:self];
     [self setErrorParsed:item];
+    [self setErrorOriginal:error];
 }
 
 

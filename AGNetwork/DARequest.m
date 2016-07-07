@@ -25,6 +25,10 @@
     return [[self.class alloc] init];
 }
 
+- (void)dealloc{
+    TLOG(@"%@", NSStringFromClass(self.class));
+}
+
 #pragma mark - 
 
 - (void)cancel{
@@ -87,6 +91,7 @@
 //    TLOG(@"requestBody -> %@ rUnit.requestBody -> %@", requestBody, _rUnit.requestBody);
     
     [_rUnit setRandomRequestId:self.randomRequestId];
+    [_rUnit setHideActivityIndicator:self.hideActivityIndicator];
     
     return _rUnit;
 }

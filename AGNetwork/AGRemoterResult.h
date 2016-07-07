@@ -32,6 +32,7 @@
 @property (nonatomic, strong) DSRequestInfo *request;
 @property (nonatomic, strong) id responseData;
 @property (nonatomic, strong) AGRemoterError *errorParsed;
+@property (nonatomic, strong) NSError *errorOriginal;
 @property (nonatomic, strong) id responseHeaders;
 
 @end

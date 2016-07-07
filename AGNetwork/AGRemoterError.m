@@ -97,4 +97,25 @@
     return [self.recoverySuggestion objectForKey:@"response"];
 }
 
+
+#pragma mark - util
+
+
+- (NSArray *)messages{
+    NSMutableArray *arr = [NSMutableArray array];
+    
+    //append message for users
+    if (self.message) {
+        [arr addObjectsFromArray:[self.message componentsSeparatedByString:@"\\n"]];
+    }
+    if (arr.count == 0) { //if no message for users, append message for developers
+        if (self.localizedDesc) [arr addObject:self.localizedDesc];
+        if (self.developMessage){
+            if (![self.developMessage isEqualToString:@""]) [arr addObject:self.developMessage];
+        }
+    }
+
+    return arr;
+}
+
 @end

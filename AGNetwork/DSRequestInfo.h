@@ -32,5 +32,6 @@
 @property (nonatomic, strong) NSDictionary *userInfo;
 
 @property (nonatomic, assign) BOOL randomRequestId;
+@property (nonatomic, assign) BOOL hideActivityIndicator;
 
 @end

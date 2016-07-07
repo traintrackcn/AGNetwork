@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 @property (nonatomic, strong) id userInfo;
 
 @property (nonatomic, assign) BOOL randomRequestId;
+@property (nonatomic, assign) BOOL hideActivityIndicator;
 @property (nonatomic, assign) BOOL cacheEnabled;
 
 @end

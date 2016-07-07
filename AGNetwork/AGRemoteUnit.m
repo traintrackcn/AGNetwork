@@ -63,6 +63,7 @@
     }
     [_requestInfo setMethod:self.methodStr];
     [_requestInfo setRandomRequestId:self.randomRequestId];
+    [_requestInfo setHideActivityIndicator:self.hideActivityIndicator];
     if (self.requestType) [_requestInfo setRequestType:self.requestType];
     if (self.requestBody) [_requestInfo setRequestBody:self.requestBody];
     if (self.requestBinary) [_requestInfo setRequestBinary:self.requestBinary];

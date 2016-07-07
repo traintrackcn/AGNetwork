@@ -7,8 +7,7 @@
 //
 
 #import "DAImageLoader.h"
-//#import "AFHTTPClient.h"
-//#import "AFImageRequestOperation.h"
+#import "AGRemoterError.h"
 #import "GlobalDefine.h"
 #import "DAFileUtil.h"
 #import "AFHTTPRequestOperation.h"
@@ -114,7 +113,7 @@
         completion(img, nil);
         return;
     }
-    TLOG(@"%@ imageURL -> %@", self, url);
+//    TLOG(@"REQUEST -> %@", url);
     AFHTTPRequestOperation *operation = [self operationInstanceWithURL:url completion:completion];
     [self enqueue:operation];
 }
@@ -132,7 +131,10 @@
         
         completion(responseObject, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        TLOG(@"error -> %@", error);
+//        TLOG(@"error -> %@", error);
+        AGRemoterError *remoterError = [[AGRemoterError alloc] init];
+        [remoterError parseErrorUserInfo:error.userInfo];
+        TLOG(@"%@ %@", remoterError.failingURL, remoterError.messages);
         completion(nil, error);
     }];
     return operation;

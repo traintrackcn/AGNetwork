@@ -32,5 +32,6 @@
 - (void)requestSuccessfulWithCompletion:(void (^)(id, id))completion data:(id)data  userInfo:(id)userInfo;
 
 @property (nonatomic, assign) BOOL randomRequestId;
+@property (nonatomic, assign) BOOL hideActivityIndicator;
 
 @end

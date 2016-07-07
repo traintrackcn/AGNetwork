@@ -48,7 +48,7 @@
 }
 
 - (void)requestSuccessfulWithCompletion:(void (^)(id, id))completion data:(id)data userInfo:(id)userInfo{
-    TLOG(@"data -> %@", data);
+//    TLOG(@"data -> %@", data);
     completion(data, nil);
 }
 
