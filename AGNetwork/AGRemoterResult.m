@@ -56,6 +56,7 @@
     return NO;
 }
 
+//defines error when get invalid content or content not modified
 - (BOOL)isError{
     if (self.code == 200) return NO;
     if (self.code == 201) return NO;
@@ -80,13 +81,13 @@
 
 
 
-- (NSString *)errorType{
-    return self.errorParsed.type;
-}
+//- (NSString *)errorType{
+//    return self.errorParsed.type;
+//}
 
-- (NSString *)errorMessage{
-    return self.errorParsed.message;
-}
+//- (NSString *)errorMessage{
+//    return self.errorParsed.message;
+//}
 
 
 

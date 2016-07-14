@@ -17,6 +17,7 @@
 }
 
 @property (nonatomic, strong) id recoverySuggestion;
+@property (nonatomic, strong) NSString *message;
 
 @end
 

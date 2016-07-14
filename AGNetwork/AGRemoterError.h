@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak) AGRemoterResult *result;
 @property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSString *message;
+
 @property (nonatomic, strong) NSString *developMessage;
 @property (nonatomic, strong) NSString *localizedDesc;
 @property (nonatomic, strong) NSURL *failingURL;

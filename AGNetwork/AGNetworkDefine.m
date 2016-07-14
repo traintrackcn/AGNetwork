@@ -11,6 +11,7 @@
 #import "DSDeviceUtil.h"
 //#import "AGNetworkMacro.h"
 #import "GlobalDefine.h"
+//#import "Flurry.h"
 
 @implementation AGNetworkDefine
 
@@ -40,6 +41,10 @@
 }
 
 
+//- (void)setFlurryKey:(NSString *)flurryKey{
+//    _flurryKey = flurryKey;
+//    [Flurry startSession:flurryKey];
+//}
 
 #pragma mark - headers
 

@@ -17,6 +17,7 @@
 #import "AGRequestBinary.h"
 #import "AFHTTPRequestOperation.h"
 #import "AFURLResponseSerialization.h"
+#import "DAAppMonitor.h"
 
 #define kErrorCode @"code"
 
@@ -51,12 +52,14 @@
     [requestInfo assemble];
     
     //log without headers
-    NSInteger dataLen = (unsigned long)[requestInfo requestBinary].data.length;
-    NSString *dataLenStr = dataLen > 0?[NSString stringWithFormat:@"binary:%@",[NSNumber numberWithInteger:dataLen]]:@"";
-    TLOG(@"[Request] %@ %@ %@ %@ ",[requestInfo method], [requestInfo URL].absoluteString, dataLenStr,  [requestInfo requestBody]);
+//    NSInteger dataLen = (unsigned long)[requestInfo requestBinary].data.length;
+//    NSString *dataLenStr = dataLen > 0?[NSString stringWithFormat:@"binary:%@",[NSNumber numberWithInteger:dataLen]]:@"";
+//    TLOG(@"[Request] %@ %@ %@ %@ ",[requestInfo method], [requestInfo URL].absoluteString, dataLenStr,  [requestInfo requestBody]);
     
     // log with headers
-//    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo allHTTPHeaderFields], (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+    id headers = [requestInfo allHTTPHeaderFields];
+    headers = @"";
+    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, headers, (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:requestInfo];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -135,6 +138,8 @@
 //        TLOG(@"responseJSON -> %@", responseJSON);
         [result setResponseData: [responseJSON objectForKey:@"response"] ];
         
+    }else{
+        TLOG(@"request headers -> %@", result.errorParsed.headers);
     }
     
     [result setResponseHeaders:operation.response.allHeaderFields];
@@ -151,14 +156,18 @@
 - (void)processResult:(AGRemoterResult *)result{
     DSRequestInfo *request = (DSRequestInfo *)result.request;
     
-    TLOG(@"[Response %@] %@ %@ ", result.type.uppercaseString,[request method], [request URL]);
+    
+    
 //    TLOG(@"result isError -> %d", result.isError);
     if ( [result isError]){
-        TLOG(@"[Response Error] %@ %@ %@", [request method], [request URL], result.errorParsed.recoverySuggestion);
+        TLOG(@"[Response Error(%@)] %@ %@ %@", @(result.code), [request method], [request URL], result.errorParsed.recoverySuggestion);
         [self dispatchRemoterErrorOccured:result];
     }else{
+        TLOG(@"[Response %@(%@)] %@ %@ ", result.type.uppercaseString , @(result.code),[request method], [request URL]);
         [self dispatchRemoterResultReceived:result];
     }
+    
+    [APP_MONITOR logRemoterResult:result];
     
 }
 

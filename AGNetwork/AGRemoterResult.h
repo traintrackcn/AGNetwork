@@ -22,8 +22,8 @@
 - (BOOL)isInvalidConnection;
 - (NSString *)type;
 
-- (NSString *)errorType;
-- (NSString *)errorMessage;
+//- (NSString *)errorType;
+//- (NSString *)errorMessage;
 
 - (void)parseError:(NSError *)error;
 

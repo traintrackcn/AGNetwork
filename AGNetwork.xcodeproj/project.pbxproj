@@ -144,8 +144,6 @@
 		4AD7D1ED19D1096500D7F178 /* AGRemoterResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoterResult.m; sourceTree = "<group>"; };
 		4AD7D1EE19D1096500D7F178 /* AGRemoterError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoterError.h; sourceTree = "<group>"; };
 		4AD7D1EF19D1096500D7F178 /* AGRemoterError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoterError.m; sourceTree = "<group>"; };
-		4AD7D20219D10BA500D7F178 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		4AD7D20319D10BA500D7F178 /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		4AD7D23619D1150200D7F178 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4AD7D23819D1150700D7F178 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		4AD7D28019D151A100D7F178 /* AGNetworkDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNetworkDefine.h; sourceTree = "<group>"; };
@@ -280,18 +278,8 @@
 			children = (
 				4AB9C04C1D20E04100549476 /* AFNetworking */,
 				4AB9C0601D20E04100549476 /* UIKit+AFNetworking */,
-				4AD7D20119D10BA500D7F178 /* Flurry */,
 			);
 			path = Shared3rd;
-			sourceTree = "<group>";
-		};
-		4AD7D20119D10BA500D7F178 /* Flurry */ = {
-			isa = PBXGroup;
-			children = (
-				4AD7D20219D10BA500D7F178 /* Flurry.h */,
-				4AD7D20319D10BA500D7F178 /* libFlurry_5.3.0.a */,
-			);
-			path = Flurry;
 			sourceTree = "<group>";
 		};
 		E80D8FBEA8ED450FAF647832 /* Frameworks */ = {
@@ -495,17 +483,19 @@
 					"$(PROJECT_DIR)/Shared3rd/**",
 					../3rd/libOpen,
 					../3rd/thirdPartyOpenResources,
+					../3rd/AGAppMonitor,
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-llibOpen",
 					"-lthirdPartyOpenResources",
+					"-l\"libAGAppMonitor\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"../3rd/thirdPartyOpenResources/include\" \"../3rd/libOpen/include\"";
+				USER_HEADER_SEARCH_PATHS = "\"../3rd/thirdPartyOpenResources/include\" \"../3rd/libOpen/include\" \"../3rd/AGAppMonitor/include\"";
 			};
 			name = Debug;
 		};
@@ -517,16 +507,18 @@
 					"$(PROJECT_DIR)/Shared3rd/**",
 					../3rd/libOpen,
 					../3rd/thirdPartyOpenResources,
+					../3rd/AGAppMonitor,
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-llibOpen",
 					"-lthirdPartyOpenResources",
+					"-l\"libAGAppMonitor\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"../3rd/thirdPartyOpenResources/include\" \"../3rd/libOpen/include\"";
+				USER_HEADER_SEARCH_PATHS = "\"../3rd/thirdPartyOpenResources/include\" \"../3rd/libOpen/include\" \"../3rd/AGAppMonitor/include\"";
 			};
 			name = Release;
 		};

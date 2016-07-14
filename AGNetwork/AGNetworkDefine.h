@@ -42,7 +42,7 @@
 @property (nonatomic, strong) NSString *clientID;
 @property (nonatomic, strong) NSString *clientSecret;
 @property (nonatomic, assign) BOOL allowInvalidSSL;
-//@property (nonatomic, assign) BOOL isOG;
+//@property (nonatomic, strong) NSString *flurryKey;
 
 //@property (nonatomic, strong) NSMutableDictionary *defaultHeadersForThirdParty;
 @property (nonatomic, strong) NSMutableDictionary *defaultHeaders;
