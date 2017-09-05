@@ -23,13 +23,17 @@
 - (id)requestType:(id)userInfo;
 - (id)requestBody:(id)userInfo;
 - (id)requestBinary:(id)userInfo;
+//- (id)requestForm:(id)userInfo;
 - (id)thirdPartyUrl:(id)userInfo;
 - (id)thirdParthHeaders:(id)userInfo;
 - (id)headers:(id)userInfo;
+- (id)protocolVersion:(id)userInfo;
+- (NSTimeInterval)timeoutInterval;
 
 - (void)requestWithCompletion:(void (^)(id, id))completion;
 - (void)requestWithCompletion:(void (^)(id, id))completion userInfo:(id)userInfo;
 - (void)requestSuccessfulWithCompletion:(void (^)(id, id))completion data:(id)data  userInfo:(id)userInfo;
+- (void)requestFailedWithCompletion:(void(^)(id,id))completion error:(id)error userInfo:(id)userInfo;
 
 @property (nonatomic, assign) BOOL randomRequestId;
 @property (nonatomic, assign) BOOL hideActivityIndicator;

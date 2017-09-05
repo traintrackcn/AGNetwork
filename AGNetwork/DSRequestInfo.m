@@ -16,6 +16,8 @@
 #import "AGNetworkDefine.h"
 #import "NSObject+Singleton.h"
 #import "AGRequestBinary.h"
+#import "LITRequestForm.h"
+#import "LITRequestFormField.h"
 
 @interface DSRequestInfo(){
     
@@ -100,9 +102,10 @@
 }
 
 - (void)assemble{
+//    TLOG(@"");
      @try {
         [self setHTTPMethod:[self method]];
-        [self setTimeoutInterval:60];
+//        [self setTimeoutInterval:60];
 
         if ([self thirdPartyUrl]) {
             [self setURL:self.thirdPartyUrl];
@@ -159,7 +162,7 @@
     //            [_defaultBody appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [_defaultBody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [_defaultBody appendData:self.requestBinary.data];
-    [_defaultBody appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [_defaultBody appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 
     
     [_defaultBody appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -184,17 +187,47 @@
     return _defaultBody;
 }
 
+- (NSData *)defaultBodyWithRequestForm{
+    _defaultBody = [NSMutableData data];
+    
+    LITRequestForm *form = (LITRequestForm *)self.requestBody;
+    NSArray *fields = form.fields;
+    
+    for (NSInteger i = 0; i<fields.count; i++) {
+        LITRequestFormField *field = [fields objectAtIndex:i];
+        [_defaultBody appendData:form.boundary];
+        [_defaultBody appendData:field.body];
+    }
+    [_defaultBody appendData:form.boundaryEnd];
+    
+    
+    TLOG(@"body str -> %@ %@", [[NSString alloc] initWithData:_defaultBody encoding:NSUTF8StringEncoding] , _defaultBody);
+    
+    //headers
+    [self setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",form.boundarySymbol] forHTTPHeaderField:HTTP_HEAD_CONTENT_TYPE];
+    [self setValue:self.defaultBodyContentLength forHTTPHeaderField:@"Content-Length"];
+    
+    
+    return _defaultBody;
+}
+
 - (id)defaultBodyContentLength{
-    return [[NSNumber numberWithInteger:[_defaultBody length]] stringValue];
+    return [@([_defaultBody length]) stringValue];
 }
 
 - (NSData *)defaultBody{
 //    TLOG(@"self.requestBinary -> %@", self.requestBinary);
+//    TLOG(@"self.requestBody -> %@", self.requestBody);
+    
+    if ([self.requestBody isKindOfClass:[LITRequestForm class]]) return [self defaultBodyWithRequestForm];
     if (self.requestBody&&!self.requestBinary) return [self defaultBodyWithRequestBody];
     if (!self.requestBody&&self.requestBinary) {
         if (self.requestBinary.sendAsForm) return [self defaultBodyWithRequestBinaryAsForm];
         return [self defaultBodyWithRequestBinary];
     }
+    
+    
+    
     return [NSData data];
 }
 

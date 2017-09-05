@@ -71,6 +71,8 @@
     if (self.thirdPartyUrl) [_requestInfo setThirdPartyUrl:self.thirdPartyUrl];
     if (self.thirdPartyHeaders) [_requestInfo setThirdPartyHeaders:self.thirdPartyHeaders];
     if (self.headers) [_requestInfo setHeaders:self.headers];
+//    if (self.requestForm) [_requestInfo setRequestForm:self.requestForm];
+    [_requestInfo setTimeoutInterval:self.timeoutInterval];
     return _requestInfo;
 }
 

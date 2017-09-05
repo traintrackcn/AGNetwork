@@ -24,12 +24,12 @@
 
 - (void)REQUEST:(NSURL *)fileURL localURL:(NSURL *)localURL completion:(void(^)(id data, id error))completion{
     
-    if ([DA_FILE_UTIL isExistLocalURL:localURL]) {
-        NSData *data = [NSData dataWithContentsOfFile:localURL.absoluteString];
-        TLOG(@"[in cache] %@", localURL.absoluteString);
-        completion(data, nil);
-        return;
-    }
+//    if ([DA_FILE_UTIL isExistLocalURL:localURL]) {
+//        NSData *data = [NSData dataWithContentsOfFile:localURL.absoluteString];
+//        TLOG(@"[in cache] %@", localURL.absoluteString);
+//        completion(data, nil);
+//        return;
+//    }
     
     
 //    AFHTTPRequestOperation *operation = [self operationInstanceWithFileURL:fileURL localURL:localURL completion:completion];

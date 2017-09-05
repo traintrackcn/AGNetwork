@@ -20,8 +20,12 @@
 //#define HTTP_HEAD_AUTH_TOKEN @"X-Authentication-Token"
 #define HTTP_HEAD_DEVICE_ID @"X-Device-UUID"
 #define HTTP_HEAD_DEVICE_INFO @"X-Device-Info"
+#define HTTP_HEAD_OS_INFO @"X-OS-Info"
 #define HTTP_HEAD_WSSID_AUTH @"X-WSSID-Authorization"
 #define HTTP_HEAD_COOKIE @"Cookie"
+#define HTTP_HEAD_CLIENT_ID @"x-client-id"
+#define HTTP_HEAD_CLIENT_SECRET @"x-client-secret"
+#define HTTP_HEAD_COMPANY_CODE @"X-Company-Code"
 
 #define HTTP_OG_HEAD_DEVICE_ID @"X-Organo-Device-UUID"
 
@@ -32,7 +36,8 @@
 @class AGRemoterResult;
 
 
-#define AG_NETWORK_DEFINE [AGNetworkDefine singleton]
+//#define AG_NETWORK_DEFINE [AGNetworkDefine singleton]
+#define NETWORK [AGNetworkDefine singleton]
 
 @interface AGNetworkDefine : AGModel
 

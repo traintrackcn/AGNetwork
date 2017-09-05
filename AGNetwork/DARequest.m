@@ -26,7 +26,7 @@
 }
 
 - (void)dealloc{
-    TLOG(@"%@", NSStringFromClass(self.class));
+//    TLOG(@"%@", NSStringFromClass(self.class));
 }
 
 #pragma mark - 
@@ -54,7 +54,8 @@
 //        TLOG(@"data -> %@", data);
     
     if (error) {
-        completion(nil, error);
+//        completion(nil, error);
+        [self requestFailedWithCompletion:completion error:error userInfo:userInfo];
         return;
     }
     
@@ -67,6 +68,10 @@
     completion(data, nil);
 }
 
+- (void)requestFailedWithCompletion:(void (^)(id, id))completion error:(id)error userInfo:(id)userInfo{
+    completion(nil,error);
+}
+
 - (AGRemoteUnit *)rUnit:(id)userInfo{
     if (!_rUnit) {
         _rUnit = [AGRemoteUnit instance];
@@ -76,9 +81,11 @@
     id requestType = [self requestType:userInfo];
     id requestBody = [self requestBody:userInfo];
     id requestBinary = [self requestBinary:userInfo];
+//    id requestForm = [self requestForm:userInfo];
     id thirdPartyUrl = [self thirdPartyUrl:userInfo];
     id thirdPartyHeaders = [self thirdParthHeaders:userInfo];
     id headers = [self headers:userInfo];
+    id protocolVersion = [self protocolVersion:userInfo];
     
     if (requestType) [_rUnit setRequestType:requestType];
     if (requestBody) [_rUnit setRequestBody:requestBody];
@@ -86,12 +93,15 @@
     if (thirdPartyUrl) [_rUnit setThirdPartyUrl:thirdPartyUrl];
     if (thirdPartyHeaders) [_rUnit setThirdPartyHeaders:thirdPartyHeaders];
     if (headers) [_rUnit setHeaders:headers];
+    if (protocolVersion) [_rUnit setProtocolVersion:protocolVersion];
+//    if (requestForm) [_rUnit setRequestForm:requestForm];
 //    TLOG(@"thirdPartyUrl -> %@", thirdPartyUrl);
     
 //    TLOG(@"requestBody -> %@ rUnit.requestBody -> %@", requestBody, _rUnit.requestBody);
     
     [_rUnit setRandomRequestId:self.randomRequestId];
     [_rUnit setHideActivityIndicator:self.hideActivityIndicator];
+    [_rUnit setTimeoutInterval:self.timeoutInterval];
     
     return _rUnit;
 }
@@ -108,6 +118,10 @@
     return nil;
 }
 
+//- (id)requestForm:(id)userInfo{
+//    return nil;
+//}
+
 - (id)thirdPartyUrl:(id)userInfo{
     return nil;
 }
@@ -120,8 +134,16 @@
     return nil;
 }
 
+- (id)protocolVersion:(id)userInfo{
+    return nil;
+}
+
 - (NSInteger)method{
     return AGRemoteUnitMethodGET;
+}
+
+- (NSTimeInterval)timeoutInterval{
+    return 60.0;
 }
 
 #pragma mark - properties

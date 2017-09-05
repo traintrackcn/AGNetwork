@@ -8,8 +8,11 @@
 
 #import "AGModel.h"
 
-@class AGRemoterError;
+#define META_CODE_UNEXPECTED -999
+#define META_CODE_ERROR_PARSING -1
+#define META_CODE_CANCELED 1
 
+@class AGRemoterError;
 @class DSRequestInfo;
 
 @interface AGRemoterResult : AGModel
@@ -22,10 +25,8 @@
 - (BOOL)isInvalidConnection;
 - (NSString *)type;
 
-//- (NSString *)errorType;
-//- (NSString *)errorMessage;
 
-- (void)parseError:(NSError *)error;
+- (void)parseError:(NSError *)error errorRaw:(id)errorRaw responseRaw:(id)responseRaw;
 
 @property (nonatomic, assign) NSInteger code;
 @property (nonatomic, strong) NSString *type;

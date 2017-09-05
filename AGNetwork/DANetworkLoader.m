@@ -56,7 +56,7 @@
 
 - (void)enqueue:(AFHTTPRequestOperation *)operation hideActivityIndicator:(BOOL)hideActivityIndicator{
     [self.queue addObject:operation];
-    if (AG_NETWORK_DEFINE.allowInvalidSSL) [operation setSecurityPolicy:self.securityPolicy];
+    if (NETWORK.allowInvalidSSL) [operation setSecurityPolicy:self.securityPolicy];
     
     if (hideActivityIndicator){
         [operation setUserInfo:@{
@@ -80,6 +80,7 @@
     if ([self.queue containsObject:operation]) {
         [self.queue removeObject:operation];
         [operation cancel];
+        
         operation = nil;
     }
 }

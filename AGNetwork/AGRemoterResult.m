@@ -8,6 +8,7 @@
 
 #import "AGRemoterResult.h"
 #import "AGRemoterError.h"
+#import "GlobalDefine.h"
 
 @implementation AGRemoterResult
 
@@ -68,27 +69,18 @@
 
 #pragma mark - 
 
-- (void)parseError:(NSError *)error{
-    AGRemoterError *item = [[AGRemoterError alloc] init];
-    [item parseErrorUserInfo:error.userInfo];
-    [item setResult:self];
-    [self setErrorParsed:item];
+- (void)parseError:(NSError *)error errorRaw:(id)errorRaw responseRaw:(id)responseRaw{
+//    TLOG(@"error -> %@ errorRaw -> %@ responseRaw -> %@", error, errorRaw, responseRaw);
+    if(!error && !errorRaw && !responseRaw ) return;
+    
+    AGRemoterError *errorParsed = [AGRemoterError instance];
+    if (error) [errorParsed parseError:error];
+    if (errorRaw) [errorParsed parseErrorRaw:errorRaw];
+    if (responseRaw) [errorParsed parseResponseRaw:responseRaw];
+    
+    [errorParsed setResult:self];
+    [self setErrorParsed:errorParsed];
     [self setErrorOriginal:error];
 }
-
-
-#pragma mark - properties
-
-
-
-//- (NSString *)errorType{
-//    return self.errorParsed.type;
-//}
-
-//- (NSString *)errorMessage{
-//    return self.errorParsed.message;
-//}
-
-
 
 @end

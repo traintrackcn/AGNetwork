@@ -27,7 +27,7 @@
 + (AGRemoter *)instanceWithDelegate:(id < AGRemoterDelegate>)aDelegate;
 - (void)send:(DSRequestInfo *)req;
 
-- (AGRemoterResult *)assembleResultForError:(NSError *)error;
+//- (AGRemoterResult *)assembleResultForError:(NSError *)error;
 - (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion;
 
 @property (nonatomic, weak) id < AGRemoterDelegate> delegate;

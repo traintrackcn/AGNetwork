@@ -56,13 +56,14 @@
         [_defaultHeaders setObject:[DSDeviceUtil identifier] forKey:HTTP_HEAD_DEVICE_ID];
         
         [_defaultHeaders setObject:[DSDeviceUtil systemInfo] forKey:HTTP_HEAD_DEVICE_INFO];
-        [_defaultHeaders setObject:@"en-US" forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
+        [_defaultHeaders setObject:@"iOS" forKey:HTTP_HEAD_OS_INFO];
+        
         [_defaultHeaders setObject:@"application/json; charset=utf-8" forKey:HTTP_HEAD_CONTENT_TYPE];
         [_defaultHeaders setObject:@"gzip" forKey:@"Accept-Encoding"];
     }
     
-    if ([AGNetworkDefine singleton].clientID) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientID forKey:@"X-Client-Id"];
-    if ([AGNetworkDefine singleton].clientSecret) [_defaultHeaders setObject:[AGNetworkDefine singleton].clientSecret forKey:@"X-Client-Secret"];
+    if (NETWORK.clientID) [_defaultHeaders setObject:NETWORK.clientID forKey:@"X-Client-Id"];
+    if (NETWORK.clientSecret) [_defaultHeaders setObject:NETWORK.clientSecret forKey:@"X-Client-Secret"];
     
 //    TLOG(@"token -> %@", self.token);
     
@@ -71,6 +72,9 @@
     }else{
         [_defaultHeaders removeObjectForKey:@"X-Authentication-Token"];
     }
+    
+    NSString *langID = [NSLocale preferredLanguages].firstObject;
+    [_defaultHeaders setObject:langID forKey:HTTP_HEAD_ACCEPT_LANGUAGE];
     
     return _defaultHeaders;
 }

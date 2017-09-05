@@ -58,7 +58,7 @@
     
     // log with headers
     id headers = [requestInfo allHTTPHeaderFields];
-    headers = @"";
+//    headers = @"";
     TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, headers, (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:requestInfo];
@@ -85,9 +85,9 @@
 
 #pragma mark -
 
-- (void)operation:(AFHTTPRequestOperation *)operation successfulWithResponse:(id)responseDataRaw{
+- (void)operation:(AFHTTPRequestOperation *)operation successfulWithResponse:(id)responseRaw{
 //    TLOG(@"operation.responseString -> %@",operation.responseString);
-//    TLOG(@"responseDataRaw -> %@", responseDataRaw);
+//    TLOG(@"responseDataRaw -> %@", responseRaw);
     NSDictionary *responseHeaders =  operation.response.allHeaderFields;
     AGRemoterResult *result = [AGRemoterResult instance];
     
@@ -95,36 +95,58 @@
     
     if (responseHeaders != nil) {
         NSString *serverCurrentTime = [responseHeaders objectForKey:@"X-SERVER-CURRENT-TIME"];
-        if ([AGNetworkDefine singleton].serverCurrentTimeReceivedBlock) {
-            [AGNetworkDefine singleton].serverCurrentTimeReceivedBlock(serverCurrentTime);
+        if (NETWORK.serverCurrentTimeReceivedBlock) {
+            NETWORK.serverCurrentTimeReceivedBlock(serverCurrentTime);
         }
     }
     
     id responseData;
     
-    if ([responseDataRaw isKindOfClass:[NSDictionary class]]) {
-        responseData = [responseDataRaw objectForKey:@"response"];
+    if ([responseRaw isKindOfClass:[NSDictionary class]]) {
+        responseData = [responseRaw objectForKey:@"response"];
     }
     
-    if (!responseData) responseData = responseDataRaw;
+    if (!responseData) responseData = responseRaw;
+    
+//    TLOG(@"responseData -> %@", responseData);
+    
 //    TLOG(@"before setCode");
     [result setCode: operation.response.statusCode ];
     [result setRequest: (DSRequestInfo *)[operation request] ];
     [result setResponseData: responseData ];
     [result setResponseHeaders:operation.response.allHeaderFields];
     
+    //find real code
+    if ([responseData isKindOfClass:[NSDictionary class]]){
+        id meta = [responseData objectForKey:@"meta"];
+        id code = [meta objectForKey:@"code"];
+        id errorRaw = [meta objectForKey:@"error"];
+        if (code) {
+            [result setCode:[code integerValue]];
+        }else if (errorRaw) {
+            [result setCode:META_CODE_UNEXPECTED];
+        }
+        
+        if (errorRaw) [result parseError:nil errorRaw:errorRaw responseRaw:nil];
+    }
+    
     [self processResult:result];
 }
 
+
+
 - (void)operation:(AFHTTPRequestOperation *)operation failedWithError:(NSError *)error{
-//    TLOG(@"operation.responseString -> %@",operation.responseString);
+//    TLOG(@"operation.responseString -> %@",operation.responseObject);
 //    TLOG(@"error -> %@", error);
 //    TLOG(@"before assemble error");
-    AGRemoterResult *result = [self assembleResultForError:error];
+//    AGRemoterResult *result = [self assembleResultForError:error responseData:operation.responseObject];
 //    DSRequestInfo *request = (DSRequestInfo *)operation.request;
     
+    AGRemoterResult *result = [AGRemoterResult instance];
+    [result parseError:error errorRaw:nil responseRaw:operation.responseObject];
+    
     if (operation.isCancelled) {
-        [result setCode:1];
+        [result setCode:META_CODE_CANCELED];
     }else{
         [result setCode: operation.response.statusCode ];
     }
@@ -133,13 +155,19 @@
         NSString *responseString = operation.responseString;
         responseString = [responseString stringByReplacingOccurrencesOfString:@"NaN" withString:@"null"];
 //        TLOG(@"responseString -> %@", responseString);
-        NSData *responseBinaryData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
-        id responseJSON = [NSJSONSerialization JSONObjectWithData:responseBinaryData options:NSJSONReadingAllowFragments error:nil];
-//        TLOG(@"responseJSON -> %@", responseJSON);
-        [result setResponseData: [responseJSON objectForKey:@"response"] ];
+        @try {
+            NSData *responseBinaryData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+            id responseJSON = [NSJSONSerialization JSONObjectWithData:responseBinaryData options:NSJSONReadingAllowFragments error:nil];
+            //        TLOG(@"responseJSON -> %@", responseJSON);
+            [result setResponseData: [responseJSON objectForKey:@"response"] ];
+        } @catch (NSException *exception) {
+            [result setCode:META_CODE_ERROR_PARSING];
+        } 
+        
+        
         
     }else{
-        TLOG(@"request headers -> %@", result.errorParsed.headers);
+//        TLOG(@"request headers -> %@", result.errorParsed.headers);
     }
     
     [result setResponseHeaders:operation.response.allHeaderFields];
@@ -147,11 +175,7 @@
     [self processResult:result];
 }
 
-- (AGRemoterResult *)assembleResultForError:(NSError *)error{
-    AGRemoterResult *result = [AGRemoterResult instance];
-    if (error) [result parseError:error];
-    return result;
-}
+
 
 - (void)processResult:(AGRemoterResult *)result{
     DSRequestInfo *request = (DSRequestInfo *)result.request;

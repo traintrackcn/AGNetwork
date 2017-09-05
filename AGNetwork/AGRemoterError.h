@@ -11,7 +11,9 @@
 @class AGRemoterResult;
 @interface AGRemoterError : AGModel
 
-- (void)parseErrorUserInfo:(id)userInfo;
+- (void)parseError:(NSError *)error;
+- (void)parseErrorRaw:(id)errorRaw;
+- (void)parseResponseRaw:(id)responseRaw;
 
 - (id)request;
 - (id)response;

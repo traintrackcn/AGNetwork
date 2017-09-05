@@ -24,21 +24,31 @@
     TLOG(@"%@", _requestType);
 }
 
-- (void)requestWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody{
+#pragma mark - full function request
+
+- (void)requestWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody protocolVersion:(id)protocolVersion{
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-//    @{
-//      @"request-type":requestType,
+    //    @{
+    //      @"request-type":requestType,
     if (requestType) [userInfo setValue:requestType forKey:@"request-type"];
     if (requestBody) [userInfo setValue:requestBody forKey:@"request-body"];
+    if (protocolVersion) [userInfo setValue:protocolVersion forKey:@"protocol-version"];
+//    if (requestForm) [userInfo setValue:requestForm forKey:@"request-form"];
     
     _requestType = requestType;
     
     _method = method;
     
     
-//    TLOG(@"requestType -> %@ requestBody -> %@ method -> %d", requestType, requestBody, method);
+    //    TLOG(@"requestType -> %@ requestBody -> %@ method -> %d", requestType, requestBody, method);
     
     [self requestWithCompletion:completion userInfo:userInfo];
+}
+
+#pragma mark -
+
+- (void)requestWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody{
+    [self requestWithCompletion:completion method:method requestType:requestType requestBody:requestBody protocolVersion:nil];
 }
 
 - (void)requestWithRandomRequestIdWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody{
@@ -63,6 +73,18 @@
 
 - (id)requestBody:(id)userInfo{
     return [userInfo objectForKey:@"request-body"];
+}
+
+- (id)protocolVersion:(id)userInfo{
+    return [userInfo objectForKey:@"protocol-version"];
+}
+
+- (id)requestBinary:(id)userInfo{
+    return [userInfo objectForKey:@"requset-binary"];
+}
+
+- (id)requestForm:(id)userInfo{
+    return [userInfo objectForKey:@"request-form"];
 }
 
 @end
