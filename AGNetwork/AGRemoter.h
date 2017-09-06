@@ -11,7 +11,6 @@
 #import "DANetworkLoader.h"
 
 @class AGRemoterResult;
-@class AGRequestBinary;
 
 @protocol AGRemoterDelegate <NSObject>
 
@@ -28,7 +27,7 @@
 - (void)send:(DSRequestInfo *)req;
 
 //- (AGRemoterResult *)assembleResultForError:(NSError *)error;
-- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion;
+- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion;
 
 @property (nonatomic, weak) id < AGRemoterDelegate> delegate;
 

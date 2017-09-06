@@ -80,8 +80,6 @@
     
     id requestType = [self requestType:userInfo];
     id requestBody = [self requestBody:userInfo];
-    id requestBinary = [self requestBinary:userInfo];
-//    id requestForm = [self requestForm:userInfo];
     id thirdPartyUrl = [self thirdPartyUrl:userInfo];
     id thirdPartyHeaders = [self thirdParthHeaders:userInfo];
     id headers = [self headers:userInfo];
@@ -89,7 +87,6 @@
     
     if (requestType) [_rUnit setRequestType:requestType];
     if (requestBody) [_rUnit setRequestBody:requestBody];
-    if (requestBinary) [_rUnit setRequestBinary:requestBinary];
     if (thirdPartyUrl) [_rUnit setThirdPartyUrl:thirdPartyUrl];
     if (thirdPartyHeaders) [_rUnit setThirdPartyHeaders:thirdPartyHeaders];
     if (headers) [_rUnit setHeaders:headers];
@@ -113,14 +110,6 @@
 - (id)requestType:(id)userInfo{
     return nil;
 }
-
-- (id)requestBinary:(id)userInfo{
-    return nil;
-}
-
-//- (id)requestForm:(id)userInfo{
-//    return nil;
-//}
 
 - (id)thirdPartyUrl:(id)userInfo{
     return nil;

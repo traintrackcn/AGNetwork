@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 
-@class AGRequestBinary;
 @interface DSRequestInfo : NSMutableURLRequest
 
 + (instancetype)instance;
@@ -26,8 +25,7 @@
 @property (nonatomic, strong) NSString *method;
 @property (nonatomic, strong) NSString *protocolVersion;
 @property (nonatomic, retain) NSString *requestType;
-@property (nonatomic, strong) NSDictionary *requestBody;
-@property (nonatomic, strong) AGRequestBinary *requestBinary;
+@property (nonatomic, strong) id requestBody;
 
 @property (nonatomic, strong) NSDictionary *userInfo;
 

@@ -52,14 +52,12 @@
     [requestInfo assemble];
     
     //log without headers
-//    NSInteger dataLen = (unsigned long)[requestInfo requestBinary].data.length;
-//    NSString *dataLenStr = dataLen > 0?[NSString stringWithFormat:@"binary:%@",[NSNumber numberWithInteger:dataLen]]:@"";
-//    TLOG(@"[Request] %@ %@ %@ %@ ",[requestInfo method], [requestInfo URL].absoluteString, dataLenStr,  [requestInfo requestBody]);
+//    TLOG(@"[Request] %@ %@ %@ ",[requestInfo method], [requestInfo URL].absoluteString, [requestInfo requestBody]);
     
     // log with headers
     id headers = [requestInfo allHTTPHeaderFields];
 //    headers = @"";
-    TLOG(@"[Request] %@ %@ %@ %ld %@ ",[requestInfo method], [requestInfo URL].absoluteString, headers, (unsigned long)[requestInfo requestBinary].data.length,  [requestInfo requestBody]);
+    TLOG(@"[Request] %@ %@ %@ %@ ",[requestInfo method], [requestInfo URL].absoluteString, headers,  [requestInfo requestBody]);
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:requestInfo];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -73,11 +71,7 @@
         [self dequeue:operation];
     }];
     
-    
-//    oper
-    
     [self enqueue:operation hideActivityIndicator:requestInfo.hideActivityIndicator];
-    
     
 }
 
@@ -299,10 +293,9 @@
 #pragma mark -
 
 
-- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody requestBinary:(AGRequestBinary *)requestBinary randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion{
+- (void)REQUEST:(NSString *)requestType method:(NSString *)method requestBody:(id)requestBody randomRequestId:(BOOL)randomRequestId protocolVersion:(NSString *)protocolVersion{
     DSRequestInfo *req = [DSRequestInfo instance];
     [req setRequestType:requestType];
-    [req setRequestBinary:requestBinary];
     [req setRequestBody:requestBody];
     [req setMethod:method];
     [req setProtocolVersion:protocolVersion];

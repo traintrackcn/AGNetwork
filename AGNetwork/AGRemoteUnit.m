@@ -58,20 +58,16 @@
 }
 
 - (DSRequestInfo *)requestInfo{
-    if (!_requestInfo) {
-        _requestInfo = [DSRequestInfo instance];
-    }
+    if (!_requestInfo) _requestInfo = [DSRequestInfo instance];
     [_requestInfo setMethod:self.methodStr];
     [_requestInfo setRandomRequestId:self.randomRequestId];
     [_requestInfo setHideActivityIndicator:self.hideActivityIndicator];
     if (self.requestType) [_requestInfo setRequestType:self.requestType];
     if (self.requestBody) [_requestInfo setRequestBody:self.requestBody];
-    if (self.requestBinary) [_requestInfo setRequestBinary:self.requestBinary];
     if (self.protocolVersion) [_requestInfo setProtocolVersion:self.protocolVersion];
     if (self.thirdPartyUrl) [_requestInfo setThirdPartyUrl:self.thirdPartyUrl];
     if (self.thirdPartyHeaders) [_requestInfo setThirdPartyHeaders:self.thirdPartyHeaders];
     if (self.headers) [_requestInfo setHeaders:self.headers];
-//    if (self.requestForm) [_requestInfo setRequestForm:self.requestForm];
     [_requestInfo setTimeoutInterval:self.timeoutInterval];
     return _requestInfo;
 }

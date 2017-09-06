@@ -133,35 +133,18 @@
     return _defaultBody;
 }
 
-- (NSData *)defaultBodyWithRequestBinaryAsForm{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
+- (NSData *)defaultBodyWithRequestBinary{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
     NSString *boundary = [self boundaryInstance];
     _defaultBody = [NSMutableData data];
     
-    // process request body
-    //        for (NSString *paramKey in self.requestBody) {
-    //            NSString *paramValue = [self.requestBody objectForKey:paramKey];
-    //            [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    //            [_defaultBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", paramKey] dataUsingEncoding:NSUTF8StringEncoding]];
-    //            [_defaultBody appendData:[[NSString stringWithFormat:@"%@\r\n", paramValue] dataUsingEncoding:NSUTF8StringEncoding]];
-    //        }
-    
-    //json data
-    //        if (self.requestBody) {
-    //            NSError *error;
-    //            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.requestBody options:0 error:&error];
-    //            [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    //            [_defaultBody appendData:[@"Content-Disposition: form-data; name=\"data\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    //            [_defaultBody appendData:[@"Content-Type: application/json\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    //            [_defaultBody appendData:jsonData];
-    //            [_defaultBody appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-    //        }
+    AGRequestBinary *requestBinary = self.requestBody;
     
     // process request binary
     [_defaultBody appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [_defaultBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", self.requestBinary.name, self.requestBinary.file] dataUsingEncoding:NSUTF8StringEncoding]];
+    [_defaultBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", requestBinary.name, requestBinary.file] dataUsingEncoding:NSUTF8StringEncoding]];
     //            [_defaultBody appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [_defaultBody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [_defaultBody appendData:self.requestBinary.data];
+    [_defaultBody appendData:requestBinary.data];
     [_defaultBody appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 
     
@@ -176,16 +159,16 @@
     return _defaultBody;
 }
 
-- (NSData *)defaultBodyWithRequestBinary{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
-
-    _defaultBody = [NSMutableData data];
-    [_defaultBody appendData:self.requestBinary.data];
-//        NSString *headerForContentLength = [NSString stringWithFormat:@"%ld", (unsigned long)[_defaultBody length]];
-    [self setValue:self.defaultBodyContentLength forHTTPHeaderField:@"Content-Length"];
-    [self setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
-
-    return _defaultBody;
-}
+//- (NSData *)defaultBodyWithRequestBinary{ // will be defaultBodyWithRequestBodyAndRequestBinary some day
+//
+//    _defaultBody = [NSMutableData data];
+//    [_defaultBody appendData:self.requestBinary.data];
+////        NSString *headerForContentLength = [NSString stringWithFormat:@"%ld", (unsigned long)[_defaultBody length]];
+//    [self setValue:self.defaultBodyContentLength forHTTPHeaderField:@"Content-Length"];
+//    [self setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
+//
+//    return _defaultBody;
+//}
 
 - (NSData *)defaultBodyWithRequestForm{
     _defaultBody = [NSMutableData data];
@@ -216,19 +199,9 @@
 }
 
 - (NSData *)defaultBody{
-//    TLOG(@"self.requestBinary -> %@", self.requestBinary);
-//    TLOG(@"self.requestBody -> %@", self.requestBody);
-    
     if ([self.requestBody isKindOfClass:[LITRequestForm class]]) return [self defaultBodyWithRequestForm];
-    if (self.requestBody&&!self.requestBinary) return [self defaultBodyWithRequestBody];
-    if (!self.requestBody&&self.requestBinary) {
-        if (self.requestBinary.sendAsForm) return [self defaultBodyWithRequestBinaryAsForm];
-        return [self defaultBodyWithRequestBinary];
-    }
-    
-    
-    
-    return [NSData data];
+    if ([self.requestBody isKindOfClass:[AGRequestBinary class]]) return [self defaultBodyWithRequestBinary];
+    return [self defaultBodyWithRequestBody];
 }
 
 

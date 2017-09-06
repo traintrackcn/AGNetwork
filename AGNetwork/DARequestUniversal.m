@@ -33,12 +33,10 @@
     if (requestType) [userInfo setValue:requestType forKey:@"request-type"];
     if (requestBody) [userInfo setValue:requestBody forKey:@"request-body"];
     if (protocolVersion) [userInfo setValue:protocolVersion forKey:@"protocol-version"];
-//    if (requestForm) [userInfo setValue:requestForm forKey:@"request-form"];
     
     _requestType = requestType;
     
     _method = method;
-    
     
     //    TLOG(@"requestType -> %@ requestBody -> %@ method -> %d", requestType, requestBody, method);
     
@@ -79,12 +77,5 @@
     return [userInfo objectForKey:@"protocol-version"];
 }
 
-- (id)requestBinary:(id)userInfo{
-    return [userInfo objectForKey:@"requset-binary"];
-}
-
-- (id)requestForm:(id)userInfo{
-    return [userInfo objectForKey:@"request-form"];
-}
 
 @end

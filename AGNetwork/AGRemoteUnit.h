@@ -16,9 +16,6 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
     AGRemoteUnitMethodHEAD
 };
 
-
-@class AGRequestBinary;
-@class LITRequestForm;
 @interface AGRemoteUnit : NSObject
 
 + (instancetype)instance;
@@ -41,8 +38,6 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 @property (nonatomic, assign) AGRemoteUnitMethod method;
 @property (nonatomic, strong) NSString *requestType;
 @property (nonatomic, strong) id requestBody;
-@property (nonatomic, strong) AGRequestBinary *requestBinary;
-//@property (nonatomic, strong) LITRequestForm *requestForm;
 @property (nonatomic, strong) NSString *protocolVersion;
 
 @property (nonatomic, strong) NSURL *thirdPartyUrl;

@@ -22,8 +22,6 @@
 - (NSInteger)method;
 - (id)requestType:(id)userInfo;
 - (id)requestBody:(id)userInfo;
-- (id)requestBinary:(id)userInfo;
-//- (id)requestForm:(id)userInfo;
 - (id)thirdPartyUrl:(id)userInfo;
 - (id)thirdParthHeaders:(id)userInfo;
 - (id)headers:(id)userInfo;
