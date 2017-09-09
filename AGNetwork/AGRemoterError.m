@@ -61,87 +61,10 @@
     
     if ([self isAvailableForKey:@"errorData"]){
         [self setData:[self objectForKey:@"errorData"]];
-        
-//        if ([self.data isKindOfClass:[NSString class]]){
-//            NSString *jsonStr = self.data;
-////            jsonStr  = [NSString stringWithFormat:@"{\"errorData\":%@}", jsonStr];
-//            jsonStr = [self JSONString:jsonStr];
-////            jsonStr = [self appendQuotationMarksForKeysAndValuesInString:jsonStr];
-////            jsonStr = @"({\"code\":\"InvalidPhone\",\"field\":\"phone\",\"message\":\"Wrong phone format, 10 digits needed.\"},{\"code\":\"InvalidAddress\",\"field\":\"\"})";
-//            TLOG(@"jsonStr -> %@", jsonStr);
-//            NSData *jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
-//            NSError *error = nil;
-//            id jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&error];
-//            
-//            if(error) {
-//                NSLog(@"error -> %@", error);
-//            }
-//            
-////            TLOG(@"jsonData -> %@ jsonObj -> %@",jsonData,  jsonObj);
-//            
-//            [self setData:jsonObj];
-//        }
-//        
     }
     
 }
 
-
-//-(NSString *)JSONString:(NSString *)aString {
-//    NSMutableString *s = [NSMutableString stringWithString:aString];
-//    [s replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"/" withString:@"\\/" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"\n" withString:@"\\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"\b" withString:@"\\b" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"\f" withString:@"\\f" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"\r" withString:@"\\r" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"\t" withString:@"\\t" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@" = " withString:@":" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@";\\n        " withString:@"," options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"\\n        " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@";\\n    " withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    [s replaceOccurrencesOfString:@"\\n" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    
-//    if ([[s substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"("]){
-//        [s replaceCharactersInRange:NSMakeRange(0, 1) withString:@"["];
-//    }
-//    
-//    if ([[s substringWithRange:NSMakeRange(s.length-1, 1)] isEqualToString:@")"]){
-//        [s replaceCharactersInRange:NSMakeRange(s.length-1, 1) withString:@"]"];
-//    }
-//    
-//    [s replaceOccurrencesOfString:@"\\\"" withString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
-//    
-//    return [NSString stringWithString:s];
-//}
-
-//- (NSString *)appendQuotationMarksForKeysAndValuesInString:(NSString *)str{
-//    
-//    NSString *result;
-//    
-//    result = [self stringBetweenString:@"{" andString:@":" inString:str];
-//    while (result) {
-//        TLOG(@"result -> %@", result);
-//        result = [self stringBetweenString:@"{" andString:@":" inString:str];
-//        str = [str stringByReplacingOccurrencesOfString:result withString:[NSString stringWithFormat:@"\"%@\"", result]];
-//    }
-//    
-//    return str;
-//
-//}
-
-//- (NSString*)stringBetweenString:(NSString*)start andString:(NSString*)end inString:(NSString *)str{
-//    NSScanner* scanner = [NSScanner scannerWithString:str];
-//    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
-//    [scanner scanUpToString:start intoString:NULL];
-//    if ([scanner scanString:start intoString:NULL]) {
-//        NSString* result = nil;
-//        if ([scanner scanUpToString:end intoString:&result]) {
-//            return result;
-//        }
-//    }
-//    return nil;
-//}
 
 - (void)parseResponseRaw:(id)responseRaw{
 //    TLOG(@"responseRaw -> %@", responseRaw);
@@ -221,9 +144,13 @@
         for (NSInteger i = 0; i<arr.count; i++) {
             id raw = [arr objectAtIndex:i];
 //            TLOG(@"raw -> %@", raw);
-            if ([raw objectForKey:@"message"]){
-                [msgs addObject:[raw objectForKey:@"message"]];
-            }
+            @try {
+                if ([raw isKindOfClass:[NSDictionary class]] && [raw objectForKey:@"message"]){
+                    [msgs addObject:[raw objectForKey:@"message"]];
+                }
+            } @catch (NSException *exception) {
+                TLOG(@"exception -> %@", exception);
+            } 
         }
     }
     

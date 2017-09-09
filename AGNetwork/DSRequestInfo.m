@@ -127,6 +127,7 @@
 
 
 - (NSData *)defaultBodyWithRequestBody{
+    if (!self.requestBody) return nil;
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:self.requestBody options:NSJSONWritingPrettyPrinted error:&error];
     _defaultBody = [NSMutableData dataWithData:data];

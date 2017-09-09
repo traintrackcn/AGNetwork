@@ -19,6 +19,12 @@
 		4A495CA01DED278E00430960 /* UIImageView+AFNetworking.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AB9C06A1D20E04100549476 /* UIImageView+AFNetworking.h */; };
 		4A495CA11DED278E00430960 /* UIWebView+AFNetworking.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AB9C0711D20E04100549476 /* UIWebView+AFNetworking.h */; };
 		4A495CA21DED31A800430960 /* AFURLResponseSerialization.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4AB9C05C1D20E04100549476 /* AFURLResponseSerialization.h */; };
+		4A4FF00F1F64218F00F6BCFD /* LITAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A4FF00A1F64218F00F6BCFD /* LITAsset.m */; };
+		4A4FF0101F64218F00F6BCFD /* LITFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A4FF00C1F64218F00F6BCFD /* LITFileUploader.m */; };
+		4A4FF0111F64218F00F6BCFD /* LITLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A4FF00E1F64218F00F6BCFD /* LITLoader.m */; };
+		4A4FF0121F64219A00F6BCFD /* LITAsset.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A4FF0091F64218F00F6BCFD /* LITAsset.h */; };
+		4A4FF0131F64219A00F6BCFD /* LITFileUploader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A4FF00B1F64218F00F6BCFD /* LITFileUploader.h */; };
+		4A4FF0141F64219A00F6BCFD /* LITLoader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A4FF00D1F64218F00F6BCFD /* LITLoader.h */; };
 		4A61A7171A6DE79D002D3E2E /* AGRemoteUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */; };
 		4A7EDF701CEDC16A00A311D2 /* DAFileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A7EDF6F1CEDC16A00A311D2 /* DAFileLoader.m */; };
 		4A7EDF721CEDC49F00A311D2 /* DAFileLoader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A7EDF6E1CEDC16A00A311D2 /* DAFileLoader.h */; };
@@ -67,6 +73,9 @@
 			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
+				4A4FF0121F64219A00F6BCFD /* LITAsset.h in CopyFiles */,
+				4A4FF0131F64219A00F6BCFD /* LITFileUploader.h in CopyFiles */,
+				4A4FF0141F64219A00F6BCFD /* LITLoader.h in CopyFiles */,
 				4A8DDF071F5F05B700C65B8F /* LITRequestForm.h in CopyFiles */,
 				4A8DDF081F5F05B700C65B8F /* LITRequestFormField.h in CopyFiles */,
 				4A495CA21DED31A800430960 /* AFURLResponseSerialization.h in CopyFiles */,
@@ -93,6 +102,12 @@
 /* Begin PBXFileReference section */
 		4A3700601C86E21500A4C1D8 /* AGRequestBinary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRequestBinary.h; sourceTree = "<group>"; };
 		4A3700611C86E21500A4C1D8 /* AGRequestBinary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRequestBinary.m; sourceTree = "<group>"; };
+		4A4FF0091F64218F00F6BCFD /* LITAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LITAsset.h; sourceTree = "<group>"; };
+		4A4FF00A1F64218F00F6BCFD /* LITAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LITAsset.m; sourceTree = "<group>"; };
+		4A4FF00B1F64218F00F6BCFD /* LITFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LITFileUploader.h; sourceTree = "<group>"; };
+		4A4FF00C1F64218F00F6BCFD /* LITFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LITFileUploader.m; sourceTree = "<group>"; };
+		4A4FF00D1F64218F00F6BCFD /* LITLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LITLoader.h; sourceTree = "<group>"; };
+		4A4FF00E1F64218F00F6BCFD /* LITLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LITLoader.m; sourceTree = "<group>"; };
 		4A61A7151A6DE79D002D3E2E /* AGRemoteUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRemoteUnit.h; sourceTree = "<group>"; };
 		4A61A7161A6DE79D002D3E2E /* AGRemoteUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRemoteUnit.m; sourceTree = "<group>"; };
 		4A7EDF6E1CEDC16A00A311D2 /* DAFileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAFileLoader.h; sourceTree = "<group>"; };
@@ -282,6 +297,12 @@
 				4A7EDF6F1CEDC16A00A311D2 /* DAFileLoader.m */,
 				4A7EDF731CEDDD8400A311D2 /* DANetworkLoader.h */,
 				4A7EDF741CEDDD8400A311D2 /* DANetworkLoader.m */,
+				4A4FF0091F64218F00F6BCFD /* LITAsset.h */,
+				4A4FF00A1F64218F00F6BCFD /* LITAsset.m */,
+				4A4FF00B1F64218F00F6BCFD /* LITFileUploader.h */,
+				4A4FF00C1F64218F00F6BCFD /* LITFileUploader.m */,
+				4A4FF00D1F64218F00F6BCFD /* LITLoader.h */,
+				4A4FF00E1F64218F00F6BCFD /* LITLoader.m */,
 			);
 			path = AGNetwork;
 			sourceTree = "<group>";
@@ -392,6 +413,7 @@
 				4AB9C0821D20E04100549476 /* UIRefreshControl+AFNetworking.m in Sources */,
 				4AB9C0761D20E04100549476 /* AFNetworkReachabilityManager.m in Sources */,
 				4AB9C0781D20E04100549476 /* AFURLConnectionOperation.m in Sources */,
+				4A4FF00F1F64218F00F6BCFD /* LITAsset.m in Sources */,
 				4AB9C0811D20E04100549476 /* UIProgressView+AFNetworking.m in Sources */,
 				4AB9C0731D20E04100549476 /* AFHTTPRequestOperation.m in Sources */,
 				4AB9C07B1D20E04100549476 /* AFURLSessionManager.m in Sources */,
@@ -401,6 +423,7 @@
 				4ABE90A81D49E5FA00EC730A /* NSObject+FileLoader.m in Sources */,
 				4AC3CC7E1CCF39B50025410B /* DARequest.m in Sources */,
 				4AB9C0771D20E04100549476 /* AFSecurityPolicy.m in Sources */,
+				4A4FF0111F64218F00F6BCFD /* LITLoader.m in Sources */,
 				4AB9C07A1D20E04100549476 /* AFURLResponseSerialization.m in Sources */,
 				4AB9C07E1D20E04100549476 /* UIAlertView+AFNetworking.m in Sources */,
 				4AB9C0791D20E04100549476 /* AFURLRequestSerialization.m in Sources */,
@@ -409,6 +432,7 @@
 				4AD7D1E919D1091300D7F178 /* DSRequestInfo.m in Sources */,
 				4AD7D1E619D1083200D7F178 /* AGRemoter.m in Sources */,
 				4AD7D1F119D1096500D7F178 /* AGRemoterResult.m in Sources */,
+				4A4FF0101F64218F00F6BCFD /* LITFileUploader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

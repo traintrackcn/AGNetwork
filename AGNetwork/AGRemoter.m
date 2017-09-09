@@ -121,7 +121,10 @@
             [result setCode:META_CODE_UNEXPECTED];
         }
         
-        if (errorRaw) [result parseError:nil errorRaw:errorRaw responseRaw:nil];
+        if (errorRaw) {
+            [result parseError:nil errorRaw:errorRaw responseRaw:nil];
+            TLOG(@"errorRaw -> %@", errorRaw);
+        }
     }
     
     [self processResult:result];
