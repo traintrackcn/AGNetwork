@@ -63,6 +63,10 @@
         [self setData:[self objectForKey:@"errorData"]];
     }
     
+    if ([self isAvailableForKey:@"data"]){
+        [self setData:[self objectForKey:@"data"]];
+    }
+    
 }
 
 
@@ -138,21 +142,8 @@
         [msgs addObjectsFromArray:[self.message componentsSeparatedByString:@"\\n"]];
     }
     
-//    TLOG(@"self.data -> %@ self.data.class -> %@", self.data, [self.data class]);
-    if (self.data){
-        NSArray *arr = (NSArray *)self.data;
-        for (NSInteger i = 0; i<arr.count; i++) {
-            id raw = [arr objectAtIndex:i];
-//            TLOG(@"raw -> %@", raw);
-            @try {
-                if ([raw isKindOfClass:[NSDictionary class]] && [raw objectForKey:@"message"]){
-                    [msgs addObject:[raw objectForKey:@"message"]];
-                }
-            } @catch (NSException *exception) {
-                TLOG(@"exception -> %@", exception);
-            } 
-        }
-    }
+    
+    [msgs addObjectsFromArray:[self messagesFromData]];
     
     if (msgs.count == 0) { //if no message for users, append message for developers
         if (self.localizedDesc) [msgs addObject:self.localizedDesc];
@@ -160,9 +151,46 @@
             if (![self.developMessage isEqualToString:@""]) [msgs addObject:self.developMessage];
         }
         if (self.stack) [msgs addObject:self.stack];
-        if (self.data) [msgs addObject:self.data];
+//        if (self.data) [msgs addObject:self.data];
     }
 
+    return msgs;
+}
+
+- (NSArray *)messagesFromData{
+    TLOG(@"self.data -> %@ self.data.class -> %@", self.data, [self.data class]);
+    if ([self.data isKindOfClass:[NSArray class]]) return [self messagesFromDataAsArray];
+    if ([self.data isKindOfClass:[NSDictionary class]]) return [self messagesFromDataAsDictionary];    
+    return @[self.data];
+}
+
+- (NSArray *)messagesFromDataAsArray{
+    NSMutableArray *msgs = [NSMutableArray array];
+    NSArray *arr = (NSArray *)self.data;
+    for (NSInteger i = 0; i<arr.count; i++) {
+        id raw = [arr objectAtIndex:i];
+        //            TLOG(@"raw -> %@", raw);
+        @try {
+            if ([raw isKindOfClass:[NSDictionary class]] && [raw objectForKey:@"message"]){
+                [msgs addObject:[raw objectForKey:@"message"]];
+            }
+        } @catch (NSException *exception) {
+            TLOG(@"exception -> %@", exception);
+        } 
+    }
+    return msgs;
+}
+
+- (NSArray *)messagesFromDataAsDictionary{
+    NSMutableArray *msgs = [NSMutableArray array];
+    NSArray *failures = [self.data objectForKey:@"failures"];
+    if (failures && [failures isKindOfClass:[NSArray class]]){
+        for (NSInteger i = 0; i<failures.count; i++) {
+            id failure = [failures objectAtIndex:i];
+            [msgs addObject:[failure objectForKey:@"message"]];
+        }
+    }
+    
     return msgs;
 }
 
