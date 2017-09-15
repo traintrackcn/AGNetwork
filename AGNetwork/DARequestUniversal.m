@@ -26,13 +26,14 @@
 
 #pragma mark - full function request
 
-- (void)requestWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody protocolVersion:(id)protocolVersion{
+- (void)requestWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody protocolVersion:(id)protocolVersion headers:(id)headers{
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     //    @{
     //      @"request-type":requestType,
     if (requestType) [userInfo setValue:requestType forKey:@"request-type"];
     if (requestBody) [userInfo setValue:requestBody forKey:@"request-body"];
     if (protocolVersion) [userInfo setValue:protocolVersion forKey:@"protocol-version"];
+    if (headers) [userInfo setValue:headers forKey:@"headers"];
     
     _requestType = requestType;
     
@@ -46,7 +47,7 @@
 #pragma mark -
 
 - (void)requestWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody{
-    [self requestWithCompletion:completion method:method requestType:requestType requestBody:requestBody protocolVersion:nil];
+    [self requestWithCompletion:completion method:method requestType:requestType requestBody:requestBody protocolVersion:nil headers:nil];
 }
 
 - (void)requestWithRandomRequestIdWithCompletion:(void (^)(id, id))completion method:(NSInteger)method requestType:(id)requestType requestBody:(id)requestBody{
@@ -77,5 +78,8 @@
     return [userInfo objectForKey:@"protocol-version"];
 }
 
+- (id)headers:(id)userInfo{
+    return [userInfo objectForKey:@"headers"];
+}
 
 @end

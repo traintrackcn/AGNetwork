@@ -21,6 +21,8 @@
 - (id)requestBody;
 //- (id)requestForm;
 - (id)cache;
+- (id)headers;
+
 
 @end
 
@@ -28,6 +30,7 @@
 
 - (void)requestWithCompletion:(void (^)(id parsedData, id error))completion;
 - (void)completion:(id)data error:(id)error;
+- (BOOL)debug;
 
 @property (nonatomic, weak) id<LITLoaderDelegate> delegate;
 

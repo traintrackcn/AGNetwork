@@ -8,6 +8,7 @@
 
 #import "LITLoader.h"
 #import "DARequestUniversal.h"
+#import "GlobalDefine.h"
 
 @interface LITLoader(){
     
@@ -22,14 +23,34 @@
 - (void)requestWithCompletion:(void (^)(id, id))completion{
     [self setCompletion:completion];
     
+    
+    id requestBody = self.requestBody;
+    
+//    @try {
+//        requestBody = self.requestBody;
+//    } @catch (NSException *exception) {
+//        TLOG(@"[%@] exception -> %@", NSStringFromClass(self.class), exception);
+//        [self completion:nil error:exception];
+//        return;
+//    } 
+    
+    if (self.debug){
+        TLOG(@"[%@] %@ %@", self.textMethod, self.requestType, requestBody);
+        [self setCompletion:nil];
+        return;
+    }
+    
     if (self.cache) {
         [self completion:self.cache error:nil];
         return;
     }
     
+    
+    
+    
     [DA_REQUEST_UNIVERSAL_INSTANCE requestWithCompletion:^(id data, id error) {
         [self requestCallback:data error:error];
-    } method:self.method requestType:self.requestType requestBody:self.requestBody protocolVersion:self.protocolVersion];
+    } method:self.method requestType:self.requestType requestBody:requestBody protocolVersion:self.protocolVersion headers:self.headers];
     
 }
 
@@ -47,6 +68,7 @@
 - (void)completion:(id)parsedData error:(id)error{
 //    TLOG(@"self.completion -> %@", self.completion);
     if(self.completion) self.completion(parsedData, error);
+    [self setCompletion:nil];
 }
 
 - (void)parse:(id)data{
@@ -92,11 +114,32 @@
     return nil;
 }
 
+- (id)headers{
+    if (_delegate && [_delegate respondsToSelector:@selector(headers)]){
+        return [_delegate headers];
+    }
+    return nil;
+}
+
 //- (id)requestForm{
 //    if (_delegate && [_delegate respondsToSelector:@selector(requestForm)]){
 //        return [_delegate requestForm];
 //    }
 //    return nil;
 //}
+
+- (BOOL)debug{
+    return NO;
+}
+
+#pragma mark -
+
+- (NSString *)textMethod{
+    if (self.method == AGRemoteUnitMethodDELETE) return @"DELETE";
+    if (self.method == AGRemoteUnitMethodPOST) return @"POST";
+    if (self.method == AGRemoteUnitMethodPUT) return @"PUT";
+    if (self.method == AGRemoteUnitMethodHEAD) return @"HEAD";
+    return @"GET";
+}
 
 @end

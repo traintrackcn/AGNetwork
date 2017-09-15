@@ -86,7 +86,7 @@
 }
 
 - (void)setHeaders{
-    [self setAllHTTPHeaderFields:[AGNetworkDefine singleton].defaultHeaders];
+    [self setAllHTTPHeaderFields:NETWORK.defaultHeaders];
     if (self.randomRequestId) [self setValue:self.randomRequestIdStr forHTTPHeaderField:@"X-Client-Request-Id"];
     
     //headers only in this request

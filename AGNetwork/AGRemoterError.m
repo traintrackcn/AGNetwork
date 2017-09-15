@@ -161,7 +161,8 @@
     TLOG(@"self.data -> %@ self.data.class -> %@", self.data, [self.data class]);
     if ([self.data isKindOfClass:[NSArray class]]) return [self messagesFromDataAsArray];
     if ([self.data isKindOfClass:[NSDictionary class]]) return [self messagesFromDataAsDictionary];    
-    return @[self.data];
+    if (self.data) return @[self.data];
+    return @[];
 }
 
 - (NSArray *)messagesFromDataAsArray{
