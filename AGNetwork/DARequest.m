@@ -15,6 +15,7 @@
 }
 
 @property (nonatomic, weak) DARequest *ws;
+@property (nonatomic, strong) id responseMetaData;
 //@property (nonatomic, strong) AGRemoteUnit *rUnit;
 
 @end
@@ -26,6 +27,7 @@
 }
 
 - (void)dealloc{
+    [self cancel];
 //    TLOG(@"%@", NSStringFromClass(self.class));
 }
 
@@ -46,12 +48,13 @@
     AGRemoteUnit *rUnit = [self rUnit:userInfo];
     [rUnit requestWithCompletion:^(id data, id error) {
 //        TLOG(@"");
-        [self.ws requestCallbackWithCompletion:completion data:data error:error userInfo:userInfo];
+        [self.ws requestCallbackWithCompletion:completion data:data error:error userInfo:userInfo rUnit:rUnit];
     }];
 }
 
-- (void)requestCallbackWithCompletion:(void (^)(id, id))completion data:(id)data error:(id)error userInfo:(id)userInfo{
+- (void)requestCallbackWithCompletion:(void (^)(id, id))completion data:(id)data error:(id)error userInfo:(id)userInfo rUnit:(AGRemoteUnit *)rUnit{
 //        TLOG(@"data -> %@", data);
+    [self setResponseMetaData:rUnit.responseMetaData];
     
     if (error) {
 //        completion(nil, error);

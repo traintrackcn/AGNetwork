@@ -23,6 +23,7 @@
 @property (nonatomic, strong) id responseData;
 @property (nonatomic, strong) id responseHeaders;
 @property (nonatomic, strong) id responseError;
+@property (nonatomic, strong) id responseMetaData;
 
 
 
@@ -169,13 +170,12 @@
     id responseData = result.responseData;
     id responseHeaders = result.responseHeaders;
     
-//    TLOG(@"responseData -> %@", responseData);
-    
     @try {
         id processedData = [self didGetResponseData:responseData];
         id processedHeaders = [self didGetResponseHeaders:responseHeaders];
         [self setResponseData:processedData];
         [self setResponseHeaders:processedHeaders];
+        [self setResponseMetaData:result.metaData];
     }@catch (NSException *exception) {
         //            [AGFlurryMonitor logClientException:exception fnName:CURRENT_FUNCTION_NAME];
     }

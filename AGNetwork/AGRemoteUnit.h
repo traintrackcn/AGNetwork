@@ -34,6 +34,7 @@ typedef NS_ENUM(NSInteger, AGRemoteUnitMethod) {
 - (id)responseData;
 - (id)responseHeaders;
 - (id)responseError;
+- (id)responseMetaData;
 
 @property (nonatomic, assign) AGRemoteUnitMethod method;
 @property (nonatomic, strong) NSString *requestType;

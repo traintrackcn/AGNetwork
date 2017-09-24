@@ -94,9 +94,15 @@
         }
     }
     
+    id metaData;
     id responseData;
+    id code;
+    id errorRaw;
     
     if ([responseRaw isKindOfClass:[NSDictionary class]]) {
+        metaData = [responseRaw objectForKey:@"meta"];
+        code = [metaData objectForKey:@"code"];
+        errorRaw = [metaData objectForKey:@"error"];
         responseData = [responseRaw objectForKey:@"response"];
     }
     
@@ -107,25 +113,22 @@
 //    TLOG(@"before setCode");
     [result setCode: operation.response.statusCode ];
     [result setRequest: (DSRequestInfo *)[operation request] ];
+    [result setMetaData: metaData];
     [result setResponseData: responseData ];
     [result setResponseHeaders:operation.response.allHeaderFields];
     
-    //find real code
-    if ([responseData isKindOfClass:[NSDictionary class]]){
-        id meta = [responseData objectForKey:@"meta"];
-        id code = [meta objectForKey:@"code"];
-        id errorRaw = [meta objectForKey:@"error"];
-        if (code) {
-            [result setCode:[code integerValue]];
-        }else if (errorRaw) {
-            [result setCode:META_CODE_UNEXPECTED];
-        }
-        
-        if (errorRaw) {
-            [result parseError:nil errorRaw:errorRaw responseRaw:nil];
-            TLOG(@"errorRaw -> %@", errorRaw);
-        }
+    //status code from meta
+    if (code) {
+        [result setCode:[code integerValue]];
+    }else if (errorRaw) {
+        [result setCode:META_CODE_UNEXPECTED];
     }
+    
+    if (errorRaw) {
+        [result parseError:nil errorRaw:errorRaw responseRaw:nil];
+        TLOG(@"errorRaw -> %@", errorRaw);
+    }
+    
     
     [self processResult:result];
 }

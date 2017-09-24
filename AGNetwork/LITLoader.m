@@ -15,10 +15,17 @@
 }
 
 @property (nonatomic, strong) void(^completion)(id data, id error);
+@property (nonatomic, assign) BOOL loading;
+@property (nonatomic, strong) id responseMetaData;
 
 @end
 
 @implementation LITLoader
+
+- (void)dealloc{
+    
+    TLOG(@"%@", NSStringFromClass(self.class));
+}
 
 - (void)requestWithCompletion:(void (^)(id, id))completion{
     [self setCompletion:completion];
@@ -45,16 +52,17 @@
         return;
     }
     
-    
-    
-    
-    [DA_REQUEST_UNIVERSAL_INSTANCE requestWithCompletion:^(id data, id error) {
-        [self requestCallback:data error:error];
+    [self setLoading:YES];
+    DARequestUniversal *l = [DARequestUniversal instance];
+    [l requestWithCompletion:^(id data, id error) {
+        [self requestCallback:data error:error meta:l.responseMetaData];
     } method:self.method requestType:self.requestType requestBody:requestBody protocolVersion:self.protocolVersion headers:self.headers];
     
 }
 
-- (void)requestCallback:(id)data error:(id)error{
+- (void)requestCallback:(id)data error:(id)error meta:(id)meta{
+    
+    [self setResponseMetaData:meta];
     
     if (error) {
         [self completion:data error:error];
@@ -62,13 +70,14 @@
     }
     
     [self parse:data];
-    
 }
 
 - (void)completion:(id)parsedData error:(id)error{
 //    TLOG(@"self.completion -> %@", self.completion);
     if(self.completion) self.completion(parsedData, error);
     [self setCompletion:nil];
+    
+    [self setLoading:NO];
 }
 
 - (void)parse:(id)data{

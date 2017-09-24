@@ -18,6 +18,7 @@
 - (void)cancel;
 
 - (AGRemoteUnit *)rUnit;
+- (id)responseMetaData;
 
 - (NSInteger)method;
 - (id)requestType:(id)userInfo;

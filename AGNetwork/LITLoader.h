@@ -31,6 +31,8 @@
 - (void)requestWithCompletion:(void (^)(id parsedData, id error))completion;
 - (void)completion:(id)data error:(id)error;
 - (BOOL)debug;
+- (BOOL)loading;
+- (id)responseMetaData;
 
 @property (nonatomic, weak) id<LITLoaderDelegate> delegate;
 
